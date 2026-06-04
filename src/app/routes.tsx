@@ -156,13 +156,17 @@ function SectionTestimonials() {
   const [idx, setIdx] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const [cw, setCw] = useState(900);
+  const [isMobile, setIsMobile] = useState(false);
   const len = reviewsData.length;
   const cardW = 340;
   const gap = 20;
   const step = cardW + gap;
 
   useEffect(() => {
-    const measure = () => { if (containerRef.current) setCw(containerRef.current.offsetWidth); };
+    const measure = () => {
+      if (containerRef.current) setCw(containerRef.current.offsetWidth);
+      setIsMobile(window.innerWidth < 768);
+    };
     measure();
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
@@ -193,29 +197,48 @@ function SectionTestimonials() {
               <motion.div
                 key={review.name}
                 animate={{
-                  scale: isCenterCard ? 1.05 : dist === 1 ? 0.88 : 0.75,
-                  opacity: isCenterCard ? 1 : dist === 1 ? 0.55 : 0.15,
+                  scale: isMobile ? 1 : isCenterCard ? 1.05 : dist === 1 ? 0.88 : 0.75,
+                  opacity: isMobile ? (isCenterCard ? 1 : 0) : isCenterCard ? 1 : dist === 1 ? 0.55 : 0.15,
                 }}
                 transition={{ type: 'spring', stiffness: 250, damping: 28 }}
                 className="shrink-0"
-                style={{ width: cardW, filter: isCenterCard ? 'none' : 'blur(0.5px)', pointerEvents: isCenterCard ? 'auto' : 'none' }}
+                style={{
+                  width: isMobile ? 'calc(100vw - 2rem)' : cardW,
+                  maxWidth: isMobile ? 340 : cardW,
+                  filter: isCenterCard ? 'none' : 'blur(0.5px)',
+                  pointerEvents: isCenterCard ? 'auto' : 'none',
+                }}
               >
                 <ReviewCard review={review} isCenter={isCenterCard} />
               </motion.div>
             );
           })}
         </motion.div>
-        <div className="absolute top-0 left-0 bottom-0 w-16 bg-gradient-to-r from-[#0B1020] to-transparent pointer-events-none z-10" />
-        <div className="absolute top-0 right-0 bottom-0 w-16 bg-gradient-to-l from-[#0B1020] to-transparent pointer-events-none z-10" />
+        {!isMobile && (
+          <>
+            <div className="absolute top-0 left-0 bottom-0 w-16 bg-gradient-to-r from-[#0B1020] to-transparent pointer-events-none z-10" />
+            <div className="absolute top-0 right-0 bottom-0 w-16 bg-gradient-to-l from-[#0B1020] to-transparent pointer-events-none z-10" />
+          </>
+        )}
+        {isMobile && (
+          <>
+            <button onClick={prev} aria-label="Previous testimonial" className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 backdrop-blur-sm border border-white/15 text-white/80 hover:text-white hover:bg-black/80 flex items-center justify-center transition-all z-20">
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button onClick={next} aria-label="Next testimonial" className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 backdrop-blur-sm border border-white/15 text-white/80 hover:text-white hover:bg-black/80 flex items-center justify-center transition-all z-20">
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </>
+        )}
       </div>
       <div className="flex items-center justify-center gap-3 mt-4">
-        <button onClick={prev} className="w-9 h-9 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white hover:bg-white/10 flex items-center justify-center transition-all">
+        <button onClick={prev} className="hidden md:flex w-9 h-9 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white hover:bg-white/10 items-center justify-center transition-all">
           <ChevronLeft className="w-4 h-4" />
         </button>
         {reviewsData.map((_, i) => (
           <button key={i} onClick={() => setIdx(i)} className={`h-1.5 rounded-full transition-all duration-300 ${i === idx ? 'bg-purple-400 w-6' : 'bg-white/20 hover:bg-white/40 w-1.5'}`} />
         ))}
-        <button onClick={next} className="w-9 h-9 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white hover:bg-white/10 flex items-center justify-center transition-all">
+        <button onClick={next} className="hidden md:flex w-9 h-9 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white hover:bg-white/10 items-center justify-center transition-all">
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>
