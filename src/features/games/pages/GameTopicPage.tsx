@@ -1,18 +1,17 @@
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowLeft, Gamepad2, Lock, Crown, Zap, Brain, Star, ChevronRight,
-  Sparkles, Trophy, Code2, Rocket,
+  ArrowLeft, Gamepad2, Lock, Crown, Zap, Brain, Star,
+  Trophy, Code2, Rocket,
 } from 'lucide-react';
 import { useGameProgress } from '../hooks/useGameProgress';
-import { LEVEL_TEMPLATES, getPool, type Difficulty } from '../data/gamesData';
+import { LEVEL_TEMPLATES, type Difficulty } from '../data/gamesData';
 
 const difficultyMeta: Record<Difficulty, { color: string; ring: string; gradient: string; icon: any; label: string; }> = {
   easy:   { color: 'text-emerald-300', ring: 'ring-emerald-400/50',   gradient: 'from-emerald-400 to-teal-500',    icon: Brain, label: 'Easy'   },
   medium: { color: 'text-amber-300',   ring: 'ring-amber-400/50',     gradient: 'from-amber-400 to-orange-500',   icon: Zap,   label: 'Medium' },
   hard:   { color: 'text-rose-300',    ring: 'ring-rose-400/50',      gradient: 'from-rose-400 to-pink-500',      icon: Crown, label: 'Hard'   },
 };
-
 function Stars({ count, size = 'sm' }: { count: number; size?: 'sm' | 'md' }) {
   const dim = size === 'md' ? 'w-4 h-4 sm:w-5 sm:h-5' : 'w-3 h-3 sm:w-3.5 sm:h-3.5';
   return (
@@ -28,59 +27,6 @@ function Stars({ count, size = 'sm' }: { count: number; size?: 'sm' | 'md' }) {
 }
 
 // SVG candy-cane path: stripes between level nodes
-function CandyPath({ segments, completed }: { segments: { idx: number; fromY: number; toY: number; dx: number }[]; completed: boolean[] }) {
-  return (
-    <svg
-      viewBox="0 0 600 360"
-      preserveAspectRatio="none"
-      className="absolute inset-0 w-full h-full pointer-events-none"
-    >
-      <defs>
-        <linearGradient id="candy" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#ec4899" />
-          <stop offset="50%" stopColor="#a855f7" />
-          <stop offset="100%" stopColor="#ec4899" />
-        </linearGradient>
-        <linearGradient id="candyDim" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#475569" stopOpacity="0.4" />
-          <stop offset="50%" stopColor="#64748b" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="#475569" stopOpacity="0.4" />
-        </linearGradient>
-      </defs>
-      {segments.map((seg, i) => {
-        const x1 = (seg.idx) * 100 + 30;
-        const x2 = (seg.idx + 1) * 100 + 30;
-        const dy = seg.toY - seg.fromY;
-        const midX = (x1 + x2) / 2;
-        const cp1Y = seg.fromY + dy * 0.3;
-        const cp2Y = seg.toY - dy * 0.3;
-        const path = `M ${x1} ${seg.fromY} C ${midX} ${cp1Y}, ${midX} ${cp2Y}, ${x2} ${seg.toY}`;
-        const isActive = completed[i] && completed[i + 1];
-        return (
-          <g key={i}>
-            <path d={path} stroke="url(#candyDim)" strokeWidth="6" fill="none" strokeLinecap="round" />
-            {isActive && (
-              <>
-                <path d={path} stroke="url(#candy)" strokeWidth="6" fill="none" strokeLinecap="round" />
-                {/* candy-cane stripes */}
-                <path
-                  d={path}
-                  stroke="white"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeDasharray="6 8"
-                  opacity="0.6"
-                />
-              </>
-            )}
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
 function LollipopDecor({ emoji, style, size = 64 }: { emoji: string; style: React.CSSProperties; size?: number }) {
   return (
     <div className="absolute pointer-events-none select-none opacity-60" style={style}>
@@ -97,28 +43,14 @@ function LollipopDecor({ emoji, style, size = 64 }: { emoji: string; style: Reac
 export default function GameTopicPage() {
   const { topic: topicParam } = useParams<{ topic: string }>();
   const topic = topicParam ? decodeURIComponent(topicParam) : '';
-  const navigate = useNavigate();
   const { getLevel, isLevelUnlocked, progress } = useGameProgress();
 
-  // Wave-style Y positions for 7 nodes (zig-zag)
-  const yPositions = [50, 130, 70, 150, 60, 140, 80];
-  const nodeY = yPositions.map((y) => (y / 200) * 100); // percent
-
-  const pool = getPool(topic);
   const levelResults = LEVEL_TEMPLATES.map((l) => getLevel(topic, l.id));
   const completedCount = levelResults.filter((r) => r && r.stars >= 1).length;
   const allDone = completedCount === 7;
   const totalStars = levelResults.reduce((s, r) => s + (r?.stars || 0), 0);
   const maxStars = 21;
   const progressPct = (totalStars / maxStars) * 100;
-
-  // Build segments for candy path
-  const segments = LEVEL_TEMPLATES.slice(0, -1).map((_, i) => ({
-    idx: i,
-    fromY: nodeY[i],
-    toY: nodeY[i + 1],
-    dx: 100,
-  }));
 
   const completed = levelResults.map((r) => !!(r && r.stars >= 1));
 
@@ -175,8 +107,8 @@ export default function GameTopicPage() {
         </motion.div>
 
         {/* Levels candy path */}
-        <div className="bg-[#0d0f1f] border border-white/10 rounded-2xl sm:rounded-3xl p-3 sm:p-5 mb-5 relative">
-          <div className="flex items-center justify-between mb-3 sm:mb-4 px-1">
+        <div className="bg-[#0d0f1f] border border-white/10 rounded-2xl sm:rounded-3xl p-3 sm:p-5 mb-5 relative overflow-hidden">
+          <div className="flex items-center justify-between mb-3 sm:mb-4 px-1 relative z-10">
             <h2 className="text-sm sm:text-base font-semibold text-white">Levels</h2>
             <div className="flex items-center gap-1.5 text-xs text-white/50">
               <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
@@ -185,76 +117,133 @@ export default function GameTopicPage() {
             </div>
           </div>
 
-          <div className="relative" style={{ height: '380px' }}>
-            <CandyPath segments={segments} completed={completed} />
-            {LEVEL_TEMPLATES.map((lvl, i) => {
-              const meta = difficultyMeta[lvl.difficulty];
-              const result = levelResults[i];
-              const unlocked = isLevelUnlocked(topic, lvl.id);
-              const Icon = meta.icon;
-              const isCompleted = result && result.stars >= 1;
-              const leftPct = (i / 6) * 100;
-              const topPx = (nodeY[i] / 100) * 380;
-              return (
-                <motion.div
-                  key={lvl.id}
-                  initial={{ opacity: 0, scale: 0.6 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.05, type: 'spring', stiffness: 200 }}
-                  className="absolute"
-                  style={{ left: `calc(${leftPct}% - 32px)`, top: topPx - 32, width: 64 }}
+          {(() => {
+            // Container height in px — single source of truth for path AND circles
+            const H = 340;
+            // Circle vertical centers (px from top of container)
+            const centers = [70, 200, 110, 230, 80, 210, 130];
+            const nodeSize = 64; // w-16
+            const innerW = 600; // SVG viewBox width
+            const innerH = 340; // SVG viewBox height (matches H)
+            const xPositions = LEVEL_TEMPLATES.map((_, i) => (i + 0.5) * (innerW / LEVEL_TEMPLATES.length));
+
+            const segs = LEVEL_TEMPLATES.slice(0, -1).map((_, i) => ({
+              x1: xPositions[i], y1: centers[i],
+              x2: xPositions[i + 1], y2: centers[i + 1],
+            }));
+
+            return (
+              <div className="relative w-full" style={{ height: H }}>
+                {/* Background candy path SVG — same coord system as the circles below */}
+                <svg
+                  viewBox={`0 0 ${innerW} ${innerH}`}
+                  preserveAspectRatio="none"
+                  className="absolute inset-0 w-full h-full pointer-events-none"
                 >
-                  {unlocked ? (
-                    <Link to={`/games/${encodeURIComponent(topic)}/${lvl.id}`} className="block group">
-                      <div className="flex flex-col items-center">
-                        <div className="h-4 mb-0.5">
+                  <defs>
+                    <linearGradient id="candy" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#ec4899" />
+                      <stop offset="50%" stopColor="#a855f7" />
+                      <stop offset="100%" stopColor="#ec4899" />
+                    </linearGradient>
+                    <linearGradient id="candyDim" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#475569" stopOpacity="0.45" />
+                      <stop offset="50%" stopColor="#64748b" stopOpacity="0.55" />
+                      <stop offset="100%" stopColor="#475569" stopOpacity="0.45" />
+                    </linearGradient>
+                  </defs>
+                  {segs.map((s, i) => {
+                    const midX = (s.x1 + s.x2) / 2;
+                    const cp1Y = s.y1 + (s.y2 - s.y1) * 0.3;
+                    const cp2Y = s.y2 - (s.y2 - s.y1) * 0.3;
+                    const d = `M ${s.x1} ${s.y1} C ${midX} ${cp1Y}, ${midX} ${cp2Y}, ${s.x2} ${s.y2}`;
+                    const isActive = completed[i] && completed[i + 1];
+                    return (
+                      <g key={i}>
+                        <path d={d} stroke="url(#candyDim)" strokeWidth="8" fill="none" strokeLinecap="round" />
+                        {isActive && (
+                          <>
+                            <path d={d} stroke="url(#candy)" strokeWidth="8" fill="none" strokeLinecap="round" />
+                            <path
+                              d={d}
+                              stroke="white"
+                              strokeWidth="3"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeDasharray="8 10"
+                              opacity="0.7"
+                            />
+                          </>
+                        )}
+                      </g>
+                    );
+                  })}
+                </svg>
+
+                {/* Level nodes — absolutely positioned, centered on the path */}
+                {LEVEL_TEMPLATES.map((lvl, i) => {
+                  const meta = difficultyMeta[lvl.difficulty];
+                  const result = levelResults[i];
+                  const unlocked = isLevelUnlocked(topic, lvl.id);
+                  const isCompleted = result && result.stars >= 1;
+                  const leftPct = (xPositions[i] / innerW) * 100;
+                  return (
+                    <div
+                      key={lvl.id}
+                      className="absolute"
+                      style={{
+                        left: `calc(${leftPct}% - ${nodeSize / 2}px)`,
+                        top: centers[i] - nodeSize / 2,
+                        width: nodeSize,
+                      }}
+                    >
+                      {unlocked ? (
+                        <Link to={`/games/${encodeURIComponent(topic)}/${lvl.id}`} className="block group">
                           <Stars count={result?.stars || 0} />
-                        </div>
-                        <div className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-white text-base sm:text-lg font-bold shadow-xl transition-all ${
-                          isCompleted
-                            ? `bg-gradient-to-br ${meta.gradient} ring-2 ${meta.ring} group-hover:scale-110 group-hover:shadow-2xl`
-                            : `bg-gradient-to-br ${meta.gradient} opacity-80 ring-2 ${meta.ring} group-hover:scale-110 group-hover:opacity-100`
-                        }`}>
-                          <span className="drop-shadow-md">{lvl.id}</span>
-                          {isCompleted && (
-                            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-[#0d0f1f] flex items-center justify-center">
-                              <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
-                              </svg>
+                          <div className={`relative w-16 h-16 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-xl transition-all ${
+                            isCompleted
+                              ? `bg-gradient-to-br ${meta.gradient} ring-2 ${meta.ring} group-hover:scale-110 group-hover:shadow-2xl`
+                              : `bg-gradient-to-br ${meta.gradient} ring-2 ${meta.ring} group-hover:scale-110 group-hover:brightness-110`
+                          }`}>
+                            <span className="drop-shadow-md">{lvl.id}</span>
+                            {isCompleted && (
+                              <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-[#0d0f1f] flex items-center justify-center">
+                                <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                  <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-center mt-1.5 px-1">
+                            <div className={`text-[9px] sm:text-[10px] font-semibold ${meta.color}`}>{meta.label}</div>
+                            <div className="text-[10px] sm:text-xs font-bold text-white leading-tight whitespace-nowrap">{lvl.name}</div>
+                            <div className="text-[8px] sm:text-[9px] text-white/40 leading-tight whitespace-nowrap">{lvl.desc}</div>
+                          </div>
+                        </Link>
+                      ) : (
+                        <div className="block cursor-not-allowed">
+                          <div className="flex justify-center h-3.5 mb-0.5">
+                            <Stars count={0} />
+                          </div>
+                          <div className="relative w-16 h-16 rounded-full bg-white/[0.04] border-2 border-white/10 flex items-center justify-center text-white/30 text-lg font-bold">
+                            {lvl.id}
+                            <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/40">
+                              <Lock className="w-5 h-5 text-white/40" />
                             </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="text-center mt-1.5 px-1">
-                        <div className={`text-[9px] sm:text-[10px] font-semibold ${meta.color}`}>{meta.label}</div>
-                        <div className="text-[10px] sm:text-xs font-bold text-white leading-tight">{lvl.name}</div>
-                        <div className="text-[8px] sm:text-[9px] text-white/40 leading-tight">{lvl.desc}</div>
-                      </div>
-                    </Link>
-                  ) : (
-                    <div className="block cursor-not-allowed">
-                      <div className="flex flex-col items-center">
-                        <div className="h-4 mb-0.5">
-                          <Stars count={0} />
-                        </div>
-                        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/[0.04] border-2 border-white/10 flex items-center justify-center text-white/30 text-base sm:text-lg font-bold">
-                          {lvl.id}
-                          <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/40">
-                            <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-white/40" />
+                          </div>
+                          <div className="text-center mt-1.5 px-1">
+                            <div className="text-[9px] sm:text-[10px] font-semibold text-white/30">{meta.label}</div>
+                            <div className="text-[10px] sm:text-xs font-bold text-white/30 leading-tight whitespace-nowrap">{lvl.name}</div>
+                            <div className="text-[8px] sm:text-[9px] text-white/20 leading-tight whitespace-nowrap">{lvl.desc}</div>
                           </div>
                         </div>
-                      </div>
-                      <div className="text-center mt-1.5 px-1">
-                        <div className="text-[9px] sm:text-[10px] font-semibold text-white/30">{meta.label}</div>
-                        <div className="text-[10px] sm:text-xs font-bold text-white/30 leading-tight">{lvl.name}</div>
-                        <div className="text-[8px] sm:text-[9px] text-white/20 leading-tight">{lvl.desc}</div>
-                      </div>
+                      )}
                     </div>
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Progress + Next Reward */}
