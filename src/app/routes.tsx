@@ -23,6 +23,9 @@ import AddQuestionPage from '@/features/admin/pages/AddQuestionPage';
 import ManageUsers from '@/features/admin/pages/ManageUsers';
 import HeroSection from '@/shared/components/HeroSection';
 import FAQ from '@/shared/components/FAQ';
+import GamesLandingPage from '@/features/games/pages/GamesLandingPage';
+import GameTopicPage from '@/features/games/pages/GameTopicPage';
+import GamePlayPage from '@/features/games/pages/GamePlayPage';
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
@@ -31,7 +34,7 @@ import {
   ArrowRight, Database, Braces, Hash, Link2, Layers, MoveVertical, Trello,
   GitBranch, TreePine, Network, Target, Puzzle, RefreshCw, Maximize2, Search,
   ZapIcon, Sparkles, Code2, Eye, TrendingUp, Lightbulb, BookOpen, BarChart3,
-  Play, CheckCircle, ChevronRight, ChevronLeft, FileText, Monitor, Shield
+  Play, CheckCircle, ChevronRight, ChevronLeft, FileText, Monitor, Shield, Gamepad2
 } from 'lucide-react';
 
 const topicIcons: Record<string, React.ReactNode> = {
@@ -638,8 +641,8 @@ function HomePage() {
             <Link to="/questions" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-primary-500 text-white font-semibold hover:bg-primary-600 transition-all shadow-lg shadow-glow">
               Start Learning Free <ArrowRight className="w-4 h-4" />
             </Link>
-            <Link to="/topics" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl border border-white/10 text-white font-semibold hover:bg-white/5 hover:border-white/20 transition-all">
-              View Blind 75
+            <Link to="/games" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl border border-white/10 text-white font-semibold hover:bg-white/5 hover:border-white/20 transition-all">
+              <Gamepad2 className="w-4 h-4" /> Start Games Test
             </Link>
           </div>
         </div>
@@ -676,6 +679,9 @@ export const router = createBrowserRouter([
       { path: 'payment', element: <ProtectedRoute><PaymentPage /></ProtectedRoute> },
       { path: 'dashboard', element: <ProtectedRoute><DashboardPage /></ProtectedRoute> },
       { path: 'bookmarks', element: <ProtectedRoute><BookmarksPage /></ProtectedRoute> },
+      { path: 'games', element: <GamesLandingPage /> },
+      { path: 'games/:topic', element: <GameTopicPage /> },
+      { path: 'games/:topic/:level', element: <GamePlayPage /> },
     ],
   },
   {

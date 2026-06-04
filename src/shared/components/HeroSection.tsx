@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle, Play, Eye, Check } from 'lucide-react';
+import { ArrowRight, CheckCircle, Play, Eye, Check, Gamepad2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 interface Token {
@@ -177,10 +177,10 @@ export default function HeroSection() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                to="/topics"
+                to="/games"
                 className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl border border-white/15 bg-white/5 text-white font-semibold hover:bg-white/10 transition-all text-sm"
               >
-                View Blind 75
+                <Gamepad2 className="w-4 h-4" /> Start Games Test
               </Link>
             </div>
 
