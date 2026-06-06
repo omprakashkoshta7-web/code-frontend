@@ -5,6 +5,17 @@
     "frontend",
     "backend"
   ],
+  "scripts": {
+    "build": "npm run build -w backend",
+    "build:all": "npm run build -w frontend && npm run build -w backend",
+    "dev": "concurrently npm:dev:frontend npm:dev:backend",
+    "dev:frontend": "npm run dev -w frontend",
+    "dev:backend": "npm run dev -w backend",
+    "start": "npm start -w backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  },
   "dependencies": {
     "react-resizable-panels": "^4.11.2"
   }
