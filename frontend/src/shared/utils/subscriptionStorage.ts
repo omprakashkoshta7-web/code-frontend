@@ -13,7 +13,23 @@ const DATA_KEY = 'subscription_data';
 let cachedUserId: string | null = null;
 let cachedIdPromise: Promise<string | null> | null = null;
 
-const getUserId = (): string | null => cachedUserId;
+const getUserIdFromToken = (): string | null => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload?.id || payload?._id || null;
+  } catch {
+    return null;
+  }
+};
+
+const getUserId = (): string | null => {
+  if (cachedUserId !== null) return cachedUserId;
+  const id = getUserIdFromToken();
+  if (id) cachedUserId = id;
+  return id;
+};
 const resetUserId = () => {
   cachedUserId = null;
   cachedIdPromise = null;
@@ -29,6 +45,9 @@ const refreshUserId = (): Promise<string | null> => {
 };
 
 window.addEventListener('codesprout_user_change', resetUserId);
+window.addEventListener('storage', (e) => {
+  if (e.key === 'token' || e.key === 'user') resetUserId();
+});
 
 const keysFor = (userId: string) => ({
   plan: `${PLAN_KEY}_${userId}`,
