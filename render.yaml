@@ -5,7 +5,7 @@ services:
     runtime: node
     rootDir: backend
     buildCommand: npm install && npm run build
-    startCommand: cd backend && npm run start:gateway
+    startCommand: node backend/dist/services/gateway.js
     envVars:
       - key: NODE_ENV
         value: production
@@ -46,7 +46,7 @@ services:
     runtime: node
     rootDir: backend
     buildCommand: npm install && npm run build
-    startCommand: cd backend && PORT=10001 npm run start:auth
+    startCommand: PORT=10001 node backend/dist/services/auth.js
     envVars:
       - key: NODE_ENV
         value: production
@@ -77,7 +77,7 @@ services:
     runtime: node
     rootDir: backend
     buildCommand: npm install && npm run build
-    startCommand: cd backend && PORT=10002 npm run start:content
+    startCommand: PORT=10002 node backend/dist/services/content.js
     envVars:
       - key: NODE_ENV
         value: production
@@ -94,7 +94,7 @@ services:
     runtime: node
     rootDir: backend
     buildCommand: npm install && npm run build
-    startCommand: cd backend && PORT=10003 npm run start:social
+    startCommand: PORT=10003 node backend/dist/services/social.js
     envVars:
       - key: NODE_ENV
         value: production
@@ -111,7 +111,7 @@ services:
     runtime: node
     rootDir: backend
     buildCommand: npm install && npm run build
-    startCommand: cd backend && PORT=10004 npm run start:execution
+    startCommand: PORT=10004 node backend/dist/services/execution.js
     envVars:
       - key: NODE_ENV
         value: production
@@ -132,7 +132,7 @@ services:
     runtime: node
     rootDir: backend
     buildCommand: npm install && npm run build
-    startCommand: cd backend && PORT=10005 npm run start:payment
+    startCommand: PORT=10005 node backend/dist/services/payment.js
     envVars:
       - key: NODE_ENV
         value: production
