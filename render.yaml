@@ -153,9 +153,9 @@ services:
       - key: FRONTEND_URL
         sync: false
       - key: RAZORPAY_KEY_ID
-        sync: false
+        value: rzp_test_SyLqIGdftXBERR
       - key: RAZORPAY_KEY_SECRET
-        sync: false
+        value: vPVdqTG3SR5K1scPxDgDiVd0
       - key: RAZORPAY_WEBHOOK_SECRET
         sync: false
     port: 10005

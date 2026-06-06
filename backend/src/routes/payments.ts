@@ -213,8 +213,9 @@ router.post('/razorpay/create-order', async (req: AuthRequest, res: Response) =>
       notes: { plan: 'premium' },
     });
   } catch (e: any) {
-    console.error('[razorpay] create-order failed:', e?.message);
-    res.status(500).json({ error: e?.message || 'Failed to create Razorpay order' });
+    const msg = e?.error?.description || e?.message || 'Failed to create Razorpay order';
+    console.error('[razorpay] create-order failed:', msg);
+    res.status(500).json({ error: msg });
   }
 });
 
@@ -270,8 +271,9 @@ router.post('/razorpay/verify', async (req: AuthRequest, res: Response) => {
       subscription: newSub,
     });
   } catch (e: any) {
-    console.error('[razorpay] verify failed:', e?.message);
-    res.status(500).json({ error: e?.message || 'Failed to verify payment' });
+    const msg = e?.error?.description || e?.message || 'Failed to verify payment';
+    console.error('[razorpay] verify failed:', msg);
+    res.status(500).json({ error: msg });
   }
 });
 
@@ -303,8 +305,9 @@ router.post('/razorpay/webhook', async (req: Request, res: Response) => {
 
     res.json({ received: true });
   } catch (e: any) {
-    console.error('[razorpay] webhook failed:', e?.message);
-    res.status(500).json({ error: e?.message || 'Webhook processing failed' });
+    const msg = e?.error?.description || e?.message || 'Webhook processing failed';
+    console.error('[razorpay] webhook failed:', msg);
+    res.status(500).json({ error: msg });
   }
 });
 
@@ -321,7 +324,8 @@ router.post('/razorpay/refund', async (req: AuthRequest, res: Response) => {
     const refund = await refundRazorpayPayment(payment.razorpay_payment_id, amount);
     res.json({ success: true, refund });
   } catch (e: any) {
-    res.status(500).json({ error: e?.message || 'Refund failed' });
+    const msg = e?.error?.description || e?.message || 'Refund failed';
+    res.status(500).json({ error: msg });
   }
 });
 
