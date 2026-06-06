@@ -29,19 +29,25 @@ async function checkPremium(req: AuthRequest): Promise<boolean> {
 }
 
 router.get('/', (req: AuthRequest, res: Response) => {
-  let result = [...getQuestions()];
+  try {
+    let result = [...getQuestions()];
 
-  if (req.query.difficulty) {
-    const diff = (req.query.difficulty as string).toLowerCase();
-    result = result.filter((q) => (q.difficulty || '').toLowerCase() === diff);
+    if (req.query.difficulty) {
+      const diff = (req.query.difficulty as string).toLowerCase();
+      result = result.filter((q) => (q.difficulty || '').toLowerCase() === diff);
+    }
+
+    if (req.query.topic) {
+      const topic = (req.query.topic as string).toLowerCase();
+      result = result.filter((q) => (q.topic_name || '').toLowerCase() === topic || q.topic_id === topic);
+    }
+
+    res.json(result);
+  } catch (e: any) {
+    console.error('[questions] GET / error:', e?.message || e);
+    console.error(e?.stack);
+    res.status(500).json({ error: 'Failed to fetch questions', message: e?.message || 'Unknown error' });
   }
-
-  if (req.query.topic) {
-    const topic = (req.query.topic as string).toLowerCase();
-    result = result.filter((q) => (q.topic_name || '').toLowerCase() === topic || q.topic_id === topic);
-  }
-
-  res.json(result);
 });
 
 router.get('/search', (req: AuthRequest, res: Response) => {

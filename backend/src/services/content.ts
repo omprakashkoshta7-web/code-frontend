@@ -30,6 +30,14 @@ app.use('/api/patterns', publicPatternsRouter);
 app.use('/api/stats', publicStatsRouter);
 app.use('/api/admin', adminRouter);
 
+app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error('[content] Unhandled error:', err?.message || err);
+  console.error(err?.stack);
+  if (!res.headersSent) {
+    res.status(500).json({ error: 'Internal server error', message: err?.message || 'Unknown error' });
+  }
+});
+
 (async () => {
   await initDb(questions, topics, cheatSheets, users, testCaseData, patternDetails);
   app.listen(PORT, () => {
