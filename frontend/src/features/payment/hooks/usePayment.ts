@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { paymentApi } from '../api/paymentApi';
 import type { PaymentInit, PaymentStatus, PaymentVerify, RazorpayOrder, RazorpayVerifyResponse } from '../types/payment';
 import { subscriptionStorage } from '@/shared/utils/subscriptionStorage';
+import { subscriptionApi } from '@/features/subscription/api/subscriptionApi';
 import toast from 'react-hot-toast';
 
 export function usePaymentInit() {
@@ -136,6 +137,43 @@ export function useRazorpayCheckout() {
       const order: RazorpayOrder = orderRes.data;
 
       return await new Promise<RazorpayVerifyResponse | null>((resolve) => {
+        let resolved = false;
+
+        const finalize = async (data: RazorpayVerifyResponse | null) => {
+          if (resolved) return;
+          resolved = true;
+          if (data?.subscription) {
+            await subscriptionStorage.set('premium', data.subscription as any);
+            toast.success(data.message || 'Payment verified! Premium activated.');
+          }
+          resolve(data);
+        };
+
+        const pollBackend = () => {
+          let attempts = 0;
+          const maxAttempts = 20;
+          const interval = setInterval(async () => {
+            attempts++;
+            try {
+              const res = await subscriptionApi.getStatus();
+              if (res.data?.plan === 'premium') {
+                clearInterval(interval);
+                await finalize({
+                  success: true,
+                  message: 'Payment verified! Premium subscription activated.',
+                  subscription: res.data,
+                } as any);
+                return;
+              }
+            } catch {}
+            if (attempts >= maxAttempts) {
+              clearInterval(interval);
+              toast('Payment could not be verified. Please check later.');
+              finalize(null);
+            }
+          }, 2000);
+        };
+
         const options = {
           key: order.key_id,
           amount: order.amount,
@@ -155,27 +193,22 @@ export function useRazorpayCheckout() {
                 razorpay_signature: response.razorpay_signature,
                 payment_id: order.payment_id,
               });
-              toast.success(verifyRes.data.message);
-              if (verifyRes.data.subscription) {
-                await subscriptionStorage.set('premium', verifyRes.data.subscription as any);
-              }
-              resolve(verifyRes.data);
+              await finalize(verifyRes.data);
             } catch (err: any) {
               toast.error(err.response?.data?.error || 'Payment verification failed');
-              resolve(null);
+              finalize(null);
             }
           },
           modal: {
             ondismiss: () => {
-              toast('Payment cancelled');
-              resolve(null);
+              pollBackend();
             },
           },
         };
         const rzp = new window.Razorpay(options);
         rzp.on('payment.failed', (resp: any) => {
           toast.error(resp?.error?.description || 'Payment failed');
-          resolve(null);
+          finalize(null);
         });
         rzp.open();
       });
