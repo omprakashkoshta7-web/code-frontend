@@ -176,122 +176,122 @@ function PatternDetailContent() {
       </div>
       <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-12 sm:pb-16">
-        <Link to="/patterns" className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-white/40 hover:text-white transition-colors mb-6 sm:mb-8">
-          <ArrowLeft className="w-4 h-4" /> Back to Patterns
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-10 sm:pb-12">
+        <Link to="/patterns" className="inline-flex items-center gap-1.5 text-xs text-white/40 hover:text-white transition-colors mb-3 sm:mb-4">
+          <ArrowLeft className="w-3.5 h-3.5" /> Back to Patterns
         </Link>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="flex items-start sm:items-center gap-3 sm:gap-4 mb-4">
-            <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center shadow-lg shrink-0`}>
-              <Layers className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="flex items-center gap-3 mb-3">
+            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center shadow-lg shrink-0`}>
+              <Layers className="w-5 h-5 text-white" />
             </div>
-            <div className="min-w-0">
-              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                <h1 className="text-2xl sm:text-3xl font-bold text-white">{pattern.name}</h1>
-                <span className={`text-[10px] sm:text-xs px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-gradient-to-r ${color} text-white font-medium`}>{pattern.category}</span>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h1 className="text-xl sm:text-2xl font-bold text-white leading-tight">{pattern.name}</h1>
+                <span className={`text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-gradient-to-r ${color} text-white font-medium`}>{pattern.category}</span>
                 {isGeneric && (
-                  <span className="text-[10px] px-2 py-0.5 sm:py-1 rounded-full bg-white/5 border border-white/10 text-white/40 uppercase tracking-wider">
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/40 uppercase tracking-wider">
                     Auto
                   </span>
                 )}
               </div>
-              <p className="text-white/50 mt-1 text-sm sm:text-base">{pattern.summary}</p>
+              <p className="text-white/50 text-xs sm:text-sm leading-snug mt-0.5">{pattern.summary}</p>
+            </div>
+            <div className="hidden md:flex flex-col gap-1 shrink-0">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-[10px] text-white/50">
+                <Clock className="w-3 h-3" /> Time: {pattern.timeComplexity}
+              </div>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-[10px] text-white/50">
+                <Database className="w-3 h-3" /> Space: {pattern.spaceComplexity}
+              </div>
             </div>
           </div>
-
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
-            <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-[10px] sm:text-xs text-white/50">
-              <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Time: {pattern.timeComplexity}
+          <div className="flex md:hidden flex-wrap items-center gap-2 mb-3">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-[10px] text-white/50">
+              <Clock className="w-3 h-3" /> Time: {pattern.timeComplexity}
             </div>
-            <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-[10px] sm:text-xs text-white/50">
-              <Database className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Space: {pattern.spaceComplexity}
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-[10px] text-white/50">
+              <Database className="w-3 h-3" /> Space: {pattern.spaceComplexity}
             </div>
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-          <div className="lg:col-span-2 space-y-6 sm:space-y-8">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-              <h2 className="text-base sm:text-lg font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
-                <ArrowRight className="w-5 h-5 text-emerald-400" /> How It Works
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-5">
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+              <h2 className="text-sm sm:text-base font-bold text-white mb-2.5 flex items-center gap-1.5">
+                <ArrowRight className="w-4 h-4 text-emerald-400" /> How It Works
               </h2>
-              <div className="space-y-3 sm:space-y-4">
+              <div className="space-y-2">
                 {pattern.flow.map((step, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -16 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.15 + i * 0.08 }}
+                    transition={{ delay: 0.12 + i * 0.06 }}
                     className="group relative"
                   >
-                    {/* Connector line */}
                     {i < pattern.flow.length - 1 && (
-                      <div className="absolute left-[18px] sm:left-[21px] top-[42px] w-px h-[calc(100%+12px)] bg-gradient-to-b from-white/15 to-transparent" />
+                      <div className="absolute left-[14px] top-[30px] w-px h-[calc(100%+6px)] bg-gradient-to-b from-white/15 to-transparent" />
                     )}
-                    <div className="relative flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
-                      {/* Step number */}
-                      <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-sm font-bold text-white shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <div className="relative flex gap-2.5 p-2.5 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-300">
+                      <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${color} flex items-center justify-center text-xs font-bold text-white shrink-0 shadow group-hover:scale-110 transition-transform duration-300`}>
                         {i + 1}
                       </div>
-                      {/* Content */}
                       <div className="min-w-0 flex-1">
-                        <h3 className="text-sm font-semibold text-white mb-1.5 group-hover:text-emerald-400 transition-colors">{step.step}</h3>
-                        <p className="text-xs sm:text-sm text-white/50 leading-relaxed">{step.desc}</p>
+                        <h3 className="text-xs sm:text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors leading-tight">{step.step}</h3>
+                        <p className="text-[11px] sm:text-xs text-white/50 leading-snug mt-0.5">{step.desc}</p>
                       </div>
-                      {/* Arrow indicator */}
-                      {i < pattern.flow.length - 1 && (
-                        <div className="absolute -bottom-2 left-[18px] sm:left-[21px] w-2 h-2 rounded-full bg-white/10 border border-white/20" />
-                      )}
                     </div>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-              <h2 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
-                <Code2 className="w-5 h-5 text-emerald-400" /> Template
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+              <h2 className="text-sm sm:text-base font-bold text-white mb-2.5 flex items-center gap-1.5">
+                <Code2 className="w-4 h-4 text-emerald-400" /> Template
               </h2>
-              <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg shadow-black/20">
-                <div className="flex items-center gap-2 px-4 py-2.5 bg-white/5 border-b border-white/5">
-                  <div className="flex gap-1.5">
-                    <span className="w-3 h-3 rounded-full bg-red-500" />
-                    <span className="w-3 h-3 rounded-full bg-yellow-500" />
-                    <span className="w-3 h-3 rounded-full bg-green-500" />
+              <div className="rounded-lg overflow-hidden border border-white/10 shadow-lg shadow-black/20">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border-b border-white/5">
+                  <div className="flex gap-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
                   </div>
-                  <span className="text-xs text-white/30 ml-2">pseudocode</span>
+                  <span className="text-[10px] text-white/30 ml-1">pseudocode</span>
                 </div>
-                <pre className="p-4 sm:p-5 text-xs sm:text-sm font-mono text-emerald-300 leading-relaxed overflow-x-auto" style={{ backgroundColor: '#0B1020' }}>
+                <pre className="p-3 sm:p-4 text-[11px] sm:text-xs font-mono text-emerald-300 leading-relaxed overflow-x-auto" style={{ backgroundColor: '#0B1020' }}>
                   {pattern.template}
                 </pre>
               </div>
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                <h2 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-emerald-400" /> Tips
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+                <h2 className="text-sm sm:text-base font-bold text-white mb-2 flex items-center gap-1.5">
+                  <CheckCircle className="w-4 h-4 text-emerald-400" /> Tips
                 </h2>
-                <div className="space-y-2.5">
+                <div className="space-y-1.5">
                   {pattern.tips.map((tip, i) => (
-                    <div key={i} className="flex items-start gap-2.5 p-2.5 rounded-lg bg-emerald-500/[0.04] border border-emerald-500/[0.08] hover:bg-emerald-500/[0.08] transition-colors">
-                      <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                      <span className="text-xs sm:text-sm text-white/60 leading-relaxed">{tip}</span>
+                    <div key={i} className="flex items-start gap-2 p-2 rounded-md bg-emerald-500/[0.04] border border-emerald-500/[0.08] hover:bg-emerald-500/[0.08] transition-colors">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400 mt-0.5 shrink-0" />
+                      <span className="text-[11px] sm:text-xs text-white/60 leading-snug">{tip}</span>
                     </div>
                   ))}
                 </div>
               </motion.div>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
-                <h2 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-amber-400" /> Common Traps
+              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+                <h2 className="text-sm sm:text-base font-bold text-white mb-2 flex items-center gap-1.5">
+                  <AlertTriangle className="w-4 h-4 text-amber-400" /> Common Traps
                 </h2>
-                <div className="space-y-2.5">
+                <div className="space-y-1.5">
                   {pattern.traps.map((trap, i) => (
-                    <div key={i} className="flex items-start gap-2.5 p-2.5 rounded-lg bg-amber-500/[0.04] border border-amber-500/[0.08] hover:bg-amber-500/[0.08] transition-colors">
-                      <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
-                      <span className="text-xs sm:text-sm text-white/60 leading-relaxed">{trap}</span>
+                    <div key={i} className="flex items-start gap-2 p-2 rounded-md bg-amber-500/[0.04] border border-amber-500/[0.08] hover:bg-amber-500/[0.08] transition-colors">
+                      <AlertTriangle className="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0" />
+                      <span className="text-[11px] sm:text-xs text-white/60 leading-snug">{trap}</span>
                     </div>
                   ))}
                 </div>
@@ -299,44 +299,44 @@ function PatternDetailContent() {
             </div>
           </div>
 
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
+          <motion.div initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
             <div className="lg:sticky lg:top-24">
-              <h2 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-emerald-400" /> Practice Questions
+              <h2 className="text-sm sm:text-base font-bold text-white mb-2.5 flex items-center gap-1.5">
+                <BookOpen className="w-4 h-4 text-emerald-400" /> Practice Questions
                 {!questionsLoading && questions.length > 0 && (
-                  <span className="text-xs font-medium text-white/40 ml-auto">{questions.length}</span>
+                  <span className="text-[10px] font-medium text-white/40 ml-auto">{questions.length}</span>
                 )}
               </h2>
 
               {questionsLoading ? (
-                <div className="space-y-2 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1">
+                <div className="space-y-1.5 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1">
                   {[1,2,3].map(i => (
-                    <div key={i} className="p-3 rounded-xl bg-white/5 animate-pulse h-16" />
+                    <div key={i} className="p-2.5 rounded-lg bg-white/5 animate-pulse h-12" />
                   ))}
                 </div>
               ) : questions.length === 0 ? (
-                <div className="p-6 rounded-xl bg-white/5 border border-white/5 text-center">
-                  <Target className="w-8 h-8 text-white/10 mx-auto mb-2" />
-                  <p className="text-sm text-white/40">No questions found for this pattern</p>
+                <div className="p-4 rounded-lg bg-white/5 border border-white/5 text-center">
+                  <Target className="w-6 h-6 text-white/10 mx-auto mb-1.5" />
+                  <p className="text-xs text-white/40">No questions found for this pattern</p>
                 </div>
               ) : (
-                <div className="space-y-2 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent hover:scrollbar-thumb-white/20">
+                <div className="space-y-1.5 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent hover:scrollbar-thumb-white/20">
                   {questions.map((q, i) => (
                     <motion.div
                       key={q.id}
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 + i * 0.05 }}
+                      transition={{ delay: 0.08 + i * 0.04 }}
                     >
                       <Link
                         to={`/questions/${q.slug}`}
-                        className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all group"
+                        className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.08] hover:border-white/[0.12] transition-all group"
                       >
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-white truncate group-hover:text-emerald-400 transition-colors">{q.title}</p>
-                          <p className="text-xs text-white/30 mt-0.5">{q.topic_name}</p>
+                          <p className="text-xs sm:text-sm font-medium text-white truncate group-hover:text-emerald-400 transition-colors leading-tight">{q.title}</p>
+                          <p className="text-[10px] text-white/30 mt-0.5">{q.topic_name}</p>
                         </div>
-                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded ml-2 shrink-0 ${
+                        <span className={`text-[9px] sm:text-[10px] font-semibold px-1.5 py-0.5 rounded ml-2 shrink-0 ${
                           q.difficulty === 'Easy' ? 'bg-emerald-500/10 text-emerald-400' :
                           q.difficulty === 'Medium' ? 'bg-amber-500/10 text-amber-400' :
                           'bg-rose-500/10 text-rose-400'
