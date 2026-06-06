@@ -13,6 +13,8 @@ reg.json
 backend/data/db.json
 backend/data/*.json
 !.gitkeep
+backend/logs/
+backend/.pm2/
 .DS_Store
 Thumbs.db
 .vscode/
