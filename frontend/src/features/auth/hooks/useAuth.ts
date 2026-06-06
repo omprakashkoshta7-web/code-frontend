@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../api/authApi';
+import { userStorage } from '@/shared/utils/userStorage';
 import toast from 'react-hot-toast';
 import type { LoginPayload, RegisterPayload } from '../types/auth';
 
@@ -13,7 +14,7 @@ export function useLogin() {
     try {
       const res = await authApi.login(payload);
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      await userStorage.set(res.data.user);
       toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (err: any) {

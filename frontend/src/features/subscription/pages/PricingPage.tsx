@@ -53,22 +53,23 @@ export default function PricingPage() {
   const [subData, setSubData] = useState<SubData | null>(null);
 
   useEffect(() => {
-    const cached = subscriptionStorage.get();
-    if (cached && subscriptionStorage.isPremium()) {
-      setSubData(cached);
-      return;
-    }
+    (async () => {
+      const cached = await subscriptionStorage.get();
+      if (cached && subscriptionStorage.isPremiumSync()) {
+        setSubData(cached);
+        return;
+      }
 
-    const token = localStorage.getItem('token');
-    if (!token) return;
-    subscriptionApi.getStatus()
-      .then((res) => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+      try {
+        const res = await subscriptionApi.getStatus();
         if (res.data && res.data.plan === 'premium') {
           setSubData(res.data);
-          subscriptionStorage.set('premium', res.data);
+          await subscriptionStorage.set('premium', res.data);
         }
-      })
-      .catch(() => {});
+      } catch { /* ignore */ }
+    })();
   }, []);
 
   const isPremium = !!subData && subData.plan === 'premium';

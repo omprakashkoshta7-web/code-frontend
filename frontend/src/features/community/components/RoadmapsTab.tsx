@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { Map, Plus, X, CheckCircle, ArrowRight } from 'lucide-react';
 import { communityApi } from '../api/communityApi';
 import type { Roadmap, RoadmapProgress, RoadmapStep } from '../types/community';
+import { useUser } from '@/shared/hooks/useUser';
 import toast from 'react-hot-toast';
 
 export default function RoadmapsTab({ community, communityId }: { community: any; communityId: string }) {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const user = useUser() ?? {};
   const [roadmaps, setRoadmaps] = useState<Roadmap[]>([]);
   const [progress, setProgress] = useState<Record<string, RoadmapProgress>>({});
   const [showForm, setShowForm] = useState(false);

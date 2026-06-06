@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { subscriptionStorage } from '@/shared/utils/subscriptionStorage';
+import { userStorage } from '@/shared/utils/userStorage';
 
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL || ''}/api`,
@@ -19,8 +20,9 @@ api.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401) {
       localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      userStorage.clear();
       subscriptionStorage.clear();
+      window.dispatchEvent(new Event('codesprout_user_change'));
       window.location.href = '/login';
     }
     return Promise.reject(err);

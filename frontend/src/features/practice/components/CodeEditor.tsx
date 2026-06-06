@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import Editor from '@monaco-editor/react';
+import { userStorage } from '@/shared/utils/userStorage';
 import {
   Play, Send, Loader2, CheckCircle, XCircle, Clock, AlertTriangle,
   ChevronDown, ChevronRight, Eye, BarChart3, Terminal, Bug
@@ -149,8 +150,7 @@ export default function CodeEditor({ slug, template }: CodeEditorProps) {
       setSubmitResult(data);
       if (data?.status === 'Accepted' && slug) {
         try {
-          const raw = localStorage.getItem('user');
-          const u = raw ? JSON.parse(raw) : null;
+          const u = userStorage.getSync();
           if (u?.id) {
             const title = slug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
             await fetch(`/api/notifications/trigger?userId=${u.id}`, {

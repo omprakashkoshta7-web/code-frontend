@@ -17,7 +17,7 @@ const diffPill: Record<string, string> = {
 };
 
 export default function QuestionCard({ question, index }: { question: Question; index: number }) {
-  const isPremium = subscriptionStorage.isPremium();
+  const isPremium = subscriptionStorage.isPremiumSync();
   const isLocked = !isPremium && question.difficulty !== 'Easy';
   const borderColor = diffBorder[question.difficulty] || diffBorder.Easy;
   const pillColor = diffPill[question.difficulty] || diffPill.Easy;

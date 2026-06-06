@@ -30,7 +30,7 @@ export default function DifficultyPage() {
   const level = location.pathname.replace('/', '');
   const meta = difficultyMeta[level] || difficultyMeta.easy;
   const { questions, loading } = useQuestions({ difficulty: level });
-  const isPremium = subscriptionStorage.isPremium();
+  const isPremium = subscriptionStorage.isPremiumSync();
 
   if (!isPremium && level !== 'easy') {
     return (

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/shared/utils/helpers';
 import { subscriptionStorage } from '@/shared/utils/subscriptionStorage';
+import { userStorage } from '@/shared/utils/userStorage';
 import { NotificationBell } from '@/features/games/components/NotificationBell';
 
 const navLinks = [
@@ -29,10 +30,17 @@ export default function Navbar() {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const location = useLocation();
 
-  const user = (() => {
-    try { return JSON.parse(localStorage.getItem('user') || 'null'); }
-    catch { return null; }
-  })();
+  const [user, setUser] = useState<any>(userStorage.getSync());
+  useEffect(() => {
+    userStorage.get().then(setUser);
+    const onChange = () => userStorage.get().then(setUser);
+    window.addEventListener('codesprout_user_change', onChange);
+    window.addEventListener('storage', onChange);
+    return () => {
+      window.removeEventListener('codesprout_user_change', onChange);
+      window.removeEventListener('storage', onChange);
+    };
+  }, []);
 
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
@@ -171,7 +179,7 @@ export default function Navbar() {
                           </div>
                           <div className="p-1.5 border-t border-white/5">
                             <button
-                              onClick={() => { localStorage.removeItem('token'); localStorage.removeItem('user'); subscriptionStorage.clear(); window.location.href = '/'; }}
+                              onClick={() => { localStorage.removeItem('token'); userStorage.clear(); subscriptionStorage.clear(); window.dispatchEvent(new Event('codesprout_user_change')); window.location.href = '/'; }}
                               className="flex items-center gap-3 px-3 py-2.5 text-sm text-red-400 hover:bg-red-500/10 rounded-xl transition-colors w-full"
                             >
                               <LogOut className="w-4 h-4" /> Sign Out
@@ -252,7 +260,7 @@ export default function Navbar() {
                       <Link to="/bookmarks" onClick={() => setIsOpen(false)} className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-white/50 hover:text-white hover:bg-white/[0.06] rounded-xl transition-colors">
                         <Bookmark className="w-4 h-4" /> Bookmarks
                       </Link>
-                      <button onClick={() => { localStorage.removeItem('token'); localStorage.removeItem('user'); subscriptionStorage.clear(); window.location.href = '/'; }} className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-red-400 hover:bg-red-500/10 rounded-xl transition-colors w-full">
+                      <button onClick={() => { localStorage.removeItem('token'); userStorage.clear(); subscriptionStorage.clear(); window.dispatchEvent(new Event('codesprout_user_change')); window.location.href = '/'; }} className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-red-400 hover:bg-red-500/10 rounded-xl transition-colors w-full">
                         <LogOut className="w-4 h-4" /> Sign Out
                       </button>
                     </>

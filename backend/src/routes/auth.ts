@@ -4,8 +4,18 @@ import { getAllUsers, getUserByEmail, addUser } from '../data/db';
 import { generateToken, authenticate, AuthRequest } from '../middleware/auth';
 import { sendWelcomeNotification } from '../services/notifications';
 import { sendWelcomeEmail } from '../services/email';
+import { maskEmail } from '../services/crypto';
 
 const router = Router();
+
+const publicUser = (u: { id: string; name?: string; email: string; role: string; picture?: string }) => ({
+  id: u.id,
+  name: u.name,
+  email: u.email,
+  email_masked: maskEmail(u.email),
+  role: u.role,
+  picture: u.picture,
+});
 
 router.post('/login', async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -26,7 +36,7 @@ router.post('/login', async (req: Request, res: Response) => {
   if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
   const token = generateToken({ id: user.id, email: user.email, role: user.role, name: user.name });
-  res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+  res.json({ token, user: publicUser(user) });
 });
 
 router.post('/register', async (req: Request, res: Response) => {
@@ -57,7 +67,7 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 
   const token = generateToken({ id: newUser.id, email: newUser.email, role: newUser.role, name: newUser.name });
-  res.json({ token, user: { id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role } });
+  res.json({ token, user: publicUser(newUser) });
 });
 
 router.get('/me', authenticate, (req: AuthRequest, res: Response) => {
@@ -127,7 +137,7 @@ router.post('/google', async (req: Request, res: Response) => {
   }
 
   const token = generateToken({ id: finalUser.id, email: finalUser.email, role: finalUser.role, name: finalUser.name });
-  res.json({ token, user: { id: finalUser.id, name: finalUser.name, email: finalUser.email, role: finalUser.role, picture: (finalUser as any).picture }, isNew });
+  res.json({ token, user: publicUser(finalUser), isNew });
 });
 
 export default router;

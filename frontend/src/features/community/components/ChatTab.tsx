@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { Send, MessageCircle } from 'lucide-react';
 import { communityApi } from '../api/communityApi';
 import type { Community, ChatMessage } from '../types/community';
+import { useUser } from '@/shared/hooks/useUser';
 import toast from 'react-hot-toast';
 
 export default function ChatTab({ community, communityId }: { community: Community; communityId: string }) {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const user = useUser() ?? {};
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);

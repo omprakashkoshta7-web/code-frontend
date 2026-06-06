@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { Award, Calendar, CheckCircle, X, Plus } from 'lucide-react';
 import { communityApi } from '../api/communityApi';
 import type { WeeklyChallenge, ChallengeProgress } from '../types/community';
+import { useUser } from '@/shared/hooks/useUser';
 import toast from 'react-hot-toast';
 
 export default function ChallengesTab({ community, communityId }: { community: any; communityId: string }) {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const user = useUser() ?? {};
   const [challenges, setChallenges] = useState<WeeklyChallenge[]>([]);
   const [progress, setProgress] = useState<Record<string, ChallengeProgress>>({});
   const [showForm, setShowForm] = useState(false);

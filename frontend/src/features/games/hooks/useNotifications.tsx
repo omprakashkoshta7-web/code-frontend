@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import toast from 'react-hot-toast';
 import api from '@/services/api';
+import { userStorage } from '@/shared/utils/userStorage';
 
 export type NotificationType =
   | 'welcome'
@@ -30,14 +31,8 @@ const STORAGE_KEY = 'codesprout_last_seen_notif_v1';
 const POLL_MS = 30_000;
 
 function getUserId(): string | null {
-  try {
-    const raw = localStorage.getItem('user');
-    if (!raw) return null;
-    const u = JSON.parse(raw);
-    return u?.id ? String(u.id) : null;
-  } catch {
-    return null;
-  }
+  const u = userStorage.getSync();
+  return u?.id ? String(u.id) : null;
 }
 
 export function useNotifications() {

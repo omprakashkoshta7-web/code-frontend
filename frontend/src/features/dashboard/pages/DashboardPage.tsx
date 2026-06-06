@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { BookOpen, Star, Clock, Trophy, CreditCard, ArrowRight, Sparkles, ChevronRight } from 'lucide-react';
 import { useDashboard } from '../hooks/useDashboard';
 import { getDifficultyColor } from '@/shared/utils/helpers';
+import { useUser } from '@/shared/hooks/useUser';
 
 const statCards = [
   { icon: Star, label: 'Bookmarked Questions', gradient: 'from-amber-500 to-orange-500', shadow: 'shadow-amber-500/25' },
@@ -12,10 +13,7 @@ const statCards = [
 
 export default function DashboardPage() {
   const { data, loading } = useDashboard();
-  const user = (() => {
-    try { return JSON.parse(localStorage.getItem('user') || 'null'); }
-    catch { return null; }
-  })();
+  const user = useUser();
 
   if (loading) {
     return (

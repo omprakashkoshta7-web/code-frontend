@@ -8,15 +8,12 @@ import {
 } from 'lucide-react';
 import { useGameProgress, calcStars } from '../hooks/useGameProgress';
 import { LEVEL_TEMPLATES, getLevelQuestions, BADGE_LIBRARY, type QuizQuestion, type CodeChallenge } from '../data/gamesData';
+import { userStorage } from '@/shared/utils/userStorage';
 import api from '@/services/api';
 
 function getUserId(): string | null {
-  try {
-    const raw = localStorage.getItem('user');
-    if (!raw) return null;
-    const u = JSON.parse(raw);
-    return u?.id ? String(u.id) : null;
-  } catch { return null; }
+  const u = userStorage.getSync();
+  return u?.id ? String(u.id) : null;
 }
 
 async function fireNotification(event: string, payload: Record<string, any> = {}) {

@@ -6,6 +6,7 @@ import DifficultyBadge from '../components/DifficultyBadge';
 import CodeEditor from '@/features/practice/components/CodeEditor';
 import { bookmarksApi } from '@/features/bookmarks/api/bookmarksApi';
 import { subscriptionStorage } from '@/shared/utils/subscriptionStorage';
+import { useUser } from '@/shared/hooks/useUser';
 import toast from 'react-hot-toast';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { communityApi } from '@/features/community/api/communityApi';
@@ -17,7 +18,7 @@ export default function QuestionDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  const user = (() => { try { return JSON.parse(localStorage.getItem('user') || 'null'); } catch { return null; } })();
+  const user = useUser();
 
   useEffect(() => {
     if (!token) {
@@ -46,7 +47,7 @@ export default function QuestionDetailPage() {
 
   const { question, loading, requiresPremium, lockedInfo } = useQuestion(slug || '');
   const [bookmarked, setBookmarked] = useState(false);
-  const isPremium = subscriptionStorage.isPremium();
+  const isPremium = subscriptionStorage.isPremiumSync();
   const [notes, setNotes] = useState('');
   const [showNotes, setShowNotes] = useState(false);
   const [savedNotes, setSavedNotes] = useState('');

@@ -34,7 +34,7 @@ export function usePaymentVerify() {
       const res = await paymentApi.verify(utr, paymentId);
       toast.success(res.data.message);
       if (res.data.subscription) {
-        subscriptionStorage.set('premium', res.data.subscription as any);
+        await subscriptionStorage.set('premium', res.data.subscription as any);
       }
       return res.data;
     } catch (err: any) {
@@ -157,7 +157,7 @@ export function useRazorpayCheckout() {
               });
               toast.success(verifyRes.data.message);
               if (verifyRes.data.subscription) {
-                subscriptionStorage.set('premium', verifyRes.data.subscription as any);
+                await subscriptionStorage.set('premium', verifyRes.data.subscription as any);
               }
               resolve(verifyRes.data);
             } catch (err: any) {
