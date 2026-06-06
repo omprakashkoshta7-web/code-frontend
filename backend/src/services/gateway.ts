@@ -1,6 +1,7 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
@@ -10,6 +11,15 @@ app.use(cors({
   origin: (_origin, callback) => callback(null, _origin || true),
   credentials: true,
 }));
+
+const globalLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 120,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+});
+app.use(globalLimiter);
 
 const SERVICES = {
   auth: process.env.AUTH_SERVICE_URL || 'http://localhost:3001',

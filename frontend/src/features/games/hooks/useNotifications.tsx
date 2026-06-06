@@ -28,71 +28,124 @@ export interface AppNotification {
 }
 
 const STORAGE_KEY = 'codesprout_last_seen_notif_v1';
-const POLL_MS = 30_000;
+const POLL_MS = 60_000;
 
 function getUserId(): string | null {
   const u = userStorage.getSync();
   return u?.id ? String(u.id) : null;
 }
 
+let subscriberCount = 0;
+let sharedInterval: ReturnType<typeof setInterval> | null = null;
+const listeners = new Set<() => void>();
+let sharedItems: AppNotification[] = [];
+let sharedUnread = 0;
+let sharedLoading = false;
+let sharedFirstLoad = true;
+let sharedLastIds = new Set<string>();
+
+function notifyListeners() {
+  listeners.forEach(fn => fn());
+}
+
+async function sharedFetch(silent = false) {
+  const uid = getUserId();
+  if (!uid) {
+    sharedItems = [];
+    sharedUnread = 0;
+    sharedLoading = false;
+    sharedFirstLoad = true;
+    sharedLastIds = new Set();
+    notifyListeners();
+    return;
+  }
+  if (!silent) sharedLoading = true;
+  notifyListeners();
+  try {
+    const res = await api.get(`/notifications?userId=${uid}&limit=50`);
+    const list: AppNotification[] = res.data?.notifications || [];
+    list.sort((a, b) => b.created_at.localeCompare(a.created_at));
+
+    if (!sharedFirstLoad) {
+      const fresh = list.filter(n => !sharedLastIds.has(n.id));
+      for (const n of fresh.slice(0, 2)) {
+        const onClick = () => { window.location.href = n.link || '/'; };
+        toast(
+          (t: any) => (
+            <div onClick={onClick} className="cursor-pointer max-w-[320px]">
+              <div className="font-semibold text-sm flex items-center gap-2">
+                <span className="text-lg">{n.icon}</span>
+                <span>{n.title}</span>
+              </div>
+              <div className="text-xs text-gray-300 mt-1 line-clamp-2">{n.message}</div>
+            </div>
+          ),
+          { duration: 5000, id: `notif-${n.id}` }
+        );
+      }
+    }
+    sharedLastIds = new Set(list.map(n => n.id));
+    sharedFirstLoad = false;
+
+    sharedItems = list;
+    sharedUnread = res.data?.unread ?? list.filter(n => !n.read).length;
+  } catch (e) {
+    // silent fail
+  } finally {
+    if (!silent) sharedLoading = false;
+    notifyListeners();
+  }
+}
+
+function startSharedPolling() {
+  sharedFetch(false);
+  const onStorage = (e: StorageEvent) => {
+    if (e.key === 'user') sharedFetch(false);
+  };
+  const onUserChange = () => sharedFetch(false);
+  window.addEventListener('storage', onStorage);
+  window.addEventListener('codesprout_user_change', onUserChange);
+  const interval = setInterval(() => sharedFetch(true), POLL_MS);
+  return { interval, onStorage, onUserChange };
+}
+
 export function useNotifications() {
-  const [items, setItems] = useState<AppNotification[]>([]);
-  const [unread, setUnread] = useState(0);
+  const [items, setItems] = useState<AppNotification[]>(sharedItems);
+  const [unread, setUnread] = useState(sharedUnread);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const lastIds = useRef<Set<string>>(new Set());
-  const isFirstLoad = useRef(true);
 
-  const fetchNotifications = useCallback(async (silent = false) => {
-    const uid = getUserId();
-    if (!uid) {
-      setItems([]);
-      setUnread(0);
-      return;
+  useEffect(() => {
+    const update = () => {
+      setItems([...sharedItems]);
+      setUnread(sharedUnread);
+      setLoading(sharedLoading);
+    };
+    listeners.add(update);
+    return () => { listeners.delete(update); };
+  }, []);
+
+  useEffect(() => {
+    subscriberCount++;
+    if (subscriberCount === 1) {
+      const { interval, onStorage, onUserChange } = startSharedPolling();
+      sharedInterval = interval;
     }
-    if (!silent) setLoading(true);
-    try {
-      const res = await api.get(`/notifications?userId=${uid}&limit=50`);
-      const list: AppNotification[] = res.data?.notifications || [];
-      list.sort((a, b) => b.created_at.localeCompare(a.created_at));
-
-      // Detect new ones to fire toast
-      if (!isFirstLoad.current) {
-        const seen = lastIds.current;
-        const fresh = list.filter(n => !seen.has(n.id));
-        for (const n of fresh.slice(0, 2)) {
-          const onClick = () => { window.location.href = n.link || '/'; };
-          toast(
-            (t: any) => (
-              <div onClick={onClick} className="cursor-pointer max-w-[320px]">
-                <div className="font-semibold text-sm flex items-center gap-2">
-                  <span className="text-lg">{n.icon}</span>
-                  <span>{n.title}</span>
-                </div>
-                <div className="text-xs text-gray-300 mt-1 line-clamp-2">{n.message}</div>
-              </div>
-            ),
-            { duration: 5000, id: `notif-${n.id}` }
-          );
-        }
+    return () => {
+      subscriberCount--;
+      if (subscriberCount <= 0 && sharedInterval) {
+        clearInterval(sharedInterval);
+        sharedInterval = null;
       }
-      lastIds.current = new Set(list.map(n => n.id));
-      isFirstLoad.current = false;
-
-      setItems(list);
-      setUnread(res.data?.unread ?? list.filter(n => !n.read).length);
-    } catch (e) {
-      // silent fail on poll
-    } finally {
-      if (!silent) setLoading(false);
-    }
+    };
   }, []);
 
   const markRead = useCallback(async (id: string) => {
     const uid = getUserId();
     if (!uid) return;
-    setItems(prev => prev.map(n => (n.id === id ? { ...n, read: true } : n)));
-    setUnread(prev => Math.max(0, prev - 1));
+    sharedItems = sharedItems.map(n => (n.id === id ? { ...n, read: true } : n));
+    sharedUnread = Math.max(0, sharedUnread - 1);
+    notifyListeners();
     try {
       await api.post(`/notifications/${id}/read?userId=${uid}`);
     } catch (e) { /* ignore */ }
@@ -101,8 +154,9 @@ export function useNotifications() {
   const markAllRead = useCallback(async () => {
     const uid = getUserId();
     if (!uid) return;
-    setItems(prev => prev.map(n => ({ ...n, read: true })));
-    setUnread(0);
+    sharedItems = sharedItems.map(n => ({ ...n, read: true }));
+    sharedUnread = 0;
+    notifyListeners();
     try {
       await api.post(`/notifications/read-all?userId=${uid}`);
     } catch (e) { /* ignore */ }
@@ -111,29 +165,14 @@ export function useNotifications() {
   const remove = useCallback(async (id: string) => {
     const uid = getUserId();
     if (!uid) return;
-    const removed = items.find(n => n.id === id);
-    setItems(prev => prev.filter(n => n.id !== id));
-    if (removed && !removed.read) setUnread(prev => Math.max(0, prev - 1));
+    const removed = sharedItems.find(n => n.id === id);
+    sharedItems = sharedItems.filter(n => n.id !== id);
+    if (removed && !removed.read) sharedUnread = Math.max(0, sharedUnread - 1);
+    notifyListeners();
     try {
       await api.delete(`/notifications/${id}?userId=${uid}`);
     } catch (e) { /* ignore */ }
-  }, [items]);
+  }, []);
 
-  useEffect(() => {
-    fetchNotifications(false);
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === 'user') fetchNotifications(false);
-    };
-    window.addEventListener('storage', onStorage);
-    const onUserChange = () => fetchNotifications(false);
-    window.addEventListener('codesprout_user_change', onUserChange);
-    const interval = setInterval(() => fetchNotifications(true), POLL_MS);
-    return () => {
-      window.removeEventListener('storage', onStorage);
-      window.removeEventListener('codesprout_user_change', onUserChange);
-      clearInterval(interval);
-    };
-  }, [fetchNotifications]);
-
-  return { items, unread, open, setOpen, loading, fetchNotifications, markRead, markAllRead, remove };
+  return { items, unread, open, setOpen, loading, fetchNotifications: sharedFetch, markRead, markAllRead, remove };
 }
