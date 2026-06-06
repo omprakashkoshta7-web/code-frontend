@@ -303,10 +303,13 @@ function PatternDetailContent() {
             <div className="lg:sticky lg:top-24">
               <h2 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-emerald-400" /> Practice Questions
+                {!questionsLoading && questions.length > 0 && (
+                  <span className="text-xs font-medium text-white/40 ml-auto">{questions.length}</span>
+                )}
               </h2>
 
               {questionsLoading ? (
-                <div className="space-y-2">
+                <div className="space-y-2 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1">
                   {[1,2,3].map(i => (
                     <div key={i} className="p-3 rounded-xl bg-white/5 animate-pulse h-16" />
                   ))}
@@ -317,7 +320,7 @@ function PatternDetailContent() {
                   <p className="text-sm text-white/40">No questions found for this pattern</p>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-2 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent hover:scrollbar-thumb-white/20">
                   {questions.map((q, i) => (
                     <motion.div
                       key={q.id}
