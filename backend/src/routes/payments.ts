@@ -386,6 +386,26 @@ router.get('/requests', (req: AuthRequest, res: Response) => {
   res.json(getPaymentRequests());
 });
 
+router.get('/debug/subscriptions', (req: AuthRequest, res: Response) => {
+  if (req.user?.role !== 'admin') {
+    return res.status(403).json({ error: 'Admin only' });
+  }
+  const subs = (require('../data/db') as any).getSubscriptions ? (require('../data/db') as any).getSubscriptions() : [];
+  res.json({ count: subs.length, subscriptions: subs });
+});
+
+router.get('/debug/whoami', (req: AuthRequest, res: Response) => {
+  const subs = (require('../data/db') as any).getSubscriptions();
+  const mine = subs.filter((s: any) => s.user_id === req.user!.id);
+  res.json({
+    user_id: req.user!.id,
+    role: req.user!.role,
+    email: req.user!.email,
+    my_subscriptions: mine,
+    is_premium: mine.some((s: any) => s.plan === 'premium' && s.status === 'active'),
+  });
+});
+
 router.post('/admin-verify', async (req: AuthRequest, res: Response) => {
   if (req.user?.role !== 'admin') {
     return res.status(403).json({ error: 'Admin only' });
