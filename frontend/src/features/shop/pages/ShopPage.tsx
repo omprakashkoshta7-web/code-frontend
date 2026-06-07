@@ -102,7 +102,7 @@ export default function ShopPage() {
                 Explore Resources <ArrowRight className="w-4 h-4" />
               </a>
             </div>
-            <div className="flex-shrink-0 w-80 h-80 lg:w-96 lg:h-96">
+            <div className="flex-shrink-0 w-[28rem] h-[28rem] lg:w-[36rem] lg:h-[36rem]">
               <img src="/shop-cart.png" alt="Shop Resources" className="w-full h-full object-contain drop-shadow-2xl" />
             </div>
           </div>
