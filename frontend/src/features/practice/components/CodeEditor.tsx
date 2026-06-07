@@ -68,6 +68,21 @@ interface VisualizeStep {
 
 type TabType = 'testcases' | 'result' | 'custom' | 'complexity' | 'visualize';
 
+function isCodeEmpty(code: string): boolean {
+  if (!code || !code.trim()) return true;
+  let stripped = code;
+  stripped = stripped.replace(/\/\*[\s\S]*?\*\//g, ' ');
+  stripped = stripped.replace(/\/\/.*$/gm, ' ');
+  stripped = stripped.replace(/#.*$/gm, ' ');
+  stripped = stripped.replace(/^\s*(?:export\s+)?(?:default\s+)?(?:async\s+)?function\s+\w+\s*\([^)]*\)\s*(?::\s*[^{]+)?\s*\{/m, ' ');
+  stripped = stripped.replace(/(?:const|let|var)\s+\w+\s*=\s*(?:\([^)]*\)|async\s*\([^)]*\))\s*=>\s*\{/g, ' ');
+  stripped = stripped.replace(/(?:const|let|var)\s+\w+\s*=\s*(?:async\s+)?function\s*\([^)]*\)\s*\{/g, ' ');
+  stripped = stripped.replace(/^\s*[\{\}]\s*$/gm, ' ');
+  stripped = stripped.replace(/^\s*return\s*(?:null|undefined|void\s+0|0|["']["']|;|\s*;\s*)\s*;?\s*$/gim, ' ');
+  stripped = stripped.replace(/\s+/g, '').trim();
+  return stripped.length === 0;
+}
+
 export default function CodeEditor({ slug, template }: CodeEditorProps) {
   const [language, setLanguage] = useState('javascript');
   const [code, setCode] = useState(template?.javascript || '');
@@ -193,6 +208,11 @@ export default function CodeEditor({ slug, template }: CodeEditorProps) {
     setAnalyzing(true);
     setComplexity(null);
     setActiveTab('complexity');
+    if (isCodeEmpty(code)) {
+      setComplexity({ detected: 'N/A', reasoning: 'Write your solution code first, then analyze.', badge: 'acceptable' });
+      setAnalyzing(false);
+      return;
+    }
     try {
       const res = await fetch('/api/execute/analyze', {
         method: 'POST',

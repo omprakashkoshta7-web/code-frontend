@@ -182,7 +182,25 @@ function parseInputArgs(inputStr: string): any[] {
   return args;
 }
 
+export function isCodeEmpty(code: string): boolean {
+  if (!code || !code.trim()) return true;
+  let stripped = code;
+  stripped = stripped.replace(/\/\*[\s\S]*?\*\//g, ' ');
+  stripped = stripped.replace(/\/\/.*$/gm, ' ');
+  stripped = stripped.replace(/#.*$/gm, ' ');
+  stripped = stripped.replace(/^\s*(?:export\s+)?(?:default\s+)?(?:async\s+)?function\s+\w+\s*\([^)]*\)\s*(?::\s*[^{]+)?\s*\{/m, ' ');
+  stripped = stripped.replace(/(?:const|let|var)\s+\w+\s*=\s*(?:\([^)]*\)|async\s*\([^)]*\))\s*=>\s*\{/g, ' ');
+  stripped = stripped.replace(/(?:const|let|var)\s+\w+\s*=\s*(?:async\s+)?function\s*\([^)]*\)\s*\{/g, ' ');
+  stripped = stripped.replace(/^\s*[\{\}]\s*$/gm, ' ');
+  stripped = stripped.replace(/^\s*return\s*(?:null|undefined|void\s+0|0|["']["']|;|\s*;\s*)\s*;?\s*$/gim, ' ');
+  stripped = stripped.replace(/\s+/g, '').trim();
+  return stripped.length === 0;
+}
+
 export function analyzeComplexity(code: string): ComplexityResult {
+  if (isCodeEmpty(code)) {
+    return { detected: 'N/A', reasoning: 'Write your solution code first, then analyze.', badge: 'acceptable' };
+  }
   const hasSort = /\.sort\s*\(/.test(code);
   const hasMap = /\bMap\b/.test(code);
   const hasSet = /\bSet\b/.test(code);
@@ -266,7 +284,7 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 export async function aiAnalyzeComplexity(code: string, language: string): Promise<ComplexityResult> {
-  if (!code.trim() || code.length < 20) {
+  if (!code.trim() || code.length < 20 || isCodeEmpty(code)) {
     return { detected: 'N/A', reasoning: 'Write your solution code first, then analyze.', badge: 'acceptable' };
   }
 

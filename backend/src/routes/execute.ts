@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { executeCode, runTestCases, executeVisualize, analyzeComplexity, aiAnalyzeComplexity, TestCase } from '../services/executor';
+import { executeCode, runTestCases, executeVisualize, analyzeComplexity, aiAnalyzeComplexity, isCodeEmpty, TestCase } from '../services/executor';
 import { generateDriver, extractFunctionName } from '../drivers/driverGenerator';
 import { runCode } from '../runners/index';
 import { getTestCases, getQuestion } from '../data/db';
@@ -152,6 +152,10 @@ router.post('/analyze', async (req: Request, res: Response) => {
   const { code, language } = req.body;
   if (!code) {
     return res.status(400).json({ error: 'Code required' });
+  }
+
+  if (isCodeEmpty(code)) {
+    return res.json({ detected: 'N/A', reasoning: 'Write your solution code first, then analyze.', badge: 'acceptable' });
   }
 
   const complexity = await aiAnalyzeComplexity(code, language || 'javascript');
