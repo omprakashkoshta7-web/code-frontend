@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { authenticate, adminOnly, AuthRequest } from '../middleware/auth';
-import type { Question, CheatSheet } from '../types';
+import type { Question, CheatSheet, ShopProduct } from '../types';
 import { getDb, saveDb, addQuestion, updateQuestion, deleteQuestion, getTestCases, addTestCase, updateTestCase, deleteTestCase, addTopic, updateTopic, deleteTopic } from '../data/db';
 import { getFunctionSignature } from '../data/functionSignatures';
 import { generateStarterCode } from '../data/templateGenerator';
@@ -420,6 +420,60 @@ router.delete('/topics/:id', (req: Request, res: Response) => {
   const topic = db.topics.find((t) => t.id === req.params.id || t.slug === req.params.id);
   if (!topic) return res.status(404).json({ error: 'Topic not found' });
   deleteTopic(topic.slug);
+  res.json({ success: true });
+});
+
+// ========== SHOP PRODUCTS ==========
+router.get('/shop/products', (_req: Request, res: Response) => {
+  const db = getDb();
+  res.json(db.shopProducts || []);
+});
+
+router.get('/shop/products/:id', (req: Request, res: Response) => {
+  const db = getDb();
+  const product = (db.shopProducts || []).find((p: ShopProduct) => p.id === req.params.id);
+  if (!product) return res.status(404).json({ error: 'Product not found' });
+  res.json(product);
+});
+
+router.post('/shop/products', (req: Request, res: Response) => {
+  const { title, description, category, price, icon, color, tags, popular, pages, author, download_url } = req.body;
+  if (!title || !category) return res.status(400).json({ error: 'Title and category required' });
+  const db = getDb();
+  const id = 'sp_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const now = new Date().toISOString();
+  const product: ShopProduct = {
+    id, title, description: description || '', category, price: price || 'free',
+    icon: icon || '📦', color: color || 'from-slate-500 to-slate-600',
+    tags: tags || [], popular: !!popular, pages, author, download_url,
+    created_at: now, updated_at: now,
+  };
+  db.shopProducts = db.shopProducts || [];
+  db.shopProducts.push(product);
+  saveDb();
+  res.status(201).json(product);
+});
+
+router.put('/shop/products/:id', (req: Request, res: Response) => {
+  const db = getDb();
+  const idx = (db.shopProducts || []).findIndex((p: ShopProduct) => p.id === req.params.id);
+  if (idx < 0) return res.status(404).json({ error: 'Product not found' });
+  const existing = db.shopProducts[idx];
+  const updates = req.body;
+  db.shopProducts[idx] = {
+    ...existing, ...updates,
+    id: existing.id, updated_at: new Date().toISOString(),
+  };
+  saveDb();
+  res.json(db.shopProducts[idx]);
+});
+
+router.delete('/shop/products/:id', (req: Request, res: Response) => {
+  const db = getDb();
+  const idx = (db.shopProducts || []).findIndex((p: ShopProduct) => p.id === req.params.id);
+  if (idx < 0) return res.status(404).json({ error: 'Product not found' });
+  db.shopProducts.splice(idx, 1);
+  saveDb();
   res.json({ success: true });
 });
 

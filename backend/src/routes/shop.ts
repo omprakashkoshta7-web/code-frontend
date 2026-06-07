@@ -1,25 +1,10 @@
 import { Router, Request, Response } from 'express';
+import { getDb, saveDb } from '../data/db';
+import type { ShopProduct } from '../types';
 
 const router = Router();
 
-export type ProductCategory = 'pdf' | 'notes' | 'interview-notes' | 'company-specific';
-
-export interface ShopProduct {
-  id: string;
-  title: string;
-  description: string;
-  category: ProductCategory;
-  price: { amount: number; label: string } | 'free';
-  icon: string;
-  color: string;
-  tags: string[];
-  popular?: boolean;
-  pages?: number;
-  author?: string;
-  download_url?: string;
-}
-
-const PRODUCTS: ShopProduct[] = [
+const SEED_PRODUCTS: ShopProduct[] = [
   { id: 'p1', title: 'DSA Cheat Sheet 2025', description: 'Complete DSA cheat sheet with code snippets, time complexities, and pattern recognition for all major topics.', category: 'pdf', price: { amount: 0, label: 'Free' }, icon: '📄', color: 'from-blue-500 to-cyan-500', tags: ['dsa', 'algorithms', 'patterns'], author: 'CodeSprout Team', pages: 48 },
   { id: 'p2', title: 'System Design Interview Guide', description: 'Comprehensive guide covering distributed systems, scalability, caching, databases, and real-world architecture patterns.', category: 'pdf', price: { amount: 499, label: '₹499' }, icon: '📄', color: 'from-purple-500 to-indigo-500', tags: ['system-design', 'architecture', 'scalability'], popular: true, author: 'Senior Engineers', pages: 120 },
   { id: 'p3', title: 'JavaScript Interview Handbook', description: 'Deep dive into closures, event loop, promises, prototypes, and 50+ JS coding problems with solutions.', category: 'pdf', price: { amount: 299, label: '₹299' }, icon: '📄', color: 'from-yellow-500 to-orange-500', tags: ['javascript', 'frontend', 'coding'], author: 'JS Masters', pages: 85 },
@@ -36,20 +21,33 @@ const PRODUCTS: ShopProduct[] = [
   { id: 'c4', title: 'Startup Interview Questions', description: 'Questions commonly asked at high-growth startups, full-stack challenges, product sense, and hands-on coding.', category: 'company-specific', price: { amount: 0, label: 'Free' }, icon: '🏢', color: 'from-green-500 to-emerald-600', tags: ['startup', 'general'], author: 'Startup CTOs', pages: 35 },
 ];
 
+function seedIfEmpty(): void {
+  const db = getDb();
+  if (!db.shopProducts || db.shopProducts.length === 0) {
+    const now = new Date().toISOString();
+    db.shopProducts = SEED_PRODUCTS.map(p => ({ ...p, created_at: now, updated_at: now }));
+    saveDb();
+  }
+}
+
 router.get('/products', (req: Request, res: Response) => {
+  seedIfEmpty();
+  const db = getDb();
   const { category, search, free } = req.query;
-  let result = [...PRODUCTS];
+  let result = [...db.shopProducts];
   if (category && category !== 'all') result = result.filter(p => p.category === category);
   if (search) {
     const q = String(search).toLowerCase();
     result = result.filter(p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.tags.some(t => t.includes(q)));
   }
-  if (free === 'true') result = result.filter(p => p.price === 'free' || p.price.amount === 0);
-  res.json({ products: result, total: result.length, categories: [...new Set(PRODUCTS.map(p => p.category))] });
+  if (free === 'true') result = result.filter(p => p.price === 'free' || (typeof p.price === 'object' && p.price.amount === 0));
+  res.json({ products: result, total: result.length, categories: [...new Set(db.shopProducts.map((p: ShopProduct) => p.category))] });
 });
 
 router.get('/products/:id', (req: Request, res: Response) => {
-  const product = PRODUCTS.find(p => p.id === req.params.id);
+  seedIfEmpty();
+  const db = getDb();
+  const product = db.shopProducts.find((p: ShopProduct) => p.id === req.params.id);
   if (!product) return res.status(404).json({ error: 'Product not found' });
   res.json(product);
 });

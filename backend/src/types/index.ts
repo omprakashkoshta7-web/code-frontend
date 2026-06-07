@@ -363,3 +363,20 @@ export interface InterviewKit {
   page_count: number;
   created_at: string;
 }
+
+export interface ShopProduct {
+  id: string;
+  title: string;
+  description: string;
+  category: 'pdf' | 'notes' | 'interview-notes' | 'company-specific';
+  price: { amount: number; label: string } | 'free';
+  icon: string;
+  color: string;
+  tags: string[];
+  popular?: boolean;
+  pages?: number;
+  author?: string;
+  download_url?: string;
+  created_at?: string;
+  updated_at?: string;
+}

@@ -12,6 +12,7 @@ import Users from './pages/Users'
 import Payments from './pages/Payments'
 import Login from './pages/Login'
 import Patterns from './pages/Patterns'
+import Products from './pages/Products'
 import './index.css'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/topics" element={<ProtectedRoute><div className="flex min-h-screen"><Sidebar /><main className="flex-1 p-8 ml-64"><Topics /></main><AiChat /></div></ProtectedRoute>} />
         <Route path="/users" element={<ProtectedRoute><div className="flex min-h-screen"><Sidebar /><main className="flex-1 p-8 ml-64"><Users /></main><AiChat /></div></ProtectedRoute>} />
         <Route path="/payments" element={<ProtectedRoute><div className="flex min-h-screen"><Sidebar /><main className="flex-1 p-8 ml-64"><Payments /></main><AiChat /></div></ProtectedRoute>} />
+        <Route path="/products" element={<ProtectedRoute><div className="flex min-h-screen"><Sidebar /><main className="flex-1 p-8 ml-64"><Products /></main><AiChat /></div></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )

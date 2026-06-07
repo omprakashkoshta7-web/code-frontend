@@ -51,4 +51,9 @@ export const adminApi = {
   addPattern: (data: any) => api.post('/admin/patterns', data),
   updatePattern: (slug: string, data: any) => api.put(`/admin/patterns/${slug}`, data),
   deletePattern: (slug: string) => api.delete(`/admin/patterns/${slug}`),
+  getProducts: () => api.get('/admin/shop/products'),
+  getProduct: (id: string) => api.get(`/admin/shop/products/${id}`),
+  addProduct: (data: any) => api.post('/admin/shop/products', data),
+  updateProduct: (id: string, data: any) => api.put(`/admin/shop/products/${id}`, data),
+  deleteProduct: (id: string) => api.delete(`/admin/shop/products/${id}`),
 }
