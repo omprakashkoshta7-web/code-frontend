@@ -17,7 +17,11 @@ const globalLimiter = rateLimit({
   max: 500,
   standardHeaders: true,
   legacyHeaders: false,
-  skip: (req) => req.method === 'OPTIONS' || req.path === '/health',
+  skip: (req) =>
+    req.method === 'OPTIONS' ||
+    req.path === '/health' ||
+    req.path.startsWith('/api/notifications') ||
+    req.path.startsWith('/notifications'),
   keyGenerator: (req: any) => {
     const token = req.headers['authorization'];
     if (token) return token;
@@ -26,6 +30,17 @@ const globalLimiter = rateLimit({
   message: { error: 'Too many requests, please try again later.' },
 });
 app.use(globalLimiter);
+
+const notificationsLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => req.method === 'OPTIONS',
+  message: { error: 'Too many requests, please try again later.' },
+});
+app.use('/api/notifications', notificationsLimiter);
+app.use('/notifications', notificationsLimiter);
 
 const SERVICES = {
   auth: process.env.AUTH_SERVICE_URL || 'http://localhost:3001',
