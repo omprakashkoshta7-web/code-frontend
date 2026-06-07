@@ -208,11 +208,18 @@ export async function initDb(questions: Question[], topics: Topic[], cheatSheets
           paymentRequests: await col('paymentRequests').find({}).toArray() as any,
         };
         const adminUser = db.users.find((u: any) => u.email === 'admin@dsacheatsheets.com');
-        if (adminUser && adminUser.password && !adminUser.password.startsWith('$2')) {
+        if (adminUser) {
           const bcrypt = require('bcryptjs');
-          adminUser.password = bcrypt.hashSync('admin123', 10);
-          await mongoDb.collection('users').replaceOne({ id: adminUser.id }, adminUser);
-          console.log('[DB] Fixed admin user password hash');
+          const isValidHash = adminUser.password && adminUser.password.startsWith('$2') && adminUser.password.length >= 50;
+          let works = false;
+          if (isValidHash) {
+            try { works = bcrypt.compareSync('admin123', adminUser.password); } catch { works = false; }
+          }
+          if (!works) {
+            adminUser.password = bcrypt.hashSync('admin123', 10);
+            await mongoDb.collection('users').replaceOne({ id: adminUser.id }, adminUser);
+            console.log('[DB] Reset admin password to admin123');
+          }
         }
         console.log(`[DB] Loaded ${db.questions.length} questions, ${db.users.length} users from MongoDB`);
       }
