@@ -65,7 +65,7 @@ function InterviewDashboardContent() {
   const goal = pref?.daily_goal || 5;
   const progressPct = Math.min(100, Math.round((todaysAnswers.length / goal) * 100));
 
-  const startMock = (subject: string) => navigate(`/interview-prep/mock?subject=${encodeURIComponent(subject)}`);
+  const startMock = (subject: string) => navigate(`/interview-prep/call?subject=${encodeURIComponent(subject)}`);
   const generateKit = async () => {
     setError('');
     setGeneratingKit(true);

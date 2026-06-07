@@ -167,11 +167,11 @@ function InterviewSubjectContent() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => navigate(`/interview-prep/mock?subject=${encodeURIComponent(decodedSubject)}`)}
+              onClick={() => navigate(`/interview-prep/call?subject=${encodeURIComponent(decodedSubject)}`)}
               disabled={questions.length === 0}
               className="px-3 py-2 bg-gradient-to-r from-primary-500 to-pink-500 hover:opacity-90 text-white text-sm rounded-lg flex items-center gap-1.5 disabled:opacity-50"
             >
-              <Mic className="w-4 h-4" /> Mock Interview
+              <Mic className="w-4 h-4" /> Start AI Call
             </button>
             <button
               onClick={handleRegenerate}

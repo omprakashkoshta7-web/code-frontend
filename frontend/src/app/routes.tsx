@@ -14,6 +14,7 @@ import InterviewSetupPage from '@/features/interview/pages/InterviewSetupPage';
 import InterviewDashboardPage from '@/features/interview/pages/InterviewDashboardPage';
 import InterviewSubjectPage from '@/features/interview/pages/InterviewSubjectPage';
 import MockInterviewPage from '@/features/interview/pages/MockInterviewPage';
+import MockCallPage from '@/features/interview/pages/MockCallPage';
 import MockResultPage from '@/features/interview/pages/MockResultPage';
 import GamesLandingPage from '@/features/games/pages/GamesLandingPage';
 import HeroSection from '@/shared/components/HeroSection';
@@ -761,6 +762,7 @@ export const router = createBrowserRouter([
       { path: 'interview-prep/dashboard', element: <ProtectedRoute><InterviewDashboardPage /></ProtectedRoute> },
       { path: 'interview-prep/subject/:subject', element: <ProtectedRoute><InterviewSubjectPage /></ProtectedRoute> },
       { path: 'interview-prep/mock', element: <ProtectedRoute><MockInterviewPage /></ProtectedRoute> },
+      { path: 'interview-prep/call', element: <ProtectedRoute><MockCallPage /></ProtectedRoute> },
       { path: 'interview-prep/mock-result/:id', element: <ProtectedRoute><MockResultPage /></ProtectedRoute> },
       { path: 'leaderboard', element: <LeaderboardPage /> },
       { path: 'communities', element: <ProtectedRoute><Suspense fallback={<PageLoader />}><CommunitiesPage /></Suspense></ProtectedRoute> },
