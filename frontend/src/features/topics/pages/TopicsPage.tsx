@@ -4,7 +4,7 @@ import { useTopics } from '../hooks/useTopics';
 import TopicCard from '../components/TopicCard';
 import TopicPopup from '../components/TopicPopup';
 import SearchBar from '@/shared/components/SearchBar';
-import { Sparkles, BookOpen, Code2, Zap, Target } from 'lucide-react';
+import { BookOpen, Code2, Zap, Target, Sparkles } from 'lucide-react';
 import type { Topic } from '../types/topic';
 import SEO, { buildBreadcrumbJsonLd } from '@/shared/components/SEO';
 
@@ -58,32 +58,26 @@ function TopicsContent() {
   const formatStat = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k+` : `${n}+`);
 
   const stats = [
-    { icon: BookOpen, label: 'Topics', value: formatStat(globalStats.topics), color: 'text-purple-400' },
-    { icon: Code2, label: 'Questions', value: formatStat(globalStats.questions), color: 'text-blue-400' },
-    { icon: Zap, label: 'Patterns', value: formatStat(globalStats.patterns), color: 'text-yellow-400' },
-    { icon: Target, label: 'Companies', value: '50+', color: 'text-green-400' },
+    { icon: BookOpen, label: 'Topics', value: formatStat(globalStats.topics), color: 'text-purple-400', bg: 'bg-purple-500/10' },
+    { icon: Code2, label: 'Questions', value: formatStat(globalStats.questions), color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    { icon: Zap, label: 'Patterns', value: formatStat(globalStats.patterns), color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
+    { icon: Target, label: 'Companies', value: '50+', color: 'text-green-400', bg: 'bg-green-500/10' },
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <div className="fixed inset-0" style={{ backgroundColor: '#0B1020' }}>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-3xl" />
+    <div className="min-h-screen bg-[#0a0a1a] relative overflow-hidden">
+      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-40 w-96 h-96 bg-purple-600/8 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-40 w-96 h-96 bg-violet-600/8 rounded-full blur-3xl" />
       </div>
-      <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
-      <section className="relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-12 sm:pb-16">
-          <div className="text-center max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm font-medium">
-                <Sparkles className="w-4 h-4" />
-                Master DSA Patterns
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-3 pb-10">
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+          <div className="flex-1 w-full">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/15 border border-purple-500/20 mb-4">
+                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                <span className="text-xs font-semibold text-purple-400">DSA Topics</span>
               </span>
             </motion.div>
 
@@ -91,7 +85,7 @@ function TopicsContent() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="mt-6 sm:mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight"
             >
               <span className="text-white">Learn </span>
               <span className="bg-gradient-to-r from-purple-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent">Every Topic</span>
@@ -101,17 +95,16 @@ function TopicsContent() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="mt-4 sm:mt-6 text-base sm:text-lg text-white/50 max-w-2xl mx-auto leading-relaxed px-2"
+              className="mt-4 sm:mt-5 text-base sm:text-lg text-white/60 max-w-xl leading-relaxed"
             >
-              Master data structures and algorithms with our curated cheat sheets.
-              Learn patterns, solve problems, ace your interviews.
+              Master data structures and algorithms with our curated cheat sheets. Learn patterns, solve problems, ace your interviews.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="mt-8 sm:mt-10 flex justify-center"
+              className="mt-6"
             >
               <SearchBar />
             </motion.div>
@@ -120,17 +113,26 @@ function TopicsContent() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="mt-10 sm:mt-12 lg:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-3xl mx-auto"
+              className="mt-6 flex flex-wrap items-center gap-3"
             >
-              {stats.map((stat, i) => (
-                <div key={i} className="flex flex-col items-center gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                  <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
-                  <span className="text-lg sm:text-2xl font-bold text-white">{stat.value}</span>
-                  <span className="text-[10px] sm:text-xs text-white/40">{stat.label}</span>
+              {stats.map((s, i) => (
+                <div key={i} className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl ${s.bg} border border-white/5`}>
+                  <s.icon className={`w-4 h-4 ${s.color}`} />
+                  <span className="text-sm font-bold text-white">{s.value}</span>
+                  <span className="text-xs text-white/40">{s.label}</span>
                 </div>
               ))}
             </motion.div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="flex-shrink-0 w-full max-w-md lg:max-w-lg"
+          >
+            <img src="/topics-hero.png" alt="DSA Topics" className="w-full h-auto drop-shadow-2xl" />
+          </motion.div>
         </div>
       </section>
 
