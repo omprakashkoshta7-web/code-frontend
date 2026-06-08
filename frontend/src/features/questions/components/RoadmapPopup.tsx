@@ -2,10 +2,21 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowLeft } from 'lucide-react';
 import ROADMAPS from '../data/roadmaps';
-import type { Roadmap } from '../data/roadmaps';
+import type { Roadmap, RoadmapStep } from '../data/roadmaps';
+
+const STEPS_PER_ROW = 5;
 
 export default function RoadmapPopup({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [selected, setSelected] = useState<Roadmap | null>(null);
+
+  const getRows = (): RoadmapStep[][] => {
+    if (!selected) return [];
+    const rows: RoadmapStep[][] = [];
+    for (let i = 0; i < selected.steps.length; i += STEPS_PER_ROW) {
+      rows.push(selected.steps.slice(i, i + STEPS_PER_ROW));
+    }
+    return rows;
+  };
 
   return (
     <AnimatePresence>
@@ -23,11 +34,11 @@ export default function RoadmapPopup({ open, onClose }: { open: boolean; onClose
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2 }}
-            className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto overflow-x-hidden sm:rounded-2xl rounded-none border border-white/10 shadow-2xl"
-            style={{ backgroundColor: '#0a0e1a', scrollbarWidth: 'thin' }}
+            className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto overflow-x-hidden sm:rounded-2xl rounded-none border border-white/10 shadow-2xl"
+            style={{ backgroundColor: '#0f172a', scrollbarWidth: 'thin' }}
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4 border-b border-white/10" style={{ backgroundColor: '#0a0e1a' }}>
+            <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4 border-b border-white/10" style={{ backgroundColor: '#0f172a' }}>
               <div className="flex items-center gap-3">
                 {selected ? (
                   <button onClick={() => setSelected(null)} className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all">
@@ -69,116 +80,93 @@ export default function RoadmapPopup({ open, onClose }: { open: boolean; onClose
                           <p className="text-[10px] text-white/40">{roadmap.steps.length} steps</p>
                         </div>
                       </div>
-                      <div className="flex gap-1 mt-2">
-                        {roadmap.steps.slice(0, 4).map((s, j) => (
-                          <div key={j} className="px-2 py-0.5 rounded text-[9px] text-white/40 border border-white/5">{s.title}</div>
-                        ))}
-                      </div>
+                      <p className="text-[10px] text-white/30 mt-1 line-clamp-2">{roadmap.subtitle}</p>
                     </motion.button>
                   ))}
                 </div>
               ) : (
-                /* Winding Road Layout */
-                <div className="relative ml-4 sm:ml-8 mr-4 sm:mr-8">
-                  {/* Vertical dashed road line */}
-                  <div
-                    className="absolute left-0 sm:left-6 top-0 bottom-0 w-0 border-l-[3px] border-dashed -translate-x-1/2 sm:translate-x-0"
-                    style={{ borderColor: selected.color }}
-                  />
-
-                  {/* Steps */}
-                  <div className="space-y-2">
-                    {selected.steps.map((step, i) => {
-                      const isLeft = step.side === 'left';
-                      return (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.06, duration: 0.3 }}
-                          className="relative flex items-start"
-                        >
-                          {/* Connector line from road to box */}
-                          <div
-                            className="absolute top-5 h-0.5 hidden sm:block"
-                            style={{
-                              left: '24px',
-                              width: '32px',
-                              backgroundColor: `${selected.color}40`,
-                            }}
-                          />
-
-                          {/* Milestone circle on road */}
-                          <div className="absolute top-3 left-0 sm:left-6 -translate-x-1/2 sm:translate-x-0 z-10">
-                            <div
-                              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-lg sm:text-xl border-2 shadow-lg"
-                              style={{
-                                backgroundColor: '#0a0e1a',
-                                borderColor: selected.color,
-                                boxShadow: `0 0 20px ${selected.color}30`,
-                              }}
-                            >
-                              {step.icon}
-                            </div>
-                          </div>
-
-                          {/* Category box */}
-                          <div className={`ml-14 sm:ml-24 w-full sm:w-[calc(100%-80px)] ${isLeft ? '' : ''}`}>
-                            <div
-                              className="rounded-xl border overflow-hidden bg-[#0f1429]"
-                              style={{ borderColor: `${selected.color}30` }}
-                            >
-                              {/* Box header */}
-                              <div
-                                className="px-4 py-2 flex items-center justify-between"
-                                style={{ backgroundColor: `${selected.color}15` }}
-                              >
-                                <span className="text-xs sm:text-sm font-bold text-white">{step.title}</span>
-                                <span className="text-[10px] text-white/30 font-mono">Step {i + 1}</span>
-                              </div>
-                              {/* Box items */}
-                              <div className="p-3 flex flex-wrap gap-1.5">
-                                {step.items.map((item, j) => (
-                                  <span
-                                    key={j}
-                                    className="px-2.5 py-1 rounded-md text-[10px] sm:text-[11px] font-medium border"
+                /* Horizontal Winding Road Layout */
+                <div className="space-y-0">
+                  {getRows().map((row, rowIndex) => {
+                    const isReversed = rowIndex % 2 === 1;
+                    const displayRow = isReversed ? [...row].reverse() : row;
+                    return (
+                      <div key={rowIndex} className="relative">
+                        {/* Horizontal road line for this row */}
+                        <div
+                          className="absolute top-[22px] left-0 right-0 h-[3px] rounded-full -z-0"
+                          style={{ backgroundColor: `${selected.color}15` }}
+                        />
+                        {/* Row container */}
+                        <div className={`flex items-start ${isReversed ? 'flex-row-reverse' : ''}`}>
+                          {displayRow.map((step, colIndex) => (
+                            <div key={step.num} className="flex-1 relative">
+                              {/* Connector arrows between steps */}
+                              {colIndex > 0 && (
+                                <div
+                                  className={`absolute top-[22px] ${isReversed ? 'right-full' : 'left-full'} w-full h-[3px] z-0`}
+                                  style={{ backgroundColor: `${selected.color}30` }}
+                                >
+                                  <div
+                                    className={`absolute top-1/2 -translate-y-1/2 ${isReversed ? 'right-0 translate-x-1/2' : 'left-0 -translate-x-1/2'} w-0 h-0`}
                                     style={{
-                                      backgroundColor: `${selected.color}08`,
-                                      borderColor: `${selected.color}20`,
-                                      color: `${selected.color}cc`,
+                                      borderTop: '5px solid transparent',
+                                      borderBottom: '5px solid transparent',
+                                      [isReversed ? 'borderRight' : 'borderLeft']: `8px solid ${selected.color}50`,
                                     }}
-                                  >
-                                    {item}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
+                                  />
+                                </div>
+                              )}
 
-                  {/* End milestone */}
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: selected.steps.length * 0.06 + 0.2, type: 'spring' }}
-                    className="relative flex justify-start mt-4"
-                  >
-                    <div className="ml-0 sm:ml-6 -translate-x-1/2 sm:translate-x-0">
-                      <div
-                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-xl sm:text-2xl border-2"
-                        style={{
-                          backgroundColor: `${selected.color}20`,
-                          borderColor: selected.color,
-                          boxShadow: `0 0 30px ${selected.color}40`,
-                        }}
-                      >
-                        🏆
+                              {/* Vertical connector to next row */}
+                              {colIndex === row.length - 1 && rowIndex < getRows().length - 1 && (
+                                <div
+                                  className={`absolute top-[22px] ${isReversed ? 'left-[22px]' : 'right-[22px]'} w-[3px] h-10 z-0`}
+                                  style={{ backgroundColor: `${selected.color}30` }}
+                                />
+                              )}
+
+                              {/* Step content */}
+                              <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: (rowIndex * STEPS_PER_ROW + colIndex) * 0.04, duration: 0.3 }}
+                                className="flex flex-col items-center text-center px-1"
+                              >
+                                {/* Icon box */}
+                                <div
+                                  className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-xl sm:text-2xl border-2 mb-2 shadow-lg relative z-10"
+                                  style={{
+                                    backgroundColor: `${selected.color}15`,
+                                    borderColor: `${selected.color}40`,
+                                    boxShadow: `0 0 15px ${selected.color}20`,
+                                  }}
+                                >
+                                  {step.icon}
+                                </div>
+
+                                {/* Number badge */}
+                                <div
+                                  className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white -mt-4 relative z-20 border-2"
+                                  style={{
+                                    backgroundColor: selected.color,
+                                    borderColor: '#0f172a',
+                                  }}
+                                >
+                                  {String(step.num).padStart(2, '0')}
+                                </div>
+
+                                {/* Title */}
+                                <h4 className="text-[11px] sm:text-xs font-bold text-white mt-1.5 leading-tight">{step.title}</h4>
+                                {/* Description */}
+                                <p className="text-[9px] sm:text-[10px] text-white/40 mt-0.5 leading-relaxed max-w-[120px] sm:max-w-[140px]">{step.description}</p>
+                              </motion.div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
+                    );
+                  })}
                 </div>
               )}
             </div>
