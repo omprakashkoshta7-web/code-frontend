@@ -3,8 +3,9 @@ import Editor from '@monaco-editor/react';
 import { userStorage } from '@/shared/utils/userStorage';
 import {
   Play, Send, Loader2, CheckCircle, XCircle, Clock, AlertTriangle,
-  ChevronDown, ChevronRight, Eye, BarChart3, Terminal, Bug
+  ChevronDown, ChevronRight, Eye, BarChart3, Terminal, Bug, CheckCircle2, ChevronUp,
 } from 'lucide-react';
+import ComplexityPopup from './ComplexityPopup';
 
 interface CodeEditorProps {
   slug: string;
@@ -57,6 +58,9 @@ interface ComplexityInfo {
   detected: string;
   reasoning: string;
   badge: 'optimal' | 'acceptable' | 'needs_optimization';
+  space_complexity?: string;
+  breakdown?: { label: string; complexity: string; lines: number[] }[];
+  optimizations?: string[];
 }
 
 interface VisualizeStep {
@@ -96,6 +100,7 @@ export default function CodeEditor({ slug, template }: CodeEditorProps) {
   const [customResult, setCustomResult] = useState<{ output: string; error: string; runtime: number } | null>(null);
   const [customRunning, setCustomRunning] = useState(false);
   const [complexity, setComplexity] = useState<ComplexityInfo | null>(null);
+  const [showComplexityPopup, setShowComplexityPopup] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [visualizing, setVisualizing] = useState(false);
   const [visualizeSteps, setVisualizeSteps] = useState<VisualizeStep[]>([]);
@@ -207,7 +212,7 @@ export default function CodeEditor({ slug, template }: CodeEditorProps) {
   const handleAnalyze = async () => {
     setAnalyzing(true);
     setComplexity(null);
-    setActiveTab('complexity');
+    setShowComplexityPopup(true);
     if (isCodeEmpty(code)) {
       setComplexity({ detected: 'N/A', reasoning: 'Write your solution code first, then analyze.', badge: 'acceptable' });
       setAnalyzing(false);
@@ -701,6 +706,12 @@ export default function CodeEditor({ slug, template }: CodeEditorProps) {
           )}
         </div>
       </div>
+      <ComplexityPopup
+        show={showComplexityPopup}
+        onClose={() => setShowComplexityPopup(false)}
+        complexity={complexity}
+        analyzing={analyzing}
+      />
     </div>
   );
 }

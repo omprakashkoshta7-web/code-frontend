@@ -155,7 +155,11 @@ router.post('/analyze', async (req: Request, res: Response) => {
   }
 
   if (isCodeEmpty(code)) {
-    return res.json({ detected: 'N/A', reasoning: 'Write your solution code first, then analyze.', badge: 'acceptable' });
+    return res.json({
+      detected: 'N/A', reasoning: 'Write your solution code first, then analyze.',
+      badge: 'acceptable', space_complexity: 'N/A',
+      breakdown: [], optimizations: ['Write your solution code to analyze complexity'],
+    });
   }
 
   const complexity = await aiAnalyzeComplexity(code, language || 'javascript');

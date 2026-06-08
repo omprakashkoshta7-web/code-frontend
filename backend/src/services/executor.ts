@@ -34,6 +34,9 @@ export interface ComplexityResult {
   detected: string;
   reasoning: string;
   badge: 'optimal' | 'acceptable' | 'needs_optimization';
+  space_complexity?: string;
+  breakdown?: { label: string; complexity: string; lines: number[] }[];
+  optimizations?: string[];
 }
 
 function wrapCode(code: string, language: string, args: any[]): string {
@@ -254,30 +257,55 @@ export function analyzeComplexity(code: string): ComplexityResult {
   let detected = 'O(1)';
   let reasoning = '';
   let badge: ComplexityResult['badge'] = 'optimal';
+  let space = 'O(1)';
+  let breakdown: { label: string; complexity: string; lines: number[] }[] = [];
+  let optimizations: string[] = [];
 
   if (hasRecursion) {
     detected = 'O(2^n)';
-    reasoning = 'Recursive calls without memoization';
+    reasoning = 'Recursive calls without memoization causes exponential time. Consider using memoization or DP.';
     badge = 'needs_optimization';
+    space = 'O(n)';
+    breakdown.push({ label: 'Recursion', complexity: 'O(2^n)', lines: [] });
+    optimizations.push('Add memoization (caching) to avoid redundant recursive calls');
+    optimizations.push('Use iterative DP approach (tabulation) to reduce space');
   } else if (maxDepth >= 2) {
     detected = 'O(n²)';
-    reasoning = 'Nested loops detected';
+    reasoning = 'Nested loops detected — each nested level multiplies the complexity.';
     badge = 'needs_optimization';
+    space = 'O(1)';
+    breakdown.push({ label: 'Nested Loops', complexity: 'O(n²)', lines: [] });
+    optimizations.push('Use a HashMap/Dictionary to replace the inner loop with O(1) lookups');
+    optimizations.push('Consider sorting first then using two-pointer technique');
   } else if (hasSort) {
     detected = 'O(n log n)';
-    reasoning = 'Sorting operation dominates';
+    reasoning = 'Sorting operation dominates the time complexity.';
     badge = 'acceptable';
+    space = hasMap || hasSet ? 'O(n)' : 'O(1)';
+    breakdown.push({ label: 'Sorting', complexity: 'O(n log n)', lines: [] });
+    if (hasMap) optimizations.push('Ensure sorting is necessary — sometimes a frequency map avoids sorting entirely');
   } else if (maxDepth >= 1) {
     detected = hasMap || hasSet ? 'O(n)' : 'O(n)';
-    reasoning = hasMap || hasSet ? 'Single pass with HashMap/Set' : 'Single loop iteration';
+    reasoning = 'Single pass through the input — linear time.';
     badge = 'optimal';
+    space = hasMap || hasSet ? 'O(n)' : 'O(1)';
+    breakdown.push({ label: hasMap || hasSet ? 'Linear Scan + Hash Map' : 'Linear Scan', complexity: 'O(n)', lines: [] });
+    optimizations.push('Code is already optimal — O(n) is the best achievable for this type of problem');
   } else {
     detected = 'O(1)';
-    reasoning = 'No loops detected';
+    reasoning = 'No loops or recursion — constant time operation.';
     badge = 'optimal';
+    space = 'O(1)';
+    breakdown.push({ label: 'Direct Operation', complexity: 'O(1)', lines: [] });
+    optimizations.push('Code is already optimal — O(1) time and space');
   }
 
-  return { detected, reasoning, badge };
+  return {
+    detected, reasoning, badge,
+    space_complexity: space,
+    breakdown,
+    optimizations,
+  };
 }
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
@@ -305,18 +333,19 @@ export async function aiAnalyzeComplexity(code: string, language: string): Promi
             content: `You are a DSA complexity analyzer. Analyze the given ${language} code and return ONLY valid JSON with NO markdown, NO code fences, NO extra text.
 
 Return exactly:
-{"detected":"<time complexity>","reasoning":"<1-2 sentence explanation mentioning data structures and loops>","badge":"<optimal|acceptable|needs_optimization>"}
+{"detected":"<time complexity>","reasoning":"<1-2 sentence explanation>","badge":"<optimal|acceptable|needs_optimization>","space_complexity":"<O(...)>","breakdown":[{"label":"<e.g. Nested Loop>","complexity":"<e.g. O(n²)>","lines":[<line numbers>]}],"optimizations":["<tip 1>","<tip 2>"]}
 
 Rules:
 - If code has no loops/recursion → O(1), optimal
 - Single loop → O(n), optimal
 - Two nested loops → O(n²), needs_optimization
 - Sorting + loop → O(n log n), acceptable
-- Recursion without memo → O(2^n) or O(n!) based on branching, needs_optimization
-- Hash/Set inside a loop → mention "on average O(n)"
+- Recursion without memo → O(2^n) or O(n!), needs_optimization
+- Hash/Set inside a loop → "on average O(n)"
 - Binary search / divide and conquer → O(log n), optimal
-- If multiple complexities, pick the dominant one
-- badge mapping: O(1)/O(log n)/O(n) → optimal, O(n log n) → acceptable, O(n²)/O(2^n)/O(n!) → needs_optimization`,
+- badge mapping: O(1)/O(log n)/O(n) → optimal, O(n log n) → acceptable, O(n²)/O(2^n)/O(n!) → needs_optimization
+- breakdown: list each loop/recursion/sort with its line numbers and individual complexity
+- optimizations: 2-3 specific ways to optimize this code (e.g., "Use a hash map to avoid O(n²) lookup", "Add memoization to avoid recomputation")`,
           },
           { role: 'user', content: `Code:\n\`\`\`${language}\n${code}\n\`\`\`` },
         ],
@@ -333,7 +362,7 @@ Rules:
     const data: any = await response.json();
     const content = data.choices?.[0]?.message?.content || '';
 
-    const jsonMatch = content.match(/\{[\s\S]*"detected"[\s\S]*"badge"[\s\S]*\}/);
+    const jsonMatch = content.match(/\{[\s\S]*"detected"[\s\S]*\}/);
     if (!jsonMatch) {
       console.error('[AI] Could not parse response:', content);
       return analyzeComplexity(code);
