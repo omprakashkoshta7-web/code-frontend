@@ -90,7 +90,7 @@ function QuestionsContent() {
 
       {/* Hero Section */}
       <section className="relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-10 sm:pb-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-10 sm:pb-14">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             {/* Left Content */}
             <div>
@@ -108,7 +108,7 @@ function QuestionsContent() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight"
+                className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-tight"
               >
                 <span className="text-white">Best Choice of </span>
                 <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-violet-400 bg-clip-text text-transparent">Questions</span>
@@ -148,7 +148,7 @@ function QuestionsContent() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="mt-10 grid grid-cols-4 gap-3"
+                className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3"
               >
                 {[
                   { label: 'Questions', value: `${(stats.total / 1000).toFixed(1)}K+`, icon: BookOpen, color: 'text-purple-400' },

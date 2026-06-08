@@ -135,7 +135,7 @@ function PatternsContent() {
       <div className="fixed bottom-40 left-10 w-16 h-16 border border-teal-500/15 rounded-xl -rotate-6 opacity-30 hidden lg:block" />
 
       <section className="relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-8 sm:pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-8 sm:pb-12">
           <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
             <div className="flex-1 w-full">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
@@ -148,7 +148,7 @@ function PatternsContent() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="mt-5 text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight"
+                className="mt-5 text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-tight"
               >
                 <span className="text-white">Master </span>
                 <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">Patterns</span>

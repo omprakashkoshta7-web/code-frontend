@@ -170,14 +170,14 @@ export default function ShopPage() {
                 <Sparkles className="w-3.5 h-3.5 text-purple-400" />
                 <span className="text-xs font-semibold text-purple-400">Premium Resources</span>
               </div>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-4 tracking-tight">Shop</h1>
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-extrabold text-white mb-4 tracking-tight">Shop</h1>
               <p className="text-xl sm:text-2xl font-semibold text-white mb-3">Premium resources to ace your interviews</p>
               <p className="text-slate-400 text-sm leading-relaxed max-w-md mb-6">Curated interview materials, company insights, notes and more to help you land your dream job.</p>
               <a href="#resources" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold text-sm transition shadow-lg shadow-purple-500/25">
                 Explore Resources <ArrowRight className="w-4 h-4" />
               </a>
             </div>
-            <div className="flex-shrink-0 w-[28rem] h-[28rem] lg:w-[36rem] lg:h-[36rem]">
+            <div className="flex-shrink-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-[36rem] lg:h-[36rem]">
               <img src="/shop-cart.png" alt="Shop Resources" className="w-full h-full object-contain drop-shadow-2xl" />
             </div>
           </div>

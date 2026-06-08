@@ -85,7 +85,7 @@ function TopicsContent() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight"
+              className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-tight"
             >
               <span className="text-white">Learn </span>
               <span className="bg-gradient-to-r from-purple-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent">Every Topic</span>
