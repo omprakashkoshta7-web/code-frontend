@@ -1,660 +1,150 @@
-export interface RoadmapSubtopic {
-  label: string;
-  resource?: string;
-}
-
-export interface RoadmapBranch {
+export interface RoadmapStep {
   title: string;
-  color: string;
-  items: RoadmapSubtopic[];
+  icon: string;
+  items: string[];
+  side: 'left' | 'right';
 }
 
 export interface Roadmap {
   id: string;
   title: string;
-  icon: string;
-  centerColor: string;
-  branches: RoadmapBranch[];
+  color: string;
+  accentColor: string;
+  steps: RoadmapStep[];
 }
 
 const ROADMAPS: Roadmap[] = [
   {
-    id: 'java',
-    title: 'Java Developer',
-    icon: '☕',
-    centerColor: 'from-red-500 to-orange-500',
-    branches: [
-      {
-        title: 'Learn the Fundamentals',
-        color: 'from-blue-500 to-cyan-500',
-        items: [
-          { label: 'Basic Syntax' },
-          { label: 'Data Types, Variables' },
-          { label: 'Loops' },
-          { label: 'Exception Handling' },
-          { label: 'Conditionals' },
-          { label: 'Functions' },
-          { label: 'Data Structures' },
-          { label: 'OOP, Interfaces, Classes' },
-          { label: 'Packages' },
-          { label: 'Working with Files, APIs' },
-        ],
-      },
-      {
-        title: 'Getting Deeper',
-        color: 'from-pink-500 to-rose-500',
-        items: [
-          { label: 'Memory Management' },
-          { label: 'Collection Framework' },
-          { label: 'Serialization' },
-          { label: 'Networking & Sockets' },
-          { label: 'JVM Internal Working' },
-          { label: 'Garbage Collection' },
-          { label: 'Thread Basics' },
-          { label: 'Generics' },
-          { label: 'Streams' },
-          { label: 'Lambda' },
-        ],
-      },
-      {
-        title: 'Build Tools',
-        color: 'from-green-500 to-emerald-500',
-        items: [
-          { label: 'Gradle' },
-          { label: 'Maven' },
-          { label: 'Ant' },
-        ],
-      },
-      {
-        title: 'Web Frameworks',
-        color: 'from-red-400 to-orange-400',
-        items: [
-          { label: 'Spring' },
-          { label: 'Spring Boot' },
-          { label: 'Play Framework' },
-          { label: 'Struts' },
-        ],
-      },
-      {
-        title: 'JDBC',
-        color: 'from-violet-500 to-purple-500',
-        items: [
-          { label: 'JDBC' },
-          { label: 'JDBC Template' },
-        ],
-      },
-      {
-        title: 'ORM',
-        color: 'from-yellow-500 to-amber-500',
-        items: [
-          { label: 'Spring Data JPA' },
-          { label: 'JPA' },
-          { label: 'EBean' },
-          { label: 'Hibernate' },
-        ],
-      },
-      {
-        title: 'Testing your APIs',
-        color: 'from-purple-500 to-violet-500',
-        items: [
-          { label: 'Cucumber-JVM' },
-          { label: 'Cukes' },
-          { label: 'JBehave' },
-          { label: 'Mockito' },
-          { label: 'JMeter' },
-          { label: 'Rest Assured' },
-          { label: 'TestNG' },
-          { label: 'JUnit' },
-        ],
-      },
-      {
-        title: 'Logging Frameworks',
-        color: 'from-amber-400 to-yellow-400',
-        items: [
-          { label: 'Log4j2' },
-          { label: 'SLF4J' },
-          { label: 'Logback' },
-          { label: 'TinyLOG' },
-        ],
-      },
+    id: 'python',
+    title: 'Python Roadmap',
+    color: '#2563eb',
+    accentColor: '#3b82f6',
+    steps: [
+      { title: 'Basics', icon: '📘', side: 'left', items: ['Basic Syntax', 'Variables', 'Data Types', 'Conditionals', 'Loops', 'Exceptions', 'Lists, Tuples, Sets, Dicts', 'Strings'] },
+      { title: 'Data Science', icon: '📊', side: 'right', items: ['NumPy', 'Pandas', 'Matplotlib', 'Seaborn', 'Scikit-learn', 'TensorFlow', 'PyTorch'] },
+      { title: 'Web Frameworks', icon: '🌐', side: 'left', items: ['Django', 'Flask', 'FastAPI'] },
+      { title: 'Package Managers', icon: '📦', side: 'right', items: ['pip', 'poetry', 'conda'] },
+      { title: 'OOP', icon: '🎯', side: 'left', items: ['Classes', 'Inheritance', 'Methods'] },
+      { title: 'Testing', icon: '🧪', side: 'right', items: ['Unit Testing', 'Integration Testing', 'End-to-end Testing', 'Load Testing'] },
+      { title: 'Automation', icon: '⚙️', side: 'left', items: ['File Manipulations', 'Web Scraping', 'GUI Automations', 'Network Automation'] },
+      { title: 'DSA', icon: '🧩', side: 'right', items: ['Arrays & Linked Lists', 'Heaps, Stacks, Queue', 'Hash Tables', 'Binary Search Trees', 'Recursion', 'Sorting Algorithms'] },
+      { title: 'Advanced', icon: '🚀', side: 'left', items: ['List comprehensions', 'Generators', 'Expressions', 'Statements', 'Regex', 'Decorators', 'Context managers', 'Lambdas', 'Functional Programming', 'map, reduce, filters', 'The Walrus Operator', 'Magic Methods'] },
     ],
   },
   {
-    id: 'python',
-    title: 'Python Developer',
-    icon: '🐍',
-    centerColor: 'from-blue-500 to-cyan-500',
-    branches: [
-      {
-        title: 'Core Python',
-        color: 'from-blue-400 to-cyan-400',
-        items: [
-          { label: 'Variables & Data Types' },
-          { label: 'Loops & Conditionals' },
-          { label: 'Functions & Decorators' },
-          { label: 'List Comprehensions' },
-          { label: 'Generators & Iterators' },
-          { label: 'File I/O' },
-        ],
-      },
-      {
-        title: 'OOP & Modules',
-        color: 'from-emerald-500 to-teal-500',
-        items: [
-          { label: 'Classes & Objects' },
-          { label: 'Inheritance' },
-          { label: 'Polymorphism' },
-          { label: 'Modules & Packages' },
-          { label: 'Virtual Environments' },
-        ],
-      },
-      {
-        title: 'Data Structures',
-        color: 'from-violet-500 to-purple-500',
-        items: [
-          { label: 'Lists' },
-          { label: 'Dicts' },
-          { label: 'Sets' },
-          { label: 'Tuples' },
-          { label: 'Stacks & Queues' },
-          { label: 'Trees & Graphs' },
-        ],
-      },
-      {
-        title: 'Web Frameworks',
-        color: 'from-green-500 to-emerald-500',
-        items: [
-          { label: 'Flask' },
-          { label: 'FastAPI' },
-          { label: 'Django' },
-        ],
-      },
-      {
-        title: 'Databases',
-        color: 'from-amber-500 to-orange-500',
-        items: [
-          { label: 'SQLite' },
-          { label: 'PostgreSQL' },
-          { label: 'SQLAlchemy' },
-          { label: 'Alembic' },
-        ],
-      },
-      {
-        title: 'Testing & Tools',
-        color: 'from-purple-500 to-pink-500',
-        items: [
-          { label: 'pytest' },
-          { label: 'unittest' },
-          { label: 'Mocking' },
-          { label: 'Logging' },
-        ],
-      },
-      {
-        title: 'Data Science / ML',
-        color: 'from-rose-500 to-pink-500',
-        items: [
-          { label: 'NumPy' },
-          { label: 'Pandas' },
-          { label: 'Matplotlib' },
-          { label: 'Scikit-learn' },
-          { label: 'TensorFlow' },
-        ],
-      },
+    id: 'java',
+    title: 'Java Roadmap',
+    color: '#dc2626',
+    accentColor: '#ef4444',
+    steps: [
+      { title: 'Core Java', icon: '☕', side: 'left', items: ['Basic Syntax', 'Data Types', 'Loops & Conditionals', 'Arrays & Strings', 'OOP Concepts', 'Exception Handling'] },
+      { title: 'Collections', icon: '📚', side: 'right', items: ['ArrayList', 'HashMap', 'HashSet', 'LinkedList', 'TreeMap', 'PriorityQueue'] },
+      { title: 'Multithreading', icon: '🧵', side: 'left', items: ['Thread Basics', 'Synchronization', 'Executor Framework', 'Concurrent Collections', 'CompletableFuture'] },
+      { title: 'JDBC & Database', icon: '🗄️', side: 'right', items: ['JDBC', 'Connection Pooling', 'JPA', 'Hibernate', 'Spring Data'] },
+      { title: 'Spring Framework', icon: '🌱', side: 'left', items: ['Spring Core', 'Spring Boot', 'Spring MVC', 'Spring Security', 'REST APIs'] },
+      { title: 'Build Tools', icon: '🔨', side: 'right', items: ['Maven', 'Gradle', 'Ant'] },
+      { title: 'Testing', icon: '🧪', side: 'left', items: ['JUnit', 'Mockito', 'TestNG', 'Cucumber', 'Integration Tests'] },
+      { title: 'Advanced', icon: '🚀', side: 'right', items: ['Design Patterns', 'SOLID Principles', 'Memory Management', 'JVM Internals', 'Streams & Lambdas', 'Generic Types'] },
     ],
   },
   {
     id: 'javascript',
-    title: 'JavaScript / Frontend',
-    icon: '⚡',
-    centerColor: 'from-yellow-400 to-orange-500',
-    branches: [
-      {
-        title: 'Core JavaScript',
-        color: 'from-yellow-400 to-orange-400',
-        items: [
-          { label: 'Variables & Scopes' },
-          { label: 'Closures' },
-          { label: 'Promises & Async/Await' },
-          { label: 'ES6+ Features' },
-          { label: 'Event Loop' },
-          { label: 'DOM Manipulation' },
-        ],
-      },
-      {
-        title: 'Frameworks',
-        color: 'from-cyan-500 to-blue-500',
-        items: [
-          { label: 'React' },
-          { label: 'Next.js' },
-          { label: 'Vue.js' },
-          { label: 'Angular' },
-          { label: 'Svelte' },
-        ],
-      },
-      {
-        title: 'Build Tools',
-        color: 'from-violet-500 to-purple-500',
-        items: [
-          { label: 'Vite' },
-          { label: 'Webpack' },
-          { label: 'Babel' },
-          { label: 'ESBuild' },
-        ],
-      },
-      {
-        title: 'Styling',
-        color: 'from-pink-500 to-rose-500',
-        items: [
-          { label: 'Tailwind CSS' },
-          { label: 'CSS Modules' },
-          { label: 'Styled Components' },
-          { label: 'Framer Motion' },
-        ],
-      },
-      {
-        title: 'State Management',
-        color: 'from-emerald-500 to-teal-500',
-        items: [
-          { label: 'Redux Toolkit' },
-          { label: 'Zustand' },
-          { label: 'Context API' },
-          { label: 'TanStack Query' },
-        ],
-      },
-      {
-        title: 'TypeScript',
-        color: 'from-blue-500 to-indigo-500',
-        items: [
-          { label: 'Types & Interfaces' },
-          { label: 'Generics' },
-          { label: 'Utility Types' },
-          { label: 'Type Narrowing' },
-        ],
-      },
-      {
-        title: 'Testing',
-        color: 'from-green-500 to-emerald-500',
-        items: [
-          { label: 'Jest' },
-          { label: 'Vitest' },
-          { label: 'React Testing Library' },
-          { label: 'Playwright' },
-        ],
-      },
+    title: 'JavaScript Roadmap',
+    color: '#eab308',
+    accentColor: '#facc15',
+    steps: [
+      { title: 'Basics', icon: '📘', side: 'left', items: ['Variables & Scopes', 'Functions', 'Arrays & Objects', 'DOM Manipulation', 'Event Handling', 'ES6+ Features'] },
+      { title: 'Async JS', icon: '⚡', side: 'right', items: ['Callbacks', 'Promises', 'Async/Await', 'Fetch API', 'Event Loop'] },
+      { title: 'TypeScript', icon: '🔷', side: 'left', items: ['Types & Interfaces', 'Generics', 'Utility Types', 'Type Narrowing', 'Declaration Files'] },
+      { title: 'React / Vue / Angular', icon: '⚛️', side: 'right', items: ['Components & Props', 'State Management', 'Hooks / Composition API', 'Routing', 'Forms & Validation'] },
+      { title: 'Build Tools', icon: '📦', side: 'left', items: ['Vite', 'Webpack', 'Babel', 'ESLint', 'Prettier'] },
+      { title: 'Styling', icon: '🎨', side: 'right', items: ['Tailwind CSS', 'CSS Modules', 'Styled Components', 'SASS'] },
+      { title: 'Testing', icon: '🧪', side: 'left', items: ['Jest', 'Vitest', 'React Testing Library', 'Cypress', 'Playwright'] },
+      { title: 'Backend (Node.js)', icon: '🖥️', side: 'right', items: ['Express', 'Fastify', 'NestJS', 'REST APIs', 'GraphQL', 'WebSockets'] },
+      { title: 'Advanced', icon: '🚀', side: 'left', items: ['Closures & Prototypes', 'Design Patterns', 'Performance Optimization', 'Security Best Practices', 'SSR & SSG'] },
     ],
   },
   {
     id: 'dsa',
-    title: 'DSA & Competitive',
-    icon: '🧠',
-    centerColor: 'from-purple-500 to-violet-600',
-    branches: [
-      {
-        title: 'Linear Structures',
-        color: 'from-blue-400 to-cyan-400',
-        items: [
-          { label: 'Arrays' },
-          { label: 'Strings' },
-          { label: 'Linked Lists' },
-          { label: 'Stacks' },
-          { label: 'Queues' },
-          { label: 'HashMap' },
-        ],
-      },
-      {
-        title: 'Trees & Graphs',
-        color: 'from-emerald-500 to-teal-500',
-        items: [
-          { label: 'Binary Trees' },
-          { label: 'BST' },
-          { label: 'Trie' },
-          { label: 'DFS & BFS' },
-          { label: 'Shortest Path' },
-          { label: 'Topological Sort' },
-        ],
-      },
-      {
-        title: 'Algorithms',
-        color: 'from-pink-500 to-rose-500',
-        items: [
-          { label: 'Binary Search' },
-          { label: 'Two Pointers' },
-          { label: 'Sliding Window' },
-          { label: 'Recursion' },
-        ],
-      },
-      {
-        title: 'Dynamic Programming',
-        color: 'from-violet-500 to-purple-500',
-        items: [
-          { label: 'Memoization' },
-          { label: 'Tabulation' },
-          { label: 'Knapsack' },
-          { label: 'LCS' },
-          { label: 'DP on Trees' },
-        ],
-      },
-      {
-        title: 'Advanced',
-        color: 'from-amber-500 to-orange-500',
-        items: [
-          { label: 'Union-Find' },
-          { label: 'Segment Tree' },
-          { label: 'BIT' },
-          { label: 'Kruskal / Prim' },
-        ],
-      },
-      {
-        title: 'Greedy & Backtrack',
-        color: 'from-rose-500 to-pink-500',
-        items: [
-          { label: 'Interval Scheduling' },
-          { label: 'N-Queens' },
-          { label: 'Sudoku Solver' },
-          { label: 'Permutations' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'system-design',
-    title: 'System Design',
-    icon: '🏗️',
-    centerColor: 'from-emerald-500 to-teal-500',
-    branches: [
-      {
-        title: 'Fundamentals',
-        color: 'from-blue-400 to-cyan-400',
-        items: [
-          { label: 'Client-Server Model' },
-          { label: 'HTTP & REST APIs' },
-          { label: 'Load Balancing' },
-          { label: 'Caching' },
-          { label: 'CDN' },
-        ],
-      },
-      {
-        title: 'Databases',
-        color: 'from-amber-500 to-orange-500',
-        items: [
-          { label: 'SQL vs NoSQL' },
-          { label: 'Indexing' },
-          { label: 'Sharding' },
-          { label: 'Replication' },
-          { label: 'CAP Theorem' },
-        ],
-      },
-      {
-        title: 'Distributed Systems',
-        color: 'from-violet-500 to-purple-500',
-        items: [
-          { label: 'Consistency Models' },
-          { label: 'Consensus (Raft/Paxos)' },
-          { label: 'RPC' },
-          { label: 'Eventual Consistency' },
-        ],
-      },
-      {
-        title: 'Messaging & Streaming',
-        color: 'from-pink-500 to-rose-500',
-        items: [
-          { label: 'Kafka' },
-          { label: 'RabbitMQ' },
-          { label: 'Pub/Sub' },
-          { label: 'Event-Driven' },
-        ],
-      },
-      {
-        title: 'Design Problems',
-        color: 'from-green-500 to-emerald-500',
-        items: [
-          { label: 'URL Shortener' },
-          { label: 'WhatsApp' },
-          { label: 'Netflix' },
-          { label: 'Uber' },
-          { label: 'Twitter' },
-        ],
-      },
-      {
-        title: 'Observability',
-        color: 'from-cyan-500 to-blue-500',
-        items: [
-          { label: 'Metrics' },
-          { label: 'Tracing' },
-          { label: 'Logging' },
-          { label: 'Alerting' },
-        ],
-      },
+    title: 'DSA Roadmap',
+    color: '#8b5cf6',
+    accentColor: '#a78bfa',
+    steps: [
+      { title: 'Arrays & Strings', icon: '📋', side: 'left', items: ['Two Pointers', 'Sliding Window', 'Prefix Sum', 'Kadane\'s Algorithm', 'Prefix HashMap'] },
+      { title: 'Linked Lists', icon: '🔗', side: 'right', items: ['Singly Linked List', 'Doubly Linked List', 'Fast & Slow Pointers', 'Reversal', 'Merge Lists'] },
+      { title: 'Stacks & Queues', icon: '📚', side: 'left', items: ['Monotonic Stack', 'Min Stack', 'Queue Using Stacks', 'Sliding Window Maximum'] },
+      { title: 'HashMap & Sets', icon: '🗂️', side: 'right', items: ['HashMap Basics', 'Frequency Counting', 'Two Sum Pattern', 'Group Anagrams', 'Cache Implementation'] },
+      { title: 'Trees', icon: '🌲', side: 'left', items: ['Binary Tree Traversal', 'BST Operations', 'Lowest Common Ancestor', 'Tree Diameter', 'Serialize/Deserialize'] },
+      { title: 'Graphs', icon: '🕸️', side: 'right', items: ['DFS & BFS', 'Topological Sort', 'Shortest Path (Dijkstra)', 'Union-Find', 'Minimum Spanning Tree'] },
+      { title: 'Dynamic Programming', icon: '🧩', side: 'left', items: ['Memoization vs Tabulation', 'Knapsack Variants', 'LCS & LIS', 'DP on Trees', 'State Machine DP'] },
+      { title: 'Greedy & Backtracking', icon: '🔄', side: 'right', items: ['Interval Scheduling', 'N-Queens', 'Sudoku Solver', 'Permutations & Combinations', 'Word Search'] },
+      { title: 'Advanced', icon: '🚀', side: 'left', items: ['Segment Tree', 'Binary Indexed Tree', 'Trie', 'Suffix Array', 'Minimax Algorithm'] },
     ],
   },
   {
     id: 'react',
-    title: 'React Developer',
-    icon: '⚛️',
-    centerColor: 'from-cyan-500 to-blue-500',
-    branches: [
-      {
-        title: 'Core React',
-        color: 'from-cyan-400 to-blue-400',
-        items: [
-          { label: 'JSX' },
-          { label: 'Components' },
-          { label: 'Props & State' },
-          { label: 'Event Handling' },
-          { label: 'Conditional Rendering' },
-          { label: 'Lists & Keys' },
-        ],
-      },
-      {
-        title: 'Hooks',
-        color: 'from-violet-500 to-purple-500',
-        items: [
-          { label: 'useState' },
-          { label: 'useEffect' },
-          { label: 'useRef' },
-          { label: 'useMemo' },
-          { label: 'useCallback' },
-          { label: 'Custom Hooks' },
-        ],
-      },
-      {
-        title: 'State Management',
-        color: 'from-emerald-500 to-teal-500',
-        items: [
-          { label: 'Context API' },
-          { label: 'Zustand' },
-          { label: 'Redux Toolkit' },
-          { label: 'TanStack Query' },
-        ],
-      },
-      {
-        title: 'Routing',
-        color: 'from-amber-500 to-orange-500',
-        items: [
-          { label: 'React Router' },
-          { label: 'Nested Routes' },
-          { label: 'Protected Routes' },
-          { label: 'Lazy Loading' },
-        ],
-      },
-      {
-        title: 'Full Stack (Next.js)',
-        color: 'from-pink-500 to-rose-500',
-        items: [
-          { label: 'SSR / SSG' },
-          { label: 'App Router' },
-          { label: 'API Routes' },
-          { label: 'Middleware' },
-          { label: 'Server Components' },
-        ],
-      },
-      {
-        title: 'Styling & UI',
-        color: 'from-green-500 to-emerald-500',
-        items: [
-          { label: 'Tailwind CSS' },
-          { label: 'shadcn/ui' },
-          { label: 'Framer Motion' },
-          { label: 'Radix UI' },
-        ],
-      },
-      {
-        title: 'Testing',
-        color: 'from-purple-500 to-pink-500',
-        items: [
-          { label: 'Jest' },
-          { label: 'React Testing Library' },
-          { label: 'Cypress / Playwright' },
-        ],
-      },
+    title: 'React Roadmap',
+    color: '#06b6d4',
+    accentColor: '#22d3ee',
+    steps: [
+      { title: 'Fundamentals', icon: '⚛️', side: 'left', items: ['JSX', 'Components & Props', 'State (useState)', 'Event Handling', 'Conditional Rendering', 'Lists & Keys'] },
+      { title: 'Hooks Deep Dive', icon: '🪝', side: 'right', items: ['useEffect', 'useRef', 'useMemo', 'useCallback', 'useReducer', 'Custom Hooks'] },
+      { title: 'State Management', icon: '🗂️', side: 'left', items: ['Context API', 'Zustand', 'Redux Toolkit', 'TanStack Query'] },
+      { title: 'Routing', icon: '🗺️', side: 'right', items: ['React Router', 'Nested Routes', 'Protected Routes', 'Lazy Loading Routes'] },
+      { title: 'Styling', icon: '🎨', side: 'left', items: ['Tailwind CSS', 'shadcn/ui', 'Framer Motion', 'CSS Modules'] },
+      { title: 'Forms & Data', icon: '📝', side: 'right', items: ['Controlled Forms', 'React Hook Form', 'Zod Validation', 'File Uploads'] },
+      { title: 'Next.js (Full Stack)', icon: '▲', side: 'left', items: ['App Router', 'Server Components', 'API Routes', 'Middleware', 'SSR & SSG'] },
+      { title: 'Testing', icon: '🧪', side: 'right', items: ['Jest', 'React Testing Library', 'Cypress', 'Playwright'] },
+      { title: 'Advanced', icon: '🚀', side: 'left', items: ['Code Splitting', 'Virtual Lists', 'Portals', 'Error Boundaries', 'Performance Optimization'] },
+    ],
+  },
+  {
+    id: 'system-design',
+    title: 'System Design Roadmap',
+    color: '#10b981',
+    accentColor: '#34d399',
+    steps: [
+      { title: 'Basics', icon: '📐', side: 'left', items: ['Client-Server Model', 'HTTP & REST', 'DNS', 'Load Balancing', 'Caching (Redis)'] },
+      { title: 'Databases', icon: '🗄️', side: 'right', items: ['SQL vs NoSQL', 'Indexing & Sharding', 'Replication', 'CAP Theorem', 'ACID vs BASE'] },
+      { title: 'Caching Strategies', icon: '⚡', side: 'left', items: ['Cache-Aside', 'Write-Through', 'Read-Through', 'Write-Behind', 'CDN Caching'] },
+      { title: 'Message Queues', icon: '📨', side: 'right', items: ['Kafka', 'RabbitMQ', 'Pub/Sub Pattern', 'Event-Driven Architecture', 'CQRS'] },
+      { title: 'Microservices', icon: '🧩', side: 'left', items: ['Service Decomposition', 'API Gateway', 'Service Mesh', 'Circuit Breaker', 'Saga Pattern'] },
+      { title: 'Distributed Systems', icon: '🌐', side: 'right', items: ['Consensus (Raft)', 'Distributed Transactions', 'Eventual Consistency', 'Leader Election'] },
+      { title: 'System Problems', icon: '🏗️', side: 'left', items: ['URL Shortener', 'Chat System (WhatsApp)', 'Feed System (Twitter)', 'Video Streaming (Netflix)', 'Ride Sharing (Uber)'] },
+      { title: 'Observability', icon: '📡', side: 'right', items: ['Metrics (Prometheus)', 'Logging (ELK)', 'Tracing (Jaeger)', 'Alerting (PagerDuty)'] },
     ],
   },
   {
     id: 'ml-ai',
-    title: 'Machine Learning & AI',
-    icon: '🤖',
-    centerColor: 'from-pink-500 to-rose-500',
-    branches: [
-      {
-        title: 'Math Foundations',
-        color: 'from-blue-400 to-cyan-400',
-        items: [
-          { label: 'Linear Algebra' },
-          { label: 'Calculus' },
-          { label: 'Probability' },
-          { label: 'Statistics' },
-        ],
-      },
-      {
-        title: 'Python for Data',
-        color: 'from-yellow-400 to-orange-400',
-        items: [
-          { label: 'NumPy' },
-          { label: 'Pandas' },
-          { label: 'Matplotlib' },
-          { label: 'Seaborn' },
-        ],
-      },
-      {
-        title: 'Machine Learning',
-        color: 'from-emerald-500 to-teal-500',
-        items: [
-          { label: 'Regression' },
-          { label: 'Classification' },
-          { label: 'Clustering' },
-          { label: 'Ensemble Methods' },
-        ],
-      },
-      {
-        title: 'Deep Learning',
-        color: 'from-violet-500 to-purple-500',
-        items: [
-          { label: 'Neural Networks' },
-          { label: 'CNNs' },
-          { label: 'RNNs' },
-          { label: 'PyTorch' },
-          { label: 'TensorFlow' },
-        ],
-      },
-      {
-        title: 'NLP & Transformers',
-        color: 'from-pink-500 to-rose-500',
-        items: [
-          { label: 'Text Processing' },
-          { label: 'Embeddings' },
-          { label: 'BERT' },
-          { label: 'GPT / LLMs' },
-          { label: 'Hugging Face' },
-        ],
-      },
-      {
-        title: 'Deployment & MLOps',
-        color: 'from-amber-500 to-orange-500',
-        items: [
-          { label: 'Model Serving' },
-          { label: 'Docker' },
-          { label: 'MLflow' },
-          { label: 'Feature Stores' },
-        ],
-      },
+    title: 'Machine Learning Roadmap',
+    color: '#ec4899',
+    accentColor: '#f472b6',
+    steps: [
+      { title: 'Math Foundations', icon: '📐', side: 'left', items: ['Linear Algebra', 'Calculus', 'Probability', 'Statistics', 'Optimization'] },
+      { title: 'Python for Data', icon: '🐍', side: 'right', items: ['NumPy', 'Pandas', 'Matplotlib', 'Seaborn', 'Scikit-learn'] },
+      { title: 'ML Fundamentals', icon: '🤖', side: 'left', items: ['Supervised Learning', 'Unsupervised Learning', 'Regression', 'Classification', 'Clustering'] },
+      { title: 'Feature Engineering', icon: '🔧', side: 'right', items: ['Feature Selection', 'Feature Extraction', 'Normalization', 'Encoding', 'Dimensionality Reduction'] },
+      { title: 'Deep Learning', icon: '🧠', side: 'left', items: ['Neural Networks', 'CNNs', 'RNNs & LSTMs', 'PyTorch', 'TensorFlow'] },
+      { title: 'NLP & Transformers', icon: '💬', side: 'right', items: ['Text Processing', 'Word Embeddings', 'BERT', 'GPT & LLMs', 'Hugging Face'] },
+      { title: 'MLOps', icon: '⚙️', side: 'left', items: ['Model Serving', 'MLflow', 'Docker', 'CI/CD for ML', 'A/B Testing'] },
+      { title: 'Projects', icon: '🚀', side: 'right', items: ['Image Classifier', 'Chatbot', 'Recommendation System', 'Time Series Forecasting', 'Sentiment Analysis'] },
     ],
   },
   {
     id: 'devops',
-    title: 'DevOps & Cloud',
-    icon: '☁️',
-    centerColor: 'from-amber-500 to-yellow-500',
-    branches: [
-      {
-        title: 'Linux & Scripting',
-        color: 'from-blue-400 to-cyan-400',
-        items: [
-          { label: 'Command Line' },
-          { label: 'Bash Scripting' },
-          { label: 'File Permissions' },
-          { label: 'Process Management' },
-        ],
-      },
-      {
-        title: 'Version Control',
-        color: 'from-orange-400 to-amber-400',
-        items: [
-          { label: 'Git Basics' },
-          { label: 'Branching & Merging' },
-          { label: 'Rebasing' },
-          { label: 'Git Flow' },
-        ],
-      },
-      {
-        title: 'Containers',
-        color: 'from-cyan-500 to-blue-500',
-        items: [
-          { label: 'Docker' },
-          { label: 'Docker Compose' },
-          { label: 'Multi-stage Builds' },
-          { label: 'Registries' },
-        ],
-      },
-      {
-        title: 'Orchestration',
-        color: 'from-violet-500 to-purple-500',
-        items: [
-          { label: 'Kubernetes' },
-          { label: 'Pods & Services' },
-          { label: 'Helm' },
-          { label: 'ArgoCD' },
-        ],
-      },
-      {
-        title: 'CI/CD',
-        color: 'from-green-500 to-emerald-500',
-        items: [
-          { label: 'GitHub Actions' },
-          { label: 'GitLab CI' },
-          { label: 'Jenkins' },
-        ],
-      },
-      {
-        title: 'Cloud (AWS/GCP)',
-        color: 'from-amber-500 to-orange-500',
-        items: [
-          { label: 'IAM' },
-          { label: 'EC2 / Compute' },
-          { label: 'S3 / Storage' },
-          { label: 'RDS / Databases' },
-          { label: 'Networking' },
-        ],
-      },
-      {
-        title: 'IaC & Monitoring',
-        color: 'from-pink-500 to-rose-500',
-        items: [
-          { label: 'Terraform' },
-          { label: 'Ansible' },
-          { label: 'Prometheus' },
-          { label: 'Grafana' },
-        ],
-      },
+    title: 'DevOps Roadmap',
+    color: '#f59e0b',
+    accentColor: '#fbbf24',
+    steps: [
+      { title: 'Linux Basics', icon: '🐧', side: 'left', items: ['Command Line', 'Bash Scripting', 'File Permissions', 'Process Management', 'Networking'] },
+      { title: 'Git & Version Control', icon: '🔀', side: 'right', items: ['Git Basics', 'Branching & Merging', 'Rebasing', 'Git Flow', 'PR Reviews'] },
+      { title: 'Docker', icon: '🐳', side: 'left', items: ['Images & Containers', 'Dockerfile', 'Docker Compose', 'Multi-stage Builds', 'Registries'] },
+      { title: 'Kubernetes', icon: '☸️', side: 'right', items: ['Pods & Services', 'Deployments', 'ConfigMaps & Secrets', 'Helm Charts', 'Ingress'] },
+      { title: 'CI/CD', icon: '🔄', side: 'left', items: ['GitHub Actions', 'GitLab CI', 'Jenkins', 'ArgoCD', 'Pipeline Design'] },
+      { title: 'Cloud (AWS/GCP)', icon: '☁️', side: 'right', items: ['IAM & Security', 'Compute (EC2/EKS)', 'Storage (S3)', 'Databases (RDS)', 'Networking (VPC)'] },
+      { title: 'IaC & Config Mgmt', icon: '📜', side: 'left', items: ['Terraform', 'Ansible', 'CloudFormation', 'Pulumi'] },
+      { title: 'Monitoring & Logging', icon: '📡', side: 'right', items: ['Prometheus', 'Grafana', 'ELK Stack', 'Jaeger Tracing', 'Alerting'] },
+      { title: 'Advanced', icon: '🚀', side: 'left', items: ['Service Mesh (Istio)', 'Chaos Engineering', 'FinOps', 'Platform Engineering', 'GitOps'] },
     ],
   },
 ];
