@@ -11,6 +11,7 @@ interface Template {
   id: string;
   name: string;
   description: string;
+  category?: string;
   is_ats_friendly: boolean;
   columns: number;
   colors?: string[];
@@ -183,29 +184,38 @@ function MiniResume({ type, colors }: { type: string; colors: string[] }) {
       </div>
     ),
     'professional': (
-      <div className="flex h-full text-xs bg-white">
-        <div className="flex-1 p-3 space-y-2" style={{ backgroundColor: bg }}>
-          <div className="text-sm font-bold" style={{ color: accent }}>Sarah Watson</div>
-          <div className="text-[8px] text-gray-500">Web Developer</div>
-          <div className="text-[8px] text-gray-400">hello@watson.org · +1 123 234 3456 · New York</div>
-          <div className="pt-2 border-t" style={{ borderColor: accent }}>
-            <div className="text-[9px] font-semibold text-gray-600 uppercase">Experience</div>
-            <div className="text-[8px] text-gray-600 mt-1">Senior Web Developer at Creative Studio</div>
-            <div className="text-[8px] text-gray-600">Built modern front-end experiences with HTML, CSS, and JavaScript</div>
+      <div className="flex h-full text-[8px] bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden">
+        <div className="flex-1 p-3 space-y-2 bg-white">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <div className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.25em]">Sarah Watson</div>
+              <div className="text-[7px] text-orange-600 uppercase tracking-[0.15em] mt-1">Web Developer</div>
+            </div>
+            <div className="w-14 h-14 rounded-2xl bg-slate-200" />
           </div>
-          <div className="pt-2 border-t" style={{ borderColor: accent }}>
-            <div className="text-[9px] font-semibold text-gray-600 uppercase">Education</div>
-            <div className="text-[8px] text-gray-600 mt-1">B.Sc. Computer Science - San Francisco Bay University</div>
+          <div className="text-[7px] text-slate-500">hello@watson.org · +1 123 234 3456 · New York</div>
+          <div className="border-t border-slate-200 pt-2">
+            <div className="text-[8px] font-semibold text-slate-600 uppercase tracking-[0.14em]">Summary</div>
+            <div className="text-[7px] text-slate-500 mt-1">Driven web developer with a strong passion for creating exceptional web experiences and building beautiful user interfaces.</div>
+          </div>
+          <div className="border-t border-slate-200 pt-2">
+            <div className="text-[8px] font-semibold text-slate-600 uppercase tracking-[0.14em]">Experience</div>
+            <div className="text-[7px] text-slate-500 mt-1">Creative Studio · Senior Web Developer</div>
+            <div className="text-[7px] text-slate-500">Built responsive user-friendly websites using HTML, CSS, and JavaScript.</div>
+          </div>
+          <div className="border-t border-slate-200 pt-2">
+            <div className="text-[8px] font-semibold text-slate-600 uppercase tracking-[0.14em]">Education</div>
+            <div className="text-[7px] text-slate-500 mt-1">San Francisco Bay University · B.Sc. Computer Science</div>
           </div>
         </div>
-        <div className="w-[30%] p-3 bg-yellow-200 flex flex-col gap-2">
-          <div className="w-full h-20 rounded-xl bg-yellow-300/80" />
-          <div className="text-[9px] font-semibold text-gray-700">Languages</div>
-          <div className="text-[8px] text-gray-600">English</div>
-          <div className="text-[8px] text-gray-600">Spanish</div>
-          <div className="pt-2 border-t border-yellow-300"/>
-          <div className="text-[9px] font-semibold text-gray-700 uppercase">Skills</div>
-          <div className="text-[8px] text-gray-600">JavaScript · TypeScript · HTML · CSS · React · Next.js</div>
+        <div className="w-[30%] p-3 bg-orange-100 flex flex-col gap-2">
+          <div className="w-full h-20 rounded-2xl bg-orange-200" />
+          <div className="text-[8px] font-semibold uppercase tracking-[0.14em] text-slate-700">Languages</div>
+          <div className="text-[7px] text-slate-600">English</div>
+          <div className="text-[7px] text-slate-600">Spanish</div>
+          <div className="border-t border-orange-200 pt-2" />
+          <div className="text-[8px] font-semibold uppercase tracking-[0.14em] text-slate-700">Skills</div>
+          <div className="text-[7px] text-slate-600">JavaScript · TypeScript · HTML · CSS · React · Next.js</div>
         </div>
       </div>
     ),
@@ -1274,7 +1284,7 @@ export default function TemplateWizard({ onComplete, onCancel }: Props) {
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
   const [templates, setTemplates] = useState<Template[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
-  const [filter, setFilter] = useState<'all' | 'simple' | 'modern' | 'creative'>('all');
+  const [filter, setFilter] = useState<'all' | 'simple' | 'professional' | 'modern' | 'creative'>('all');
   const [uploading, setUploading] = useState(false);
   const [pasteText, setPasteText] = useState('');
   const [importMode, setImportMode] = useState<'file' | 'paste'>('file');
@@ -1330,6 +1340,7 @@ export default function TemplateWizard({ onComplete, onCancel }: Props) {
   const filtered = templates.filter(t => {
     if (filter === 'all') return true;
     if (filter === 'simple') return t.is_ats_friendly;
+    if (filter === 'professional') return t.category === 'professional';
     if (filter === 'modern') return t.columns === 2;
     if (filter === 'creative') return !t.is_ats_friendly;
     return true;
@@ -1427,6 +1438,7 @@ export default function TemplateWizard({ onComplete, onCancel }: Props) {
           {[
             { key: 'all' as const, label: 'All', icon: null },
             { key: 'simple' as const, label: 'Simple', icon: null },
+            { key: 'professional' as const, label: 'Professional', icon: null },
             { key: 'modern' as const, label: 'Modern', icon: null },
             { key: 'creative' as const, label: 'Creative', icon: null },
           ].map(f => (
@@ -2041,7 +2053,7 @@ function ResumePreview({ template, form, accent, bg }: {
         <div><div className="text-[9px] font-bold text-white/90 uppercase mb-1">Contact</div>
           <div className="space-y-0.5 text-[9px] text-white/70 break-all">{form.email && <div>{form.email}</div>}{form.linkedin && <div>{form.linkedin}</div>}{form.github && <div>{form.github}</div>}</div></div>
         {form.skills && <div><div className="text-[9px] font-bold text-white/90 uppercase mb-1.5">ML/AI Skills</div>
-          <div className="flex flex-wrap gap-1">{form.skills.split(',').map((s, i) => s.trim() && <span key={i} className="text-[7px] px-1.5 py-0.5 rounded bg-white/10 text-white/80">{s.trim()}</span>)}</div></div>}
+          <div className="flex flex-wrap gap-1">{form.skills.split(',').map((s: string, i: number) => s.trim() && <span key={i} className="text-[7px] px-1.5 py-0.5 rounded bg-white/10 text-white/80">{s.trim()}</span>)}</div></div>}
         {form.education.some((e: any) => e.degree || e.institution) && (
           <div><div className="text-[9px] font-bold text-white/90 uppercase mb-1">Research</div>
             <div className="space-y-1">{form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
@@ -2417,63 +2429,72 @@ function ResumePreview({ template, form, accent, bg }: {
   );
 
   const ProfessionalResumeLayout = () => (
-    <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden flex" style={{ minHeight: '820px' }}>
-      <div className="flex-1 p-8 space-y-6" style={{ backgroundColor: '#fff8ed' }}>
-        <div>
-          <div className="text-3xl font-bold text-slate-900">{form.name || 'Sarah Watson'}</div>
-          <div className="text-sm text-slate-500 mt-1">{form.summary || 'Web Developer'}</div>
-          <div className="text-[11px] text-slate-400 mt-3">{form.email || 'hello@watson.org'} · {form.phone || '+1 233 234 3456'} · {form.location || 'New York'}</div>
-        </div>
-        {form.experience.some((e: any) => e.role || e.company) && (
-          <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500 mb-3">Professional Experience</div>
-            {form.experience.filter((e: any) => e.role || e.company).map((exp: any, i: number) => (
-              <div key={i} className="mb-4">
-                <div className="flex justify-between items-start gap-3">
-                  <div>
-                    <div className="text-sm font-semibold text-slate-900">{exp.role || 'Web Developer'}</div>
-                    <div className="text-[11px] text-slate-500">{exp.company || 'Company Name'}</div>
-                  </div>
-                  <div className="text-[10px] text-slate-400">{exp.duration || '2018 - Present'}</div>
-                </div>
-                {exp.description && <div className="text-[11px] text-slate-600 mt-2 whitespace-pre-wrap">{exp.description}</div>}
-              </div>
-            ))}
-          </div>
-        )}
-        {form.education.some((e: any) => e.degree || e.institution) && (
-          <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500 mb-3">Education</div>
-            {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
-              <div key={i} className="mb-4">
-                <div className="text-sm font-semibold text-slate-900">{edu.degree || 'Bachelor of Science in Computer Science'}</div>
-                <div className="text-[11px] text-slate-500">{edu.institution || 'San Francisco Bay University'}</div>
-                <div className="text-[10px] text-slate-400">{edu.year || '2014 - 2018'}</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      <div className="w-[34%] p-6 bg-[#f7e0b0] flex flex-col gap-5">
-        <div className="h-28 rounded-3xl bg-slate-200 overflow-hidden">
+    <div className="mx-auto max-w-[600px] border-8 border-orange-300 bg-white shadow-2xl rounded-[2rem] overflow-hidden" style={{ minHeight: '850px' }}>
+      <div className="relative p-8 bg-white">
+        <div className="absolute top-8 right-8 w-28 h-28 rounded-3xl overflow-hidden bg-slate-200 shadow-inner">
           {form.photo ? <img src={form.photo} alt="Profile" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-slate-300" />}
         </div>
-        <div>
-          <div className="text-[9px] font-semibold uppercase tracking-[0.22em] text-slate-500 mb-2">Languages</div>
-          <div className="text-[11px] text-slate-700">{form.languages || 'English, Spanish'}</div>
+        <div className="max-w-[calc(100%-8rem)]">
+          <div className="text-4xl font-bold text-slate-900">{form.name || 'Sarah Watson'}</div>
+          <div className="text-sm uppercase tracking-[0.24em] text-orange-600 mt-2">{form.summary || 'Web Developer'}</div>
+          <div className="text-[11px] text-slate-500 mt-4">{form.email || 'hello@watson.org'} · {form.phone || '+1 223 234 3456'} · {form.location || 'New York'}</div>
         </div>
-        <div>
-          <div className="text-[9px] font-semibold uppercase tracking-[0.22em] text-slate-500 mb-2">Favorite Quote</div>
-          <div className="text-[11px] text-slate-600 italic">{form.quote || 'Great websites aren’t built in a day; they are crafted with passion, dedication, and attention to detail.'}</div>
-        </div>
-        {form.skills && (
-          <div>
-            <div className="text-[9px] font-semibold uppercase tracking-[0.22em] text-slate-500 mb-2">Skills</div>
-            <div className="text-[11px] text-slate-700 space-y-1">
-              {form.skills.split(',').map((s: string, i: number) => s.trim() && <div key={i}>• {s.trim()}</div>)}
+        <div className="mt-8 grid gap-6 lg:grid-cols-[2fr_1fr]">
+          <div className="space-y-6">
+            <div className="rounded-3xl border border-slate-200 p-5 bg-slate-50">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500 mb-3">Professional Summary</div>
+              <div className="text-[11px] text-slate-600 leading-relaxed whitespace-pre-wrap">{form.summary || 'Driven and enthusiastic Web Developer with a strong passion for creating exceptional web experiences. Experienced in manual testing, test automation, tracking tools, and A/B testing.'}</div>
+            </div>
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500 mb-3">Professional Experience</div>
+              {form.experience.filter((e: any) => e.role || e.company).map((exp: any, i: number) => (
+                <div key={i} className="mb-5 last:mb-0">
+                  <div className="flex justify-between items-start gap-4">
+                    <div>
+                      <div className="text-sm font-semibold text-slate-900">{exp.role || 'Web Developer'}</div>
+                      <div className="text-[11px] text-slate-500">{exp.company || 'Google Inc.'}</div>
+                    </div>
+                    <div className="text-[10px] text-slate-400">{exp.duration || '2018 - Present'}</div>
+                  </div>
+                  {exp.description && <div className="text-[11px] text-slate-600 mt-2 leading-relaxed whitespace-pre-wrap">{exp.description}</div>}
+                </div>
+              ))}
+            </div>
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500 mb-3">Education</div>
+              {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
+                <div key={i} className="mb-4">
+                  <div className="text-sm font-semibold text-slate-900">{edu.degree || 'Bachelor of Science in Computer Science'}</div>
+                  <div className="text-[11px] text-slate-500">{edu.institution || 'San Francisco Bay University'}</div>
+                  <div className="text-[10px] text-slate-400">{edu.year || '2014 - 2018'}</div>
+                </div>
+              ))}
             </div>
           </div>
-        )}
+          <div className="space-y-6">
+            <div className="rounded-3xl border border-slate-200 p-5 bg-orange-50">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500 mb-3">Languages</div>
+              <div className="text-[11px] text-slate-700">{form.languages || 'English · Spanish'}</div>
+            </div>
+            <div className="rounded-3xl border border-slate-200 p-5 bg-orange-50">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500 mb-3">Favorite Quote</div>
+              <div className="text-[11px] text-slate-700 italic">{form.quote || 'Great websites aren’t built in a day; they are crafted with passion, dedication, and attention to detail.'}</div>
+            </div>
+            {form.skills && (
+              <div className="rounded-3xl border border-slate-200 p-5 bg-orange-50">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500 mb-3">Skills</div>
+                <div className="space-y-2 text-[11px] text-slate-700">
+                  {form.skills.split(',').map((s: string, i: number) => s.trim() && (
+                    <div key={i} className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-orange-500 inline-block" />
+                      <span>{s.trim()}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
