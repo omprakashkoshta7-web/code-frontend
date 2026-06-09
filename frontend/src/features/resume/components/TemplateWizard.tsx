@@ -209,10 +209,6 @@ function MiniResume({ type, colors }: { type: string; colors: string[] }) {
         </div>
       </div>
     ),
-          </div>
-        </div>
-      </div>
-    ),
     'fullstack': (
       <div className="flex h-full text-xs">
         <div className="w-[35%] h-full p-3 flex flex-col gap-2" style={{ backgroundColor: accent }}>
