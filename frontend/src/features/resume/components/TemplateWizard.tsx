@@ -443,6 +443,164 @@ function MiniResume({ type, colors }: { type: string; colors: string[] }) {
         </div>
       </div>
     ),
+    'grayblue-sidebar': (
+      <div className="flex h-full text-xs">
+        <div className="w-[35%] h-full p-2.5 flex flex-col gap-1.5" style={{ backgroundColor: accent }}>
+          <div className="w-10 h-10 rounded-full mx-auto border-2 border-white/30 overflow-hidden bg-white/10" />
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Contact</div>
+            <div className="text-[6px] text-white/70 mt-0.5 space-y-0"><div>+1 234 567 890</div><div>hello@email.com</div></div>
+          </div>
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Education</div>
+            <div className="text-[6px] text-white/70 mt-0.5">BA Marketing · University 2015-2020</div>
+          </div>
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Skills</div>
+            <div className="text-[6px] text-white/70 mt-0.5 space-y-0">
+              <div>• Marketing Strategy</div><div>• SEO/SEM</div><div>• Content Creation</div>
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 p-2.5 space-y-1.5" style={{ backgroundColor: bg }}>
+          <div className="text-sm font-bold text-gray-900">Olivia Sanchez</div>
+          <div className="text-[8px] text-gray-500">Marketing Manager</div>
+          <div><div className="text-[7px] font-bold uppercase border-b pb-0.5" style={{ borderColor: accent, color: accent }}>Summary</div>
+            <div className="text-[6px] text-gray-600 mt-0.5 leading-tight">Creative marketing professional with 8+ years experience.</div>
+          </div>
+          <div><div className="text-[7px] font-bold uppercase border-b pb-0.5" style={{ borderColor: accent, color: accent }}>Experience</div>
+            <div className="text-[6px] text-gray-600 mt-0.5"><span className="font-semibold">Marketing Manager</span> · 2020-Present</div>
+            <div className="text-[6px] text-gray-500">Acme International Co.</div>
+          </div>
+        </div>
+      </div>
+    ),
+    'dark-sidebar-photo': (
+      <div className="flex h-full text-xs">
+        <div className="w-[35%] h-full p-2.5 flex flex-col gap-1.5" style={{ backgroundColor: accent }}>
+          <div className="w-10 h-10 rounded-full mx-auto border-2 border-white/30 overflow-hidden bg-white/10" />
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Contact</div>
+            <div className="text-[6px] text-white/70 mt-0.5 space-y-0"><div>+1 234 567 890</div><div>hello@email.com</div><div>linkedin.com/in/john</div></div>
+          </div>
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Education</div>
+            <div className="text-[6px] text-white/70 mt-0.5">BA Marketing · University 2015-2020</div>
+          </div>
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Skills</div>
+            <div className="text-[6px] text-white/70 mt-0.5 space-y-0">
+              <div>• Marketing</div><div>• SEO</div><div>• Content</div>
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 p-2.5 space-y-1.5" style={{ backgroundColor: bg }}>
+          <div className="text-sm font-bold text-gray-900">Olivia Sanchez</div>
+          <div className="text-[8px] text-gray-500">Marketing Manager</div>
+          <div><div className="text-[7px] font-bold uppercase border-b pb-0.5" style={{ borderColor: accent, color: accent }}>Experience</div>
+            <div className="text-[6px] text-gray-600 mt-0.5"><span className="font-semibold">Marketing Manager</span> · 2020-Present</div>
+          </div>
+          <div><div className="text-[7px] font-bold uppercase border-b pb-0.5" style={{ borderColor: accent, color: accent }}>References</div>
+            <div className="text-[6px] text-gray-600 mt-0.5">Harumi Kobayashi · CEO</div>
+          </div>
+        </div>
+      </div>
+    ),
+    'gray-sidebar-right': (
+      <div className="flex h-full text-xs">
+        <div className="flex-1 p-2.5 space-y-1.5" style={{ backgroundColor: bg }}>
+          <div className="text-sm font-bold text-gray-900">Lorna Alvarado</div>
+          <div className="text-[8px] text-gray-500">Digital Marketing Specialist</div>
+          <div><div className="text-[7px] font-bold uppercase" style={{ color: accent }}>About Me</div>
+            <div className="text-[6px] text-gray-600 mt-0.5 leading-tight">Creative professional with 5+ years experience in visual design, UX/UI, and brand development.</div>
+          </div>
+          <div><div className="text-[7px] font-bold uppercase" style={{ color: accent }}>Work Experience</div>
+            <div className="text-[6px] text-gray-600 mt-0.5"><span className="font-semibold">Marketing Manager</span> · 2020-Present</div>
+            <div className="text-[6px] text-gray-500">Acme International Co.</div>
+          </div>
+        </div>
+        <div className="w-[35%] h-full p-2.5 flex flex-col gap-1.5" style={{ backgroundColor: accent }}>
+          <div className="w-10 h-10 rounded-full mx-auto border-2 border-white/30 overflow-hidden bg-white/10" />
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Contact</div>
+            <div className="text-[6px] text-white/70 mt-0.5 space-y-0"><div>+1 234 567 890</div><div>hello@email.com</div></div>
+          </div>
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Education</div>
+            <div className="text-[6px] text-white/70 mt-0.5">BA Marketing · University 2015-2020</div>
+          </div>
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Skills</div>
+            <div className="text-[6px] text-white/70 mt-0.5 space-y-0">
+              <div>• Marketing</div><div>• SEO</div><div>• Content</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+    'centered-light': (
+      <div className="flex h-full text-xs" style={{ backgroundColor: bg }}>
+        <div className="w-full p-3 space-y-2">
+          <div className="text-center pb-1 border-b border-gray-200">
+            <div className="text-sm font-bold text-gray-900">Emaa Warner</div>
+            <div className="text-[8px] text-gray-500">Accounting Executive</div>
+          </div>
+          <div><div className="text-[7px] font-bold text-gray-500 uppercase">Summary</div>
+            <div className="text-[6px] text-gray-600 mt-0.5 leading-tight">Detail-oriented accounting executive with 7+ years experience.</div>
+          </div>
+          <div><div className="text-[7px] font-bold text-gray-500 uppercase">Education</div>
+            <div className="text-[6px] text-gray-600">Bachelor of Marketing · University 2015-2019</div>
+          </div>
+          <div><div className="text-[7px] font-bold text-gray-500 uppercase">Skills</div>
+            <div className="text-[6px] text-gray-600">Client Relations · Budgeting · Strategic Planning</div>
+          </div>
+          <div><div className="text-[7px] font-bold text-gray-500 uppercase">Experience</div>
+            <div className="text-[6px] text-gray-600"><span className="font-semibold">Accounting Executive</span> · 2020-Present</div>
+            <div className="text-[6px] text-gray-500">Acme International Co.</div>
+          </div>
+        </div>
+      </div>
+    ),
+    'brown-sidebar': (
+      <div className="flex h-full text-xs">
+        <div className="flex-1 p-2.5 space-y-1.5" style={{ backgroundColor: bg }}>
+          <div className="text-sm font-bold text-gray-900">Lorna Alvarado</div>
+          <div className="text-[8px] text-gray-500">Marketing Manager</div>
+          <div><div className="text-[7px] font-bold uppercase" style={{ color: accent }}>About Me</div>
+            <div className="text-[6px] text-gray-600 mt-0.5 leading-tight">Creative marketing professional with 8+ years experience in digital campaigns and brand strategy.</div>
+          </div>
+          <div><div className="text-[7px] font-bold uppercase" style={{ color: accent }}>Education</div>
+            <div className="text-[6px] text-gray-600 mt-0.5">BA Marketing · University 2015-2020</div>
+          </div>
+        </div>
+        <div className="w-[35%] h-full p-2.5 flex flex-col gap-1.5" style={{ backgroundColor: accent }}>
+          <div className="w-10 h-10 rounded-full mx-auto border-2 border-white/30 overflow-hidden bg-white/10" />
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Skills</div>
+            <div className="text-[6px] text-white/70 mt-0.5 space-y-0">
+              <div>• Project Management</div><div>• Public Relations</div><div>• Time Management</div>
+            </div>
+          </div>
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Education</div>
+            <div className="text-[6px] text-white/70 mt-0.5">BA Marketing · University</div>
+          </div>
+        </div>
+      </div>
+    ),
+    'dark-sidebar-right': (
+      <div className="flex h-full text-xs">
+        <div className="flex-1 p-2.5 space-y-1.5" style={{ backgroundColor: bg }}>
+          <div className="text-sm font-bold text-gray-900">Connor Hamilton</div>
+          <div className="text-[8px] text-gray-500">Accounting Executive</div>
+          <div><div className="text-[7px] font-bold uppercase border-b pb-0.5" style={{ borderColor: accent, color: accent }}>Work Experience</div>
+            <div className="text-[6px] text-gray-600 mt-0.5"><span className="font-semibold">Accounting Executive</span> · 2020-Present</div>
+            <div className="text-[6px] text-gray-500">Acme International Co.</div>
+          </div>
+          <div><div className="text-[7px] font-bold uppercase border-b pb-0.5" style={{ borderColor: accent, color: accent }}>Projects</div>
+            <div className="text-[6px] text-gray-600 mt-0.5">Financial Analysis Dashboard</div>
+          </div>
+        </div>
+        <div className="w-[35%] h-full p-2.5 flex flex-col gap-1.5" style={{ backgroundColor: accent }}>
+          <div className="w-10 h-10 rounded-full mx-auto border-2 border-white/30 overflow-hidden bg-white/10" />
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Contact</div>
+            <div className="text-[6px] text-white/70 mt-0.5 space-y-0"><div>+1 234 567 890</div><div>hello@email.com</div></div>
+          </div>
+          <div><div className="text-[7px] font-bold text-white/90 uppercase">Education</div>
+            <div className="text-[6px] text-white/70 mt-0.5">BA Accounting · University</div>
+          </div>
+        </div>
+      </div>
+    ),
   };
 
   return (
@@ -638,7 +796,7 @@ export default function TemplateWizard({ onComplete, onCancel }: Props) {
 
   // form state for step 5
   const [form, setForm] = useState({
-    name: '', email: '', phone: '', linkedin: '', github: '', skills: '',
+    name: '', email: '', phone: '', linkedin: '', github: '', skills: '', photo: '',
     experience: [{ role: '', company: '', duration: '', description: '' }],
     education: [{ degree: '', institution: '', year: '' }],
     projects: [{ title: '', description: '', link: '' }],
@@ -663,6 +821,12 @@ export default function TemplateWizard({ onComplete, onCancel }: Props) {
     { id: 'blackwhite-minimalist', name: 'Black White Minimalist', description: 'Clean black & white single-column, ATS-friendly', is_ats_friendly: true, columns: 1, colors: ['#1a1a1a', '#ffffff'] },
     { id: 'bluegray-simple', name: 'Blue & Gray Professional', description: 'Blue sidebar right with Skills, Languages & References', is_ats_friendly: false, columns: 2, colors: ['#1a365d', '#f7fafc'] },
     { id: 'professional-modern', name: 'Professional Modern', description: 'Centered name, About Me, Skills & References layout', is_ats_friendly: true, columns: 1, colors: ['#2d3748', '#f7fafc'] },
+    { id: 'grayblue-sidebar', name: 'Gray Blue Sidebar', description: 'Gray-blue sidebar left with photo, contact, education & skills', is_ats_friendly: false, columns: 2, colors: ['#4a5568', '#ffffff'] },
+    { id: 'dark-sidebar-photo', name: 'Dark Sidebar Photo', description: 'Dark sidebar left with photo, education, skills & references', is_ats_friendly: false, columns: 2, colors: ['#1a202c', '#ffffff'] },
+    { id: 'gray-sidebar-right', name: 'Gray Sidebar Right', description: 'White main left, gray sidebar right with photo & skills', is_ats_friendly: false, columns: 2, colors: ['#4a5568', '#ffffff'] },
+    { id: 'centered-light', name: 'Centered Light', description: 'Centered layout with summary, education, skills & experience', is_ats_friendly: true, columns: 1, colors: ['#2d3748', '#f7fafc'] },
+    { id: 'brown-sidebar', name: 'Brown Sidebar', description: 'White main left, brown sidebar right with photo & skills', is_ats_friendly: false, columns: 2, colors: ['#744210', '#ffffff'] },
+    { id: 'dark-sidebar-right', name: 'Dark Sidebar Right', description: 'White main left, dark sidebar right with photo & contact', is_ats_friendly: false, columns: 2, colors: ['#1a202c', '#ffffff'] },
   ];
 
   useEffect(() => {
@@ -984,6 +1148,33 @@ export default function TemplateWizard({ onComplete, onCancel }: Props) {
           <div className={`${showPreview ? 'hidden' : 'block'} sm:block w-full sm:w-[45%] overflow-y-auto p-3 sm:p-6 space-y-4 sm:space-y-5`}>
             {/* personal info */}
             <FormSection title="Personal Information" icon={<div className="w-5 h-5 rounded-full bg-violet-400/20" />}>
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full border-2 border-white/20 overflow-hidden bg-white/10 flex items-center justify-center shrink-0">
+                  {form.photo ? (
+                    <img src={form.photo} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <svg className="w-8 h-8 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <label className="text-[11px] text-slate-400 mb-1 block">Photo (optional)</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-violet-600/20 file:text-violet-300 hover:file:bg-violet-600/30 cursor-pointer"
+                    onChange={e => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const reader = new FileReader();
+                      reader.onload = ev => setForm(f => ({ ...f, photo: ev.target?.result as string }));
+                      reader.readAsDataURL(file);
+                    }}
+                  />
+                  {form.photo && (
+                    <button onClick={() => setForm(f => ({ ...f, photo: '' }))} className="text-[10px] text-red-400 hover:text-red-300 mt-1">Remove photo</button>
+                  )}
+                </div>
+              </div>
               <Input label="Full Name" value={form.name} onChange={v => setForm(f => ({ ...f, name: v }))} placeholder="John Doe" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Input label="Email" value={form.email} onChange={v => setForm(f => ({ ...f, email: v }))} placeholder="john@email.com" />
@@ -1184,7 +1375,7 @@ function ResumePreview({ template, form, accent, bg }: {
     <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden flex" style={{ minHeight: '800px' }}>
       {/* sidebar */}
       <div className="w-[35%] p-4 flex flex-col" style={{ backgroundColor: accent }}>
-        <div className="w-12 h-12 rounded-full bg-white/20 mx-auto mb-3" />
+        {form.photo ? <div className="w-14 h-14 rounded-full mx-auto mb-3 overflow-hidden border-2 border-white/30"><img src={form.photo} alt="Profile" className="w-full h-full object-cover" /></div> : <div className="w-12 h-12 rounded-full bg-white/20 mx-auto mb-3" />}
         <div className="mb-4">
           <div className="text-[9px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Contact</div>
           <div className="space-y-0.5 text-[9px] text-white/70 break-all">
@@ -1230,7 +1421,7 @@ function ResumePreview({ template, form, accent, bg }: {
   const FullstackLayout = () => (
     <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden flex" style={{ minHeight: '800px' }}>
       <div className="w-[30%] p-4 flex flex-col gap-3" style={{ backgroundColor: accent }}>
-        <div className="w-12 h-12 rounded-full bg-white/20 mx-auto" />
+        {form.photo ? <div className="w-14 h-14 rounded-full mx-auto overflow-hidden border-2 border-white/30"><img src={form.photo} alt="Profile" className="w-full h-full object-cover" /></div> : <div className="w-12 h-12 rounded-full bg-white/20 mx-auto" />}
         <div>
           <div className="text-[9px] font-bold text-white/90 uppercase mb-1">Contact</div>
           <div className="space-y-0.5 text-[8px] text-white/70 break-all">
@@ -1328,9 +1519,11 @@ function ResumePreview({ template, form, accent, bg }: {
   const CreativeLayout = () => (
     <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden" style={{ minHeight: '800px' }}>
       <div className="p-6 text-center text-white" style={{ background: `linear-gradient(135deg, ${accent}, #ec4899)` }}>
-        <div className="w-16 h-16 rounded-full border-2 border-white mx-auto mb-2 flex items-center justify-center text-white text-xl font-bold">
-          {(form.name || 'YN').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || 'YN'}
-        </div>
+        {form.photo ? <div className="w-18 h-18 rounded-full border-2 border-white mx-auto mb-2 overflow-hidden"><img src={form.photo} alt="Profile" className="w-full h-full object-cover" /></div> : (
+          <div className="w-16 h-16 rounded-full border-2 border-white mx-auto mb-2 flex items-center justify-center text-white text-xl font-bold">
+            {(form.name || 'YN').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || 'YN'}
+          </div>
+        )}
         <div className="text-xl font-bold">{form.name || 'Your Name'}</div>
         <div className="text-sm text-white/80">{form.email || 'email@example.com'}</div>
       </div>
@@ -1434,9 +1627,11 @@ function ResumePreview({ template, form, accent, bg }: {
   const ModernProfessionalLayout = () => (
     <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden flex" style={{ minHeight: '800px' }}>
       <div className="w-[38%] p-5 flex flex-col gap-4" style={{ backgroundColor: accent }}>
-        <div className="w-20 h-20 rounded-full mx-auto border-3 border-white/30 bg-white/10 flex items-center justify-center text-white text-xl font-bold">
-          {(form.name || 'YN').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
-        </div>
+        {form.photo ? <div className="w-20 h-20 rounded-full mx-auto border-3 border-white/30 overflow-hidden"><img src={form.photo} alt="Profile" className="w-full h-full object-cover" /></div> : (
+          <div className="w-20 h-20 rounded-full mx-auto border-3 border-white/30 bg-white/10 flex items-center justify-center text-white text-xl font-bold">
+            {(form.name || 'YN').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
+          </div>
+        )}
         <div>
           <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Contact</div>
           <div className="space-y-1 text-[9px] text-white/80">
@@ -1625,9 +1820,11 @@ function ResumePreview({ template, form, accent, bg }: {
         )}
       </div>
       <div className="w-[38%] p-5 flex flex-col gap-4" style={{ backgroundColor: accent }}>
-        <div className="w-20 h-20 rounded-full mx-auto border-3 border-white/30 bg-white/10 flex items-center justify-center text-white text-xl font-bold">
-          {(form.name || 'YN').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
-        </div>
+        {form.photo ? <div className="w-20 h-20 rounded-full mx-auto border-3 border-white/30 overflow-hidden"><img src={form.photo} alt="Profile" className="w-full h-full object-cover" /></div> : (
+          <div className="w-20 h-20 rounded-full mx-auto border-3 border-white/30 bg-white/10 flex items-center justify-center text-white text-xl font-bold">
+            {(form.name || 'YN').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
+          </div>
+        )}
         <div>
           <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Contact</div>
           <div className="space-y-1 text-[9px] text-white/80">
@@ -1739,6 +1936,451 @@ function ResumePreview({ template, form, accent, bg }: {
     </div>
   );
 
+  /* ── Gray Blue Sidebar layout ── */
+  const GrayBlueSidebarLayout = () => (
+    <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden flex" style={{ minHeight: '800px' }}>
+      <div className="w-[35%] p-5 flex flex-col gap-4" style={{ backgroundColor: accent }}>
+        {form.photo && <div className="w-24 h-24 rounded-full mx-auto border-3 border-white/30 overflow-hidden"><img src={form.photo} alt="Profile" className="w-full h-full object-cover" /></div>}
+        <div>
+          <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Contact</div>
+          <div className="space-y-1 text-[9px] text-white/80">
+            {form.phone && <div>{form.phone}</div>}
+            {form.email && <div>{form.email}</div>}
+            {form.linkedin && <div>{form.linkedin}</div>}
+          </div>
+        </div>
+        {form.education.some((e: any) => e.degree || e.institution) && (
+          <div>
+            <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Education</div>
+            {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
+              <div key={i} className="mb-1.5">
+                <div className="text-[9px] font-semibold text-white/90">{edu.degree}</div>
+                <div className="text-[8px] text-white/70">{edu.institution}</div>
+                <div className="text-[8px] text-white/60">{edu.year}</div>
+              </div>
+            ))}
+          </div>
+        )}
+        {form.skills && (
+          <div>
+            <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Skills</div>
+            <div className="space-y-1">
+              {form.skills.split(',').map((s: string, i: number) => s.trim() && (
+                <div key={i} className="text-[9px] text-white/80">• {s.trim()}</div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="flex-1 p-6 space-y-4" style={{ backgroundColor: bg }}>
+        <div>
+          <div className="text-xl font-bold text-gray-900">{form.name || 'Your Name'}</div>
+          <div className="text-sm text-gray-500 mt-0.5">{form.email || 'email@example.com'}</div>
+        </div>
+        {form.summary && (
+          <div>
+            <SectionTitle text="Summary" accent={accent} />
+            <p className="text-[11px] text-gray-600 leading-relaxed whitespace-pre-wrap">{form.summary}</p>
+          </div>
+        )}
+        {form.experience.some((e: any) => e.role || e.company) && (
+          <div>
+            <SectionTitle text="Work Experience" accent={accent} />
+            {form.experience.filter((e: any) => e.role || e.company).map((exp: any, i: number) => (
+              <div key={i} className="mb-3">
+                <div className="flex justify-between items-start">
+                  <span className="text-xs font-semibold text-gray-800">{exp.role}</span>
+                  <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">{exp.duration}</span>
+                </div>
+                <div className="text-[11px] text-gray-500">{exp.company}</div>
+                {exp.description && <div className="text-[11px] text-gray-600 mt-0.5 whitespace-pre-wrap">{exp.description}</div>}
+              </div>
+            ))}
+          </div>
+        )}
+        {form.projects.some((p: any) => p.title) && (
+          <div>
+            <SectionTitle text="Projects" accent={accent} />
+            {form.projects.filter((p: any) => p.title).map((proj: any, i: number) => (
+              <div key={i} className="mb-2">
+                <div className="text-xs font-semibold text-gray-800">{proj.title}{proj.link ? <span className="text-[10px] text-gray-400 ml-2">{proj.link}</span> : ''}</div>
+                {proj.description && <div className="text-[11px] text-gray-600 mt-0.5 whitespace-pre-wrap">{proj.description}</div>}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  /* ── Dark Sidebar Photo layout ── */
+  const DarkSidebarPhotoLayout = () => (
+    <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden flex" style={{ minHeight: '800px' }}>
+      <div className="w-[35%] p-5 flex flex-col gap-4" style={{ backgroundColor: accent }}>
+        {form.photo && <div className="w-24 h-24 rounded-full mx-auto border-3 border-white/30 overflow-hidden"><img src={form.photo} alt="Profile" className="w-full h-full object-cover" /></div>}
+        <div>
+          <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Contact</div>
+          <div className="space-y-1 text-[9px] text-white/80">
+            {form.phone && <div>{form.phone}</div>}
+            {form.email && <div>{form.email}</div>}
+            {form.linkedin && <div>{form.linkedin}</div>}
+            {form.github && <div>{form.github}</div>}
+          </div>
+        </div>
+        {form.education.some((e: any) => e.degree || e.institution) && (
+          <div>
+            <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Education</div>
+            {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
+              <div key={i} className="mb-1.5">
+                <div className="text-[9px] font-semibold text-white/90">{edu.degree}</div>
+                <div className="text-[8px] text-white/70">{edu.institution}</div>
+                <div className="text-[8px] text-white/60">{edu.year}</div>
+              </div>
+            ))}
+          </div>
+        )}
+        {form.skills && (
+          <div>
+            <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Skills</div>
+            <div className="space-y-1">
+              {form.skills.split(',').map((s: string, i: number) => s.trim() && (
+                <div key={i} className="text-[9px] text-white/80">• {s.trim()}</div>
+              ))}
+            </div>
+          </div>
+        )}
+        {form.certifications.some((c: any) => c.name) && (
+          <div>
+            <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">References</div>
+            {form.certifications.filter((c: any) => c.name).map((cert: any, i: number) => (
+              <div key={i} className="mb-1">
+                <div className="text-[9px] font-semibold text-white/90">{cert.name}</div>
+                <div className="text-[8px] text-white/70">{cert.issuer}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="flex-1 p-6 space-y-4" style={{ backgroundColor: bg }}>
+        <div>
+          <div className="text-xl font-bold text-gray-900">{form.name || 'Your Name'}</div>
+          <div className="text-sm text-gray-500 mt-0.5">{form.email || 'email@example.com'}</div>
+        </div>
+        {form.experience.some((e: any) => e.role || e.company) && (
+          <div>
+            <SectionTitle text="Experience" accent={accent} />
+            {form.experience.filter((e: any) => e.role || e.company).map((exp: any, i: number) => (
+              <div key={i} className="mb-3">
+                <div className="flex justify-between items-start">
+                  <span className="text-xs font-semibold text-gray-800">{exp.role}</span>
+                  <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">{exp.duration}</span>
+                </div>
+                <div className="text-[11px] text-gray-500">{exp.company}</div>
+                {exp.description && <div className="text-[11px] text-gray-600 mt-0.5 whitespace-pre-wrap">{exp.description}</div>}
+              </div>
+            ))}
+          </div>
+        )}
+        {form.projects.some((p: any) => p.title) && (
+          <div>
+            <SectionTitle text="Projects" accent={accent} />
+            {form.projects.filter((p: any) => p.title).map((proj: any, i: number) => (
+              <div key={i} className="mb-2">
+                <div className="text-xs font-semibold text-gray-800">{proj.title}{proj.link ? <span className="text-[10px] text-gray-400 ml-2">{proj.link}</span> : ''}</div>
+                {proj.description && <div className="text-[11px] text-gray-600 mt-0.5 whitespace-pre-wrap">{proj.description}</div>}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  /* ── Gray Sidebar Right layout ── */
+  const GraySidebarRightLayout = () => (
+    <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden flex" style={{ minHeight: '800px' }}>
+      <div className="flex-1 p-6 space-y-4" style={{ backgroundColor: bg }}>
+        <div>
+          <div className="text-xl font-bold text-gray-900">{form.name || 'Your Name'}</div>
+          <div className="text-sm text-gray-500 mt-0.5">{form.email || 'email@example.com'}</div>
+        </div>
+        {form.summary && (
+          <div>
+            <SectionTitle text="About Me" accent={accent} />
+            <p className="text-[11px] text-gray-600 leading-relaxed whitespace-pre-wrap">{form.summary}</p>
+          </div>
+        )}
+        {form.experience.some((e: any) => e.role || e.company) && (
+          <div>
+            <SectionTitle text="Work Experience" accent={accent} />
+            {form.experience.filter((e: any) => e.role || e.company).map((exp: any, i: number) => (
+              <div key={i} className="mb-3">
+                <div className="flex justify-between items-start">
+                  <span className="text-xs font-semibold text-gray-800">{exp.role}</span>
+                  <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">{exp.duration}</span>
+                </div>
+                <div className="text-[11px] text-gray-500">{exp.company}</div>
+                {exp.description && <div className="text-[11px] text-gray-600 mt-0.5 whitespace-pre-wrap">{exp.description}</div>}
+              </div>
+            ))}
+          </div>
+        )}
+        {form.education.some((e: any) => e.degree || e.institution) && (
+          <div>
+            <SectionTitle text="Education" accent={accent} />
+            {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
+              <div key={i} className="mb-2">
+                <div className="flex justify-between">
+                  <span className="text-xs font-semibold text-gray-900">{edu.degree}</span>
+                  <span className="text-[10px] text-gray-400">{edu.year}</span>
+                </div>
+                <div className="text-[11px] text-gray-500">{edu.institution}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="w-[35%] p-5 flex flex-col gap-4" style={{ backgroundColor: accent }}>
+        {form.photo && <div className="w-24 h-24 rounded-full mx-auto border-3 border-white/30 overflow-hidden"><img src={form.photo} alt="Profile" className="w-full h-full object-cover" /></div>}
+        <div>
+          <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Contact</div>
+          <div className="space-y-1 text-[9px] text-white/80">
+            {form.phone && <div>{form.phone}</div>}
+            {form.email && <div>{form.email}</div>}
+            {form.linkedin && <div>{form.linkedin}</div>}
+          </div>
+        </div>
+        {form.education.some((e: any) => e.degree || e.institution) && (
+          <div>
+            <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Education</div>
+            {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
+              <div key={i} className="mb-1.5">
+                <div className="text-[9px] font-semibold text-white/90">{edu.degree}</div>
+                <div className="text-[8px] text-white/70">{edu.institution}</div>
+                <div className="text-[8px] text-white/60">{edu.year}</div>
+              </div>
+            ))}
+          </div>
+        )}
+        {form.skills && (
+          <div>
+            <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Skills</div>
+            <div className="space-y-1">
+              {form.skills.split(',').map((s: string, i: number) => s.trim() && (
+                <div key={i} className="text-[9px] text-white/80">• {s.trim()}</div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  /* ── Centered Light layout ── */
+  const CenteredLightLayout = () => (
+    <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden" style={{ minHeight: '800px', backgroundColor: bg }}>
+      <div className="p-8 text-center border-b border-gray-200">
+        <div className="text-2xl font-bold text-gray-900 tracking-tight">{form.name || 'Your Name'}</div>
+        <div className="text-sm text-gray-500 mt-1 tracking-wide">{form.email || 'email@example.com'}</div>
+        <div className="flex justify-center gap-3 text-[11px] text-gray-500 mt-2">
+          {form.phone && <span>{form.phone}</span>}
+          {form.linkedin && <span>{form.linkedin}</span>}
+          {form.github && <span>{form.github}</span>}
+        </div>
+      </div>
+      <div className="p-8 space-y-6">
+        {form.summary && (
+          <div>
+            <div className="text-[10px] font-bold uppercase text-gray-500 mb-2">Summary</div>
+            <p className="text-[11px] text-gray-600 leading-relaxed whitespace-pre-wrap">{form.summary}</p>
+          </div>
+        )}
+        {form.education.some((e: any) => e.degree || e.institution) && (
+          <div>
+            <div className="text-[10px] font-bold uppercase text-gray-500 mb-2">Education</div>
+            {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
+              <div key={i} className="mb-2">
+                <div className="flex justify-between">
+                  <span className="text-xs font-semibold text-gray-900">{edu.degree}</span>
+                  <span className="text-[10px] text-gray-400">{edu.year}</span>
+                </div>
+                <div className="text-[11px] text-gray-500">{edu.institution}</div>
+              </div>
+            ))}
+          </div>
+        )}
+        {form.skills && (
+          <div>
+            <div className="text-[10px] font-bold uppercase text-gray-500 mb-2">Skills</div>
+            <div className="flex flex-wrap gap-1.5">
+              {form.skills.split(',').map((s: string, i: number) => s.trim() && (
+                <span key={i} className="text-[10px] px-2 py-0.5 rounded bg-gray-100 text-gray-600">{s.trim()}</span>
+              ))}
+            </div>
+          </div>
+        )}
+        {form.experience.some((e: any) => e.role || e.company) && (
+          <div>
+            <div className="text-[10px] font-bold uppercase text-gray-500 mb-2">Experience</div>
+            {form.experience.filter((e: any) => e.role || e.company).map((exp: any, i: number) => (
+              <div key={i} className="mb-3">
+                <div className="flex justify-between items-start">
+                  <span className="text-xs font-semibold text-gray-800">{exp.role}</span>
+                  <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">{exp.duration}</span>
+                </div>
+                <div className="text-[11px] text-gray-500">{exp.company}</div>
+                {exp.description && <div className="text-[11px] text-gray-600 mt-0.5 whitespace-pre-wrap">{exp.description}</div>}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  /* ── Brown Sidebar layout ── */
+  const BrownSidebarLayout = () => (
+    <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden flex" style={{ minHeight: '800px' }}>
+      <div className="flex-1 p-6 space-y-4" style={{ backgroundColor: bg }}>
+        <div>
+          <div className="text-xl font-bold text-gray-900">{form.name || 'Your Name'}</div>
+          <div className="text-sm text-gray-500 mt-0.5">{form.email || 'email@example.com'}</div>
+        </div>
+        {form.summary && (
+          <div>
+            <SectionTitle text="About Me" accent={accent} />
+            <p className="text-[11px] text-gray-600 leading-relaxed whitespace-pre-wrap">{form.summary}</p>
+          </div>
+        )}
+        {form.education.some((e: any) => e.degree || e.institution) && (
+          <div>
+            <SectionTitle text="Education" accent={accent} />
+            {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
+              <div key={i} className="mb-2">
+                <div className="text-xs font-semibold text-gray-900">{edu.degree}</div>
+                <div className="text-[11px] text-gray-500">{edu.institution}</div>
+                <div className="text-[10px] text-gray-400">{edu.year}</div>
+              </div>
+            ))}
+          </div>
+        )}
+        {form.experience.some((e: any) => e.role || e.company) && (
+          <div>
+            <SectionTitle text="Experience" accent={accent} />
+            {form.experience.filter((e: any) => e.role || e.company).map((exp: any, i: number) => (
+              <div key={i} className="mb-3">
+                <div className="flex justify-between items-start">
+                  <span className="text-xs font-semibold text-gray-800">{exp.role}</span>
+                  <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">{exp.duration}</span>
+                </div>
+                <div className="text-[11px] text-gray-500">{exp.company}</div>
+                {exp.description && <div className="text-[11px] text-gray-600 mt-0.5 whitespace-pre-wrap">{exp.description}</div>}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="w-[35%] p-5 flex flex-col gap-4" style={{ backgroundColor: accent }}>
+        {form.photo && <div className="w-24 h-24 rounded-full mx-auto border-3 border-white/30 overflow-hidden"><img src={form.photo} alt="Profile" className="w-full h-full object-cover" /></div>}
+        <div>
+          <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Skills</div>
+          <div className="space-y-1">
+            {form.skills.split(',').map((s: string, i: number) => s.trim() && (
+              <div key={i} className="text-[9px] text-white/80">• {s.trim()}</div>
+            ))}
+          </div>
+        </div>
+        {form.education.some((e: any) => e.degree || e.institution) && (
+          <div>
+            <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Education</div>
+            {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
+              <div key={i} className="mb-1.5">
+                <div className="text-[9px] font-semibold text-white/90">{edu.degree}</div>
+                <div className="text-[8px] text-white/70">{edu.institution}</div>
+                <div className="text-[8px] text-white/60">{edu.year}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  /* ── Dark Sidebar Right layout ── */
+  const DarkSidebarRightLayout = () => (
+    <div className="mx-auto max-w-[600px] bg-white shadow-2xl rounded-lg overflow-hidden flex" style={{ minHeight: '800px' }}>
+      <div className="flex-1 p-6 space-y-4" style={{ backgroundColor: bg }}>
+        <div>
+          <div className="text-xl font-bold text-gray-900">{form.name || 'Your Name'}</div>
+          <div className="text-sm text-gray-500 mt-0.5">{form.email || 'email@example.com'}</div>
+        </div>
+        {form.experience.some((e: any) => e.role || e.company) && (
+          <div>
+            <SectionTitle text="Work Experience" accent={accent} />
+            {form.experience.filter((e: any) => e.role || e.company).map((exp: any, i: number) => (
+              <div key={i} className="mb-3">
+                <div className="flex justify-between items-start">
+                  <span className="text-xs font-semibold text-gray-800">{exp.role}</span>
+                  <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">{exp.duration}</span>
+                </div>
+                <div className="text-[11px] text-gray-500">{exp.company}</div>
+                {exp.description && <div className="text-[11px] text-gray-600 mt-0.5 whitespace-pre-wrap">{exp.description}</div>}
+              </div>
+            ))}
+          </div>
+        )}
+        {form.projects.some((p: any) => p.title) && (
+          <div>
+            <SectionTitle text="Projects" accent={accent} />
+            {form.projects.filter((p: any) => p.title).map((proj: any, i: number) => (
+              <div key={i} className="mb-2">
+                <div className="text-xs font-semibold text-gray-800">{proj.title}{proj.link ? <span className="text-[10px] text-gray-400 ml-2">{proj.link}</span> : ''}</div>
+                {proj.description && <div className="text-[11px] text-gray-600 mt-0.5 whitespace-pre-wrap">{proj.description}</div>}
+              </div>
+            ))}
+          </div>
+        )}
+        {form.education.some((e: any) => e.degree || e.institution) && (
+          <div>
+            <SectionTitle text="Education" accent={accent} />
+            {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
+              <div key={i} className="mb-2">
+                <div className="flex justify-between">
+                  <span className="text-xs font-semibold text-gray-900">{edu.degree}</span>
+                  <span className="text-[10px] text-gray-400">{edu.year}</span>
+                </div>
+                <div className="text-[11px] text-gray-500">{edu.institution}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="w-[35%] p-5 flex flex-col gap-4" style={{ backgroundColor: accent }}>
+        {form.photo && <div className="w-24 h-24 rounded-full mx-auto border-3 border-white/30 overflow-hidden"><img src={form.photo} alt="Profile" className="w-full h-full object-cover" /></div>}
+        <div>
+          <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Contact</div>
+          <div className="space-y-1 text-[9px] text-white/80">
+            {form.phone && <div>{form.phone}</div>}
+            {form.email && <div>{form.email}</div>}
+            {form.linkedin && <div>{form.linkedin}</div>}
+          </div>
+        </div>
+        {form.education.some((e: any) => e.degree || e.institution) && (
+          <div>
+            <div className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-1.5">Education</div>
+            {form.education.filter((e: any) => e.degree || e.institution).map((edu: any, i: number) => (
+              <div key={i} className="mb-1.5">
+                <div className="text-[9px] font-semibold text-white/90">{edu.degree}</div>
+                <div className="text-[8px] text-white/70">{edu.institution}</div>
+                <div className="text-[8px] text-white/60">{edu.year}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   // pick layout based on template id
   switch (tid) {
     case 'fullstack': return <FullstackLayout />;
@@ -1751,6 +2393,12 @@ function ResumePreview({ template, form, accent, bg }: {
     case 'blackwhite-minimalist': return <BlackWhiteLayout />;
     case 'bluegray-simple': return <BlueGrayLayout />;
     case 'professional-modern': return <ProfessionalModernLayout />;
+    case 'grayblue-sidebar': return <GrayBlueSidebarLayout />;
+    case 'dark-sidebar-photo': return <DarkSidebarPhotoLayout />;
+    case 'gray-sidebar-right': return <GraySidebarRightLayout />;
+    case 'centered-light': return <CenteredLightLayout />;
+    case 'brown-sidebar': return <BrownSidebarLayout />;
+    case 'dark-sidebar-right': return <DarkSidebarRightLayout />;
     default: if (isTwoCol) return <TwoColumn />; return <SingleColumn />;
   }
 }
