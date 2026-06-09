@@ -6,7 +6,7 @@ import questionsRouter from '../routes/questions';
 import publicPatternsRouter from '../routes/publicPatterns';
 import publicStatsRouter from '../routes/publicStats';
 import adminRouter from '../routes/admin';
-import shopRouter from '../routes/shop';
+import shopRouter, { ensureSeedProducts } from '../routes/shop';
 import shopPurchasesRouter from '../routes/shopPurchases';
 import { isRazorpayEnabled } from '../services/razorpay';
 import { initDb } from '../data/db';
@@ -45,6 +45,7 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
 
 (async () => {
   await initDb(questions, topics, cheatSheets, users, testCaseData, patternDetails);
+  ensureSeedProducts();
   app.listen(PORT, () => {
     console.log(`[content-service] running on http://localhost:${PORT}`);
     console.log(`[content-config] RAZORPAY_KEY_ID=${process.env.RAZORPAY_KEY_ID ? 'SET (' + process.env.RAZORPAY_KEY_ID.slice(0,8) + '...)' : 'NOT SET'}`);

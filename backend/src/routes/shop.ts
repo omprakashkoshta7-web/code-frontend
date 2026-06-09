@@ -4,6 +4,26 @@ import type { ShopProduct } from '../types';
 
 const router = Router();
 
+router.get('/products', (req: Request, res: Response) => {
+  const db = getDb();
+  const { category, search, free } = req.query;
+  let result = [...(db.shopProducts || [])];
+  if (category && category !== 'all') result = result.filter(p => p.category === category);
+  if (search) {
+    const q = String(search).toLowerCase();
+    result = result.filter(p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.tags.some(t => t.includes(q)));
+  }
+  if (free === 'true') result = result.filter(p => p.price === 'free' || (typeof p.price === 'object' && p.price.amount === 0));
+  res.json({ products: result, total: result.length, categories: [...new Set((db.shopProducts || []).map((p: ShopProduct) => p.category))] });
+});
+
+router.get('/products/:id', (req: Request, res: Response) => {
+  const db = getDb();
+  const product = (db.shopProducts || []).find((p: ShopProduct) => p.id === req.params.id);
+  if (!product) return res.status(404).json({ error: 'Product not found' });
+  res.json(product);
+});
+
 const SEED_PRODUCTS: ShopProduct[] = [
   { id: 'p1', title: 'DSA Cheat Sheet 2025', description: 'Complete DSA cheat sheet with code snippets, time complexities, and pattern recognition for all major topics.', category: 'pdf', price: { amount: 0, label: 'Free' }, icon: '📄', color: 'from-blue-500 to-cyan-500', tags: ['dsa', 'algorithms', 'patterns'], author: 'CodeSprout Team', pages: 48 },
   { id: 'p2', title: 'System Design Interview Guide', description: 'Comprehensive guide covering distributed systems, scalability, caching, databases, and real-world architecture patterns.', category: 'pdf', price: { amount: 499, label: '₹499' }, icon: '📄', color: 'from-purple-500 to-indigo-500', tags: ['system-design', 'architecture', 'scalability'], popular: true, author: 'Senior Engineers', pages: 120 },
@@ -21,35 +41,26 @@ const SEED_PRODUCTS: ShopProduct[] = [
   { id: 'c4', title: 'Startup Interview Questions', description: 'Questions commonly asked at high-growth startups, full-stack challenges, product sense, and hands-on coding.', category: 'company-specific', price: { amount: 0, label: 'Free' }, icon: '🏢', color: 'from-green-500 to-emerald-600', tags: ['startup', 'general'], author: 'Startup CTOs', pages: 35 },
 ];
 
-function seedIfEmpty(): void {
+// Called once at startup to ensure default seed products exist without overwriting custom ones
+export function ensureSeedProducts(): void {
   const db = getDb();
-  if (!db.shopProducts || db.shopProducts.length === 0) {
+  if (!db.shopProducts) {
     const now = new Date().toISOString();
     db.shopProducts = SEED_PRODUCTS.map(p => ({ ...p, created_at: now, updated_at: now }));
     saveDb();
+    return;
   }
+  // Merge: add seed products that don't already exist in db
+  const existingIds = new Set(db.shopProducts.map((p: ShopProduct) => p.id));
+  let changed = false;
+  const now = new Date().toISOString();
+  for (const sp of SEED_PRODUCTS) {
+    if (!existingIds.has(sp.id)) {
+      db.shopProducts.push({ ...sp, created_at: now, updated_at: now });
+      changed = true;
+    }
+  }
+  if (changed) saveDb();
 }
-
-router.get('/products', (req: Request, res: Response) => {
-  seedIfEmpty();
-  const db = getDb();
-  const { category, search, free } = req.query;
-  let result = [...db.shopProducts];
-  if (category && category !== 'all') result = result.filter(p => p.category === category);
-  if (search) {
-    const q = String(search).toLowerCase();
-    result = result.filter(p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.tags.some(t => t.includes(q)));
-  }
-  if (free === 'true') result = result.filter(p => p.price === 'free' || (typeof p.price === 'object' && p.price.amount === 0));
-  res.json({ products: result, total: result.length, categories: [...new Set(db.shopProducts.map((p: ShopProduct) => p.category))] });
-});
-
-router.get('/products/:id', (req: Request, res: Response) => {
-  seedIfEmpty();
-  const db = getDb();
-  const product = db.shopProducts.find((p: ShopProduct) => p.id === req.params.id);
-  if (!product) return res.status(404).json({ error: 'Product not found' });
-  res.json(product);
-});
 
 export default router;
