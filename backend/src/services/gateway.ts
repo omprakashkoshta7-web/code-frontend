@@ -168,6 +168,21 @@ const handle = (req: Request, res: Response, next: NextFunction) => {
     return res.json({ templates: RESUME_TEMPLATES });
   }
 
+  // Resume list — return empty (resume microservice DB not available via gateway)
+  if (path === '/resume/list') {
+    return res.json({ resumes: [] });
+  }
+
+  // Resume analyze — return error (AI analysis only available via resume microservice)
+  if (path === '/resume/analyze') {
+    return res.status(503).json({ error: 'Resume analysis service unavailable. Please try again later.' });
+  }
+
+  // Resume rewrite — return error (AI rewrite only available via resume microservice)
+  if (path === '/resume/rewrite') {
+    return res.status(503).json({ error: 'Resume rewrite service unavailable. Please try again later.' });
+  }
+
   // Resume upload & parse served directly from gateway
   if (path === '/resume/upload') {
     return resumeUpload.single('resume')(req, res, async (err) => {
