@@ -10,6 +10,7 @@ import type {
   Contest, ContestSubmission,
   Roadmap, RoadmapProgress,
   InterviewPreference, GeneratedInterviewQuestion, MockInterviewSession, InterviewKit, ShopProduct,
+  ParsedResume,
 } from '../types';
 
 export interface TestCaseData {
@@ -64,6 +65,7 @@ interface DbData {
   aiInterviewSessions: any[];
   shopProducts: ShopProduct[];
   shopPurchases: any[];
+  resumes: ParsedResume[];
 }
 
 const DB_PATH = join(__dirname, '..', '..', 'data', 'db.json');
@@ -91,7 +93,7 @@ async function persistToMongo() {
     'communities', 'answers', 'chatMessages', 'discussions', 'studyProgress', 'points',
     'weeklyChallenges', 'challengeProgress', 'notes', 'interviews', 'resources',
     'contests', 'contestSubmissions', 'roadmaps', 'roadmapProgress', 'notifications',
-    'paymentRequests', 'shopProducts', 'shopPurchases',
+    'paymentRequests', 'shopProducts', 'shopPurchases', 'resumes',
   ];
   const keyFor: Partial<Record<keyof DbData, string>> = {
     users: 'id',
@@ -120,6 +122,7 @@ async function persistToMongo() {
     paymentRequests: 'id',
     shopProducts: 'id',
     shopPurchases: 'id',
+    resumes: 'id',
   };
   for (const col of collections) {
     const arr = db[col] as any[];
@@ -191,6 +194,7 @@ export async function initDb(questions: Question[], topics: Topic[], cheatSheets
           aiInterviewSessions: [],
           shopProducts: [],
           shopPurchases: [],
+          resumes: [],
         };
         db = fresh;
         await persistToMongo();
@@ -230,6 +234,7 @@ export async function initDb(questions: Question[], topics: Topic[], cheatSheets
           aiInterviewSessions: [],
           shopProducts: await col('shopProducts').find({}).toArray() as any,
           shopPurchases: await col('shopPurchases').find({}).toArray() as any,
+          resumes: await col('resumes').find({}).toArray() as any,
         };
         const adminUser = db.users.find((u: any) => u.email === 'admin@dsacheatsheets.com');
         if (adminUser) {
@@ -291,6 +296,7 @@ export async function initDb(questions: Question[], topics: Topic[], cheatSheets
     aiInterviewSessions: [],
     shopProducts: [],
     shopPurchases: [],
+    resumes: [],
   };
   db = fresh;
   console.log(`[DB] Initialized with ${questions.length} questions, ${testCases.length} test cases, ${patternDetails.length} pattern details`);

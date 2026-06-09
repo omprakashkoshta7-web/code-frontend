@@ -20,6 +20,7 @@ import MockCallPage from '@/features/interview/pages/MockCallPage';
 import MockResultPage from '@/features/interview/pages/MockResultPage';
 import AiInterviewPage from '@/features/interview/pages/AiInterviewPage';
 import ShopPage from '@/features/shop/pages/ShopPage';
+import ResumePage from '@/features/resume/pages/ResumePage';
 import GamesLandingPage from '@/features/games/pages/GamesLandingPage';
 import HeroSection from '@/shared/components/HeroSection';
 import FAQ from '@/shared/components/FAQ';
@@ -764,6 +765,7 @@ export const router = createBrowserRouter([
       { path: 'forgot-password', element: <ForgotPasswordPage /> },
       { path: 'reset-password', element: <ResetPasswordPage /> },
       { path: 'shop', element: <ShopPage /> },
+      { path: 'resume', element: <ResumePage /> },
       { path: 'pricing', element: <PricingPage /> },
       { path: 'interview-prep', element: <InterviewPrepPage /> },
       { path: 'interview-prep/setup', element: <ProtectedRoute><InterviewSetupPage /></ProtectedRoute> },

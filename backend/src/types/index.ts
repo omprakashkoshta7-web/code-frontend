@@ -382,3 +382,57 @@ export interface ShopProduct {
   created_at?: string;
   updated_at?: string;
 }
+
+// ====== RESUME ======
+export interface ResumeSection {
+  type: 'name' | 'email' | 'phone' | 'linkedin' | 'github' | 'portfolio' | 'education' | 'skills' | 'projects' | 'experience' | 'achievements' | 'certifications';
+  value: string;
+  items?: string[];
+}
+
+export interface ParsedResume {
+  id: string;
+  user_id: string;
+  title: string;
+  raw_text: string;
+  sections: ResumeSection[];
+  score?: ResumeScore;
+  analysis?: ResumeAnalysis;
+  created_at: string;
+}
+
+export interface ResumeScore {
+  total: number;
+  breakdown: {
+    basic_info: number;
+    projects: number;
+    skills: number;
+    experience: number;
+    education: number;
+    ats: number;
+  };
+}
+
+export interface ResumeAnalysis {
+  strength: 'Low' | 'Medium' | 'High';
+  weak_areas: string[];
+  missing_sections: string[];
+  ats_improvements: string[];
+  project_suggestions: string[];
+  skill_suggestions: string[];
+  template_recommendation: string;
+  ats_friendly: number;
+  project_score: number;
+  rewrite_suggestions: { original: string; rewritten: string }[];
+}
+
+export interface ResumeTemplate {
+  id: string;
+  name: string;
+  description: string;
+  category: 'ats-beginner' | 'sde' | 'frontend' | 'backend' | 'ai-ml' | 'fullstack';
+  preview: string;
+  is_ats_friendly: boolean;
+  columns: 1 | 2;
+  colors: string[];
+}

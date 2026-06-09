@@ -65,6 +65,7 @@ const SERVICES = {
   social: process.env.SOCIAL_SERVICE_URL || 'http://localhost:3003',
   execution: process.env.EXECUTION_SERVICE_URL || 'http://localhost:3004',
   payment: process.env.PAYMENT_SERVICE_URL || 'http://localhost:3005',
+  resume: process.env.RESUME_SERVICE_URL || 'http://localhost:3006',
 };
 
 const proxies = new Map<string, ReturnType<typeof createProxyMiddleware>>();
@@ -116,6 +117,7 @@ const handle = (req: Request, res: Response, next: NextFunction) => {
   else if (path.startsWith('/subscription')) target = SERVICES.payment;
   else if (path.startsWith('/communities') || path.startsWith('/answers') || path.startsWith('/chat') || path.startsWith('/discussions') || path.startsWith('/progress') || path.startsWith('/notes') || path.startsWith('/interviews') || path.startsWith('/resources') || path.startsWith('/contests') || path.startsWith('/roadmaps') || path.startsWith('/challenges') || path.startsWith('/points')) target = SERVICES.social;
   else if (path.startsWith('/execute') || path.startsWith('/upload')) target = SERVICES.execution;
+  else if (path.startsWith('/resume')) target = SERVICES.resume;
   else if (path.startsWith('/payments')) target = SERVICES.payment;
   else if (path.startsWith('/admin')) {
     if (path.startsWith('/admin/ai') || path.startsWith('/admin/patterns')) target = SERVICES.execution;
