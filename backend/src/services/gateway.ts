@@ -109,20 +109,22 @@ app.get('/health', (_req, res) => res.json({
 
 // ====== Resume Templates (served directly from gateway) ======
 const RESUME_TEMPLATES = [
-  { id: 'ats-beginner', name: 'ATS Beginner', description: 'Clean single-column layout optimized for ATS parsers', category: 'ats-beginner', is_ats_friendly: true, columns: 1, colors: ['#1e293b', '#f8fafc', '#ffffff'] },
-  { id: 'sde', name: 'SDE Resume', description: 'Software engineering focused with technical skills emphasis', category: 'sde', is_ats_friendly: true, columns: 1, colors: ['#0f172a', '#e2e8f0', '#ffffff'] },
-  { id: 'frontend', name: 'Frontend Resume', description: 'Modern layout with visual portfolio & project highlights', category: 'frontend', is_ats_friendly: false, columns: 2, colors: ['#312e81', '#f0f9ff', '#ffffff'] },
-  { id: 'backend', name: 'Backend Resume', description: 'System design & architecture focused clean format', category: 'backend', is_ats_friendly: true, columns: 1, colors: ['#1e3a5f', '#f1f5f9', '#ffffff'] },
-  { id: 'ai-ml', name: 'AI/ML Resume', description: 'Research & model-focused layout for data scientists', category: 'ai-ml', is_ats_friendly: false, columns: 2, colors: ['#581c87', '#fdf4ff', '#ffffff'] },
-  { id: 'fullstack', name: 'Full Stack Resume', description: 'Versatile format balancing frontend & backend skills', category: 'fullstack', is_ats_friendly: true, columns: 1, colors: ['#0d9488', '#f0fdfa', '#ffffff'] },
+  { id: 'ats-beginner', name: 'ATS Beginner', description: 'Clean single-column layout optimized for ATS parsers', is_ats_friendly: true, columns: 1, colors: ['#1e293b', '#f8fafc', '#ffffff'] },
+  { id: 'sde', name: 'SDE Resume', description: 'Software engineering focused with technical skills emphasis', is_ats_friendly: true, columns: 1, colors: ['#0f172a', '#e2e8f0', '#ffffff'] },
+  { id: 'frontend', name: 'Frontend Resume', description: 'Modern layout with visual portfolio & project highlights', is_ats_friendly: false, columns: 2, colors: ['#312e81', '#f0f9ff', '#ffffff'] },
+  { id: 'backend', name: 'Backend Resume', description: 'System design & architecture focused clean format', is_ats_friendly: true, columns: 1, colors: ['#1e3a5f', '#f1f5f9', '#ffffff'] },
+  { id: 'ai-ml', name: 'AI/ML Resume', description: 'Research & model-focused layout for data scientists', is_ats_friendly: false, columns: 2, colors: ['#581c87', '#fdf4ff', '#ffffff'] },
+  { id: 'fullstack', name: 'Full Stack Resume', description: 'Versatile format balancing frontend & backend skills', is_ats_friendly: true, columns: 1, colors: ['#0d9488', '#f0fdfa', '#ffffff'] },
 ];
-
-app.get('/api/resume/templates', (_req: Request, res: Response) => {
-  res.json({ templates: RESUME_TEMPLATES });
-});
 
 const handle = (req: Request, res: Response, next: NextFunction) => {
   const path = req.path;
+
+  // Resume templates served directly from gateway
+  if (path === '/resume/templates') {
+    return res.json({ templates: RESUME_TEMPLATES });
+  }
+
   let target: string | null = null;
   if (path.startsWith('/auth') || path.startsWith('/notifications') || path.startsWith('/email')) target = SERVICES.auth;
   else if (path.startsWith('/topics') || path.startsWith('/questions') || path.startsWith('/patterns') || path.startsWith('/stats') || path.startsWith('/shop')) target = SERVICES.content;
