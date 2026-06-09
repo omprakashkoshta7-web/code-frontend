@@ -431,7 +431,7 @@ export interface ResumeTemplate {
   id: string;
   name: string;
   description: string;
-  category: 'ats-beginner' | 'sde' | 'frontend' | 'backend' | 'ai-ml' | 'fullstack';
+  category: 'ats-beginner' | 'sde' | 'frontend' | 'backend' | 'ai-ml' | 'fullstack' | 'executive' | 'minimalist' | 'creative' | 'technical' | 'academic';
   preview: string;
   is_ats_friendly: boolean;
   columns: 1 | 2;
