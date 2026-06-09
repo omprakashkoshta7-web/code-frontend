@@ -174,13 +174,9 @@ export default function HeroSection() {
                   while (pos < typed.length) {
                     const word = words.find(w => typed.startsWith(w, pos));
                     if (word) {
-                      parts.push(<span key={pos} className="text-white" style={{ WebkitTextFillColor: 'white' }}>{typed[pos]}</span>);
-                      pos++;
-                      if (pos < typed.length) {
-                        const restLen = Math.min(word.length - 1, typed.length - pos);
-                        parts.push(<span key={`${pos}_r`}>{typed.substring(pos, pos + restLen)}</span>);
-                        pos += restLen;
-                      }
+                      const end = Math.min(pos + word.length, typed.length);
+                      parts.push(<span key={pos} className="text-white" style={{ WebkitTextFillColor: 'white' }}>{typed.substring(pos, end)}</span>);
+                      pos = end;
                     } else {
                       parts.push(<span key={pos}>{typed[pos]}</span>);
                       pos++;
