@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  X, FileText, Upload, Trash2, Loader2, ChevronRight, ArrowRight,
+  X, FileText, Upload, Trash2, Loader2, ChevronRight, ArrowRight, Lock, Crown,
 } from 'lucide-react';
 import { resumeApi } from '../api/resumeApi';
 import toast from 'react-hot-toast';
@@ -15,6 +15,7 @@ interface Template {
   columns: number;
   colors?: string[];
   sections?: string[];
+  isPremium?: boolean;
 }
 
 interface Props {
@@ -681,9 +682,17 @@ function MiniResume({ type, colors }: { type: string; colors: string[] }) {
     ),
   };
 
+  const premiumToFree: Record<string, string> = {
+    'grayblue-premium': 'grayblue-sidebar',
+    'dark-photo-premium': 'dark-sidebar-photo',
+    'gray-right-premium': 'gray-sidebar-right',
+    'centered-premium': 'centered-light',
+    'brown-premium': 'brown-sidebar',
+    'dark-right-premium': 'dark-sidebar-right',
+  };
   return (
     <div className="w-full h-full rounded overflow-hidden border border-gray-200/30" style={{ backgroundColor: bg }}>
-      {layouts[type] || layouts['ats-beginner']}
+      {layouts[type] || layouts[premiumToFree[type]] || layouts['ats-beginner']}
     </div>
   );
 }
@@ -882,6 +891,27 @@ export default function TemplateWizard({ onComplete, onCancel }: Props) {
     summary: '',
   });
   const [showPreview, setShowPreview] = useState(false);
+  const [unlockedTemplates, setUnlockedTemplates] = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem('unlockedTemplates') || '[]'); } catch { return []; }
+  });
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentTemplate, setPaymentTemplate] = useState<Template | null>(null);
+
+  const handleUnlock = (t: Template) => {
+    if (!t.isPremium) return;
+    setPaymentTemplate(t);
+    setShowPaymentModal(true);
+  };
+
+  const confirmPayment = () => {
+    if (!paymentTemplate) return;
+    const updated = [...new Set([...unlockedTemplates, paymentTemplate.id])];
+    setUnlockedTemplates(updated);
+    localStorage.setItem('unlockedTemplates', JSON.stringify(updated));
+    setShowPaymentModal(false);
+    setPaymentTemplate(null);
+    setStep(2);
+  };
 
   const FALLBACK_TEMPLATES: Template[] = [
     { id: 'ats-beginner', name: 'ATS Beginner', description: 'Clean single-column layout optimized for ATS parsers', is_ats_friendly: true, columns: 1, colors: ['#1e293b', '#f8fafc'] },
@@ -908,6 +938,13 @@ export default function TemplateWizard({ onComplete, onCancel }: Props) {
     { id: 'blank-canvas', name: 'Blank Canvas Builder', description: 'Fully editable blank canvas — add/remove sections, upload photo, two-column professional layout', is_ats_friendly: true, columns: 2, colors: ['#2563eb', '#ffffff'] },
     { id: 'blue-sidebar-profile', name: 'Blue Sidebar Profile', description: 'Blue sidebar left with photo, skills, languages & interests, two-column', is_ats_friendly: false, columns: 2, colors: ['#1e3a5f', '#ffffff'] },
     { id: 'orange-sidebar-profile', name: 'Orange Sidebar Profile', description: 'Orange/peach sidebar left with photo, contact, education & skills', is_ats_friendly: false, columns: 2, colors: ['#c2410c', '#ffffff'] },
+    /* ── Premium Templates (₹5 each) ── */
+    { id: 'grayblue-premium', name: 'Gray Blue Pro✨', description: 'Premium gray-blue sidebar layout with enhanced design ★', is_ats_friendly: false, columns: 2, colors: ['#4a5568', '#ffffff'], isPremium: true },
+    { id: 'dark-photo-premium', name: 'Dark Photo Pro✨', description: 'Premium dark sidebar with photo & refined typography ★', is_ats_friendly: false, columns: 2, colors: ['#1a202c', '#ffffff'], isPremium: true },
+    { id: 'gray-right-premium', name: 'Gray Right Pro✨', description: 'Premium gray sidebar right with elegant spacing ★', is_ats_friendly: false, columns: 2, colors: ['#4a5568', '#ffffff'], isPremium: true },
+    { id: 'centered-premium', name: 'Centered Pro✨', description: 'Premium centered single-column with pro finishing ★', is_ats_friendly: true, columns: 1, colors: ['#2d3748', '#f7fafc'], isPremium: true },
+    { id: 'brown-premium', name: 'Brown Pro✨', description: 'Premium brown sidebar with advanced styling ★', is_ats_friendly: false, columns: 2, colors: ['#744210', '#ffffff'], isPremium: true },
+    { id: 'dark-right-premium', name: 'Dark Right Pro✨', description: 'Premium dark sidebar right with photo & contact ★', is_ats_friendly: false, columns: 2, colors: ['#1a202c', '#ffffff'], isPremium: true },
   ];
 
   useEffect(() => {
@@ -1050,10 +1087,29 @@ export default function TemplateWizard({ onComplete, onCancel }: Props) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05 }}
                 className="cursor-pointer group"
-                onClick={() => { setSelectedTemplate(t); setStep(2); }}
+                onClick={() => {
+                  if (t.isPremium && !unlockedTemplates.includes(t.id)) {
+                    handleUnlock(t);
+                    return;
+                  }
+                  setSelectedTemplate(t);
+                  setStep(2);
+                }}
               >
                 <div className="rounded-xl overflow-hidden border border-white/10 bg-white/5 shadow-lg hover:shadow-2xl hover:shadow-violet-500/10 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-violet-500/50">
-                  <div className="h-80 overflow-hidden">
+                  <div className="h-80 overflow-hidden relative">
+                    {t.isPremium && !unlockedTemplates.includes(t.id) && (
+                      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/60 backdrop-blur-[2px] transition-opacity">
+                        <Lock className="w-8 h-8 text-yellow-400 mb-2" />
+                        <span className="text-yellow-400 font-bold text-sm">₹5 Unlock</span>
+                        <span className="text-white/70 text-[10px] mt-1">Premium Template</span>
+                      </div>
+                    )}
+                    {t.isPremium && (
+                      <div className="absolute top-2 right-2 z-10 flex items-center gap-1 bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-lg">
+                        <Crown className="w-3 h-3" /> PRO
+                      </div>
+                    )}
                     <MiniResume type={t.id} colors={t.colors || ['#6d28d9', '#f8fafc']} />
                   </div>
                 </div>
@@ -1061,6 +1117,27 @@ export default function TemplateWizard({ onComplete, onCancel }: Props) {
             ))}
           </div>
         </div>
+
+        {/* Payment Modal */}
+        {showPaymentModal && paymentTemplate && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}>
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="rounded-2xl max-w-sm w-full p-6 border border-white/10 text-center" style={{ backgroundColor: 'rgba(17, 24, 39, 0.95)', backdropFilter: 'blur(20px)' }}>
+              <Crown className="w-12 h-12 text-yellow-400 mx-auto mb-3" />
+              <h3 className="text-lg font-bold text-white mb-1">Unlock Premium Template</h3>
+              <p className="text-slate-400 text-sm mb-1">{paymentTemplate.name}</p>
+              <p className="text-2xl font-bold text-yellow-400 mb-4">₹5</p>
+              <p className="text-slate-500 text-xs mb-5">One-time payment · Lifetime access</p>
+              <div className="flex gap-3">
+                <button onClick={confirmPayment} className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-yellow-500 to-amber-600 text-white font-semibold text-sm hover:from-yellow-400 hover:to-amber-500 transition-all shadow-lg shadow-yellow-500/25">
+                  Pay ₹5 & Unlock
+                </button>
+                <button onClick={() => setShowPaymentModal(false)} className="px-5 py-2.5 rounded-xl border border-white/10 text-slate-400 text-sm hover:bg-white/5 hover:text-white transition-colors">
+                  Cancel
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
       </motion.div>
     );
   }
@@ -2856,6 +2933,13 @@ function ResumePreview({ template, form, accent, bg }: {
     case 'blank-canvas': return <BlankCanvasLayout />;
     case 'blue-sidebar-profile': return <BlueSidebarProfileLayout />;
     case 'orange-sidebar-profile': return <OrangeSidebarProfileLayout />;
+    /* premium templates reuse same layouts */
+    case 'grayblue-premium': return <GrayBlueSidebarLayout />;
+    case 'dark-photo-premium': return <DarkSidebarPhotoLayout />;
+    case 'gray-right-premium': return <GraySidebarRightLayout />;
+    case 'centered-premium': return <CenteredLightLayout />;
+    case 'brown-premium': return <BrownSidebarLayout />;
+    case 'dark-right-premium': return <DarkSidebarRightLayout />;
     default: if (isTwoCol) return <TwoColumn />; return <SingleColumn />;
   }
 }
