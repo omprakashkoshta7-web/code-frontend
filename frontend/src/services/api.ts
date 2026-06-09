@@ -1,10 +1,20 @@
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { subscriptionStorage } from '@/shared/utils/subscriptionStorage';
 import { userStorage } from '@/shared/utils/userStorage';
 
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL || ''}/api`,
   headers: { 'Content-Type': 'application/json' },
+});
+
+axiosRetry(api, {
+  retries: 4,
+  retryCondition: (error) => error.response?.status === 429,
+  retryDelay: axiosRetry.exponentialDelay,
+  onRetry: (retryCount, error) => {
+    console.warn(`[429] Retry #${retryCount} for ${error.config?.url}`);
+  },
 });
 
 api.interceptors.request.use((config) => {
