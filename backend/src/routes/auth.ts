@@ -202,4 +202,43 @@ router.post('/reset-password', async (req: Request, res: Response) => {
   res.json({ message: 'Password reset successfully. You can now log in with your new password.' });
 });
 
+// PUT /api/auth/profile — update name, picture
+router.put('/profile', authenticate, async (req: AuthRequest, res: Response) => {
+  const userId = req.user!.id;
+  const { name, picture } = req.body;
+  const db = getDb();
+  const idx = db.users.findIndex(u => u.id === userId);
+  if (idx === -1) return res.status(404).json({ error: 'User not found' });
+
+  if (name !== undefined) db.users[idx].name = name;
+  if (picture !== undefined) db.users[idx].picture = picture;
+  saveDb();
+
+  const user = db.users[idx];
+  const token = generateToken({ id: user.id, email: user.email, role: user.role, name: user.name });
+  res.json({ user: publicUser(user), token });
+});
+
+// PUT /api/auth/password — change password (requires current password)
+router.put('/password', authenticate, async (req: AuthRequest, res: Response) => {
+  const userId = req.user!.id;
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) return res.status(400).json({ error: 'Current and new password required' });
+  if (newPassword.length < 6) return res.status(400).json({ error: 'New password must be at least 6 characters' });
+
+  const user = getUserById(userId);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  const valid = await bcrypt.compare(currentPassword, user.password).catch(() => false);
+  if (!valid) return res.status(401).json({ error: 'Current password is incorrect' });
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  const db = getDb();
+  const idx = db.users.findIndex(u => u.id === userId);
+  db.users[idx] = { ...db.users[idx], password: hashedPassword };
+  saveDb();
+
+  res.json({ message: 'Password changed successfully' });
+});
+
 export default router;

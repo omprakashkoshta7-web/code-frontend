@@ -41,6 +41,7 @@ const AddQuestionPage = lazy(() => import('@/features/admin/pages/AddQuestionPag
 const ManageUsers = lazy(() => import('@/features/admin/pages/ManageUsers'));
 const ManageShopPayments = lazy(() => import('@/features/admin/pages/ManageShopPayments'));
 const ManageTemplates = lazy(() => import('@/features/admin/pages/ManageTemplates'));
+const ProfilePage = lazy(() => import('@/features/auth/pages/ProfilePage'));
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
@@ -781,6 +782,7 @@ export const router = createBrowserRouter([
       { path: 'communities/:id', element: <ProtectedRoute><Suspense fallback={<PageLoader />}><CommunityDetailPage /></Suspense></ProtectedRoute> },
       { path: 'payment', element: <ProtectedRoute><Suspense fallback={<PageLoader />}><PaymentPage /></Suspense></ProtectedRoute> },
       { path: 'dashboard', element: <ProtectedRoute><Suspense fallback={<PageLoader />}><DashboardPage /></Suspense></ProtectedRoute> },
+      { path: 'profile', element: <ProtectedRoute><Suspense fallback={<PageLoader />}><ProfilePage /></Suspense></ProtectedRoute> },
       { path: 'bookmarks', element: <ProtectedRoute><Suspense fallback={<PageLoader />}><BookmarksPage /></Suspense></ProtectedRoute> },
       { path: 'games', element: <GamesLandingPage /> },
       { path: 'games/:topic', element: lazyRoute(GameTopicPage) },

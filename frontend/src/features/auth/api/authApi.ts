@@ -8,4 +8,6 @@ export const authApi = {
   google: (credential: string) => api.post<AuthResponse & { isNew?: boolean }>('/auth/google', { credential }),
   forgotPassword: (email: string) => api.post<{ message: string }>('/auth/forgot-password', { email }),
   resetPassword: (token: string, password: string) => api.post<{ message: string }>('/auth/reset-password', { token, password }),
+  updateProfile: (data: { name?: string; picture?: string }) => api.put<{ user: any; token: string }>('/auth/profile', data),
+  changePassword: (currentPassword: string, newPassword: string) => api.put<{ message: string }>('/auth/password', { currentPassword, newPassword }),
 };
