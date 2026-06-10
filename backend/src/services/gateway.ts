@@ -18,9 +18,10 @@ app.use(cors({
 }));
 
 // Auth-specific rate limiter (stricter — login/register/Google OAuth)
+// On Render, all users share the proxy IP so limits must be high
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 500,
+  max: 5000,
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) => req.method === 'OPTIONS',
@@ -31,7 +32,7 @@ app.use('/auth', authLimiter);
 
 const globalLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10000,
+  max: 100000,
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) =>
@@ -52,7 +53,7 @@ app.use(globalLimiter);
 
 const notificationsLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 5000,
+  max: 50000,
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) => req.method === 'OPTIONS',
